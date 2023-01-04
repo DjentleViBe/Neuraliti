@@ -6,6 +6,16 @@
 #include <fstream>
 #include "MainMenu.h"
 
+// Platform-specific headers
+#if defined(_WIN32)
+#include <direct.h> // for _getcwd()
+#define GetCurrentDir _getcwd
+#else
+#include <unistd.h> // for getcwd()
+#define GetCurrentDir getcwd
+#endif
+
+
 int verbose;
 std::string logs;
 
@@ -95,4 +105,13 @@ std::string readfileconcat(char const *filename){
         concatenatedString += str;
     }
     return concatenatedString;
+}
+
+std::string GetCurrentWorkingDirectory() {
+    char buffer[FILENAME_MAX];
+    if (GetCurrentDir(buffer, sizeof(buffer)) != nullptr) {
+        return std::string(buffer);
+    } else {
+        return std::string("");
+    }
 }
