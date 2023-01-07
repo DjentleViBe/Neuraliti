@@ -115,3 +115,41 @@ std::string GetCurrentWorkingDirectory() {
         return std::string("");
     }
 }
+
+void overwriteLine(const std::string& filename, int lineNumber, const std::string& newContent) {
+    // Read the file into memory
+    std::ifstream infile(filename);
+    if (!infile.is_open()) {
+        std::cerr << "Error: Unable to open file for reading." << std::endl;
+        return;
+    }
+
+    std::vector<std::string> lines;
+    std::string line;
+    while (std::getline(infile, line)) {
+        lines.push_back(line);
+    }
+    infile.close();
+
+    // Check if the line number is valid
+    if (lineNumber < 1 || lineNumber > static_cast<int>(lines.size())) {
+        std::cerr << "Error: Line number out of range." << std::endl;
+        return;
+    }
+
+    // Modify the desired line
+    lines[lineNumber - 1] = newContent;
+
+    // Write the modified lines back to the file
+    std::ofstream outfile(filename);
+    if (!outfile.is_open()) {
+        std::cerr << "Error: Unable to open file for writing." << std::endl;
+        return;
+    }
+
+    for (const std::string& modifiedLine : lines) {
+        outfile << modifiedLine << std::endl;
+    }
+
+    std::cout << "Line " << lineNumber << " overwritten successfully." << std::endl;
+}
