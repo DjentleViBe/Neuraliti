@@ -24,7 +24,7 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 std::map<std::string, std::string> appsettings;
-std::vector<std::string> fontlist, configlist;
+std::vector<std::string> fontlist, configlist, fontsizelist;
 const char* homeDir = std::getenv("HOME");
 picojson::value v;
 
@@ -97,6 +97,7 @@ int loadconfig(std::string path){
     appsettings["fontsize"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("fontsize").to_str();
     fontlist = listfiles(appsettings["defaultfolder"] + "/fonts", ".ttf");
     configlist = listfiles(appsettings["defaultfolder"], ".json");
+    fontsizelist = {"12", "13", "14", "15"};
     return 0;
 }
 
