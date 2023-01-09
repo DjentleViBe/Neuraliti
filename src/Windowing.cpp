@@ -27,6 +27,7 @@ void editprefwindow(ImGui::FileBrowser fileDialog){
     }
     ImGui::Separator();
     static int currentItem = 0;
+    static int currentSize = 3;
     if (ImGui::TreeNode("Fonts"))
     {
         ImGui::Text("Font name");
@@ -41,28 +42,26 @@ void editprefwindow(ImGui::FileBrowser fileDialog){
             }
             ImGui::EndCombo();
         }
+        //ImGui::SameLine();
+        
+        if (ImGui::BeginCombo("##combo2", fontsizelist[currentSize].c_str())) {
+            for (int j = 0; j < fontsizelist.size(); j++) {
+                const bool isSelected = (currentSize == j);
+                if (ImGui::Selectable(fontsizelist[j].c_str(), isSelected))
+                    currentSize = j;
+                    appsettings["fontsize"] = fontsizelist[currentSize];
+                if (isSelected)
+                    ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndCombo();
+        }
         ImGui::TreePop();
+        
     }
     if(ImGui::Button("Save")){
         // write to json
-        addlogs(v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("defaultfolder").to_str());
-        
-        picojson::object& person = v.get<picojson::object>();
-        person["defaultfolder"] = picojson::value("neuraliti");
-
-        // Serialize the modified JSON object to a string
-        std::string serialized_json = picojson::value(v).serialize();
-
         // Write the updated JSON data back to the file
-        std::ofstream outfile("../prefs.json");
-        if (!outfile.is_open()) {
-            std::cerr << "Error: Unable to open file for writing." << std::endl;
-            }
-        outfile << serialized_json;
-        outfile.close();
-
+        overwriteLine("../prefs.json", 8, "\"fontsize\": \"" + appsettings["fontsize"] + "\"");
         addlogs("\nPreferences saved. Restart the app to see changes\n");
-        //addlogs(appsettings["defaultfont"]);
     }
-    //ImGui::Button("Save");
 }
