@@ -97,7 +97,7 @@ int loadconfig(std::string path){
     appsettings["fontsize"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("fontsize").to_str();
     fontlist = listfiles(appsettings["defaultfolder"] + "/fonts", ".ttf");
     configlist = listfiles(appsettings["defaultfolder"], ".json");
-    fontsizelist = {"12", "13", "14", "15"};
+    fontsizelist = {"12", "13", "14", "15", "16", "17", "18"};
     return 0;
 }
 
