@@ -5,13 +5,15 @@
 #include "Windowing.h"
 #include "imgui.h"
 #include "imfilebrowser.h"
+#include "uielements.h"
 #include "MainMenu.h"
 #include "Extras.h"
 #include "picojson.h"
 
 void editprefwindow(ImGui::FileBrowser fileDialog){
     // Buffer to hold the current working directory
-    //ImGui::SetNextWindowPos(ImVec2(window_width / 2.0, (window_height / 4.0)));
+    ImGui::SetNextWindowPos(ImVec2(window_width / 4.0, (window_height / 4.0)));
+    ImGui::SetNextWindowSize(ImVec2(window_width / 3.0, (window_height / 3.0)));
     ImGui::Begin("Preferences", &editpref);
     
     /*if(ImGui::Button("Choose font")){
@@ -27,10 +29,10 @@ void editprefwindow(ImGui::FileBrowser fileDialog){
     }
     ImGui::Separator();
     static int currentItem = 0;
-    static int currentSize = 3;
+    static int currentSize = std::stof(appsettings["fontsize"]) - 12;
     if (ImGui::TreeNode("Fonts"))
     {
-        ImGui::Text("Font name");
+        ImGui::PushItemWidth(window_width / 7.0);
         if (ImGui::BeginCombo("##combo", fontlist[currentItem].c_str())) {
             for (int i = 0; i < fontlist.size(); i++) {
                 const bool isSelected = (currentItem == i);
@@ -42,8 +44,7 @@ void editprefwindow(ImGui::FileBrowser fileDialog){
             }
             ImGui::EndCombo();
         }
-        //ImGui::SameLine();
-        
+        ImGui::SameLine();
         if (ImGui::BeginCombo("##combo2", fontsizelist[currentSize].c_str())) {
             for (int j = 0; j < fontsizelist.size(); j++) {
                 const bool isSelected = (currentSize == j);
