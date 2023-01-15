@@ -42,8 +42,11 @@
       viewDebuggingEnabled = "No"
       consoleMode = "0"
       structuredConsoleMode = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <PathRunnable
+         runnableDebuggingMode = "0"
+         FilePath = "/Users/vishakhbegari/Documents/GitHub/GENT-CrossPlatform/bin/GENT">
+      </PathRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CE5A6DBA2B40FA1D00F70C8C"
@@ -51,7 +54,7 @@
             BlueprintName = "GENT"
             ReferencedContainer = "container:GENT.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
