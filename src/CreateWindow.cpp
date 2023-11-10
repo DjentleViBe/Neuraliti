@@ -5,6 +5,7 @@
 #include "GLFW/glfw3.h"
 #include "shader_s.h"
 #include "stb_image.h"
+void InitShader(const char* shadevs, const char* shadefs);
 
 void DrawRectangle(){
     //glClear( GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
@@ -25,8 +26,8 @@ void DrawRectangle(){
     glFlush();
 }
 
-int InitRectangle(size_t vert, float vertices[], size_t ind, unsigned int indices[], unsigned int &texture, unsigned int &VBO, unsigned int &VAO, unsigned int &EBO){
-    Shader ourShader("simpleshader.vs", "simpleshader.fs");
+int InitRectangle(size_t vert, float vertices[], size_t ind, unsigned int indices[], unsigned int &texture, unsigned int &VBO, unsigned int &VAO, unsigned int &EBO, const char* shadevs, const char* shadefs){
+    
     // objects /////////////////
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -41,14 +42,14 @@ int InitRectangle(size_t vert, float vertices[], size_t ind, unsigned int indice
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, ind, indices, GL_STATIC_DRAW);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
     // texture coord attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    //glEnableVertexAttribArray(2);
 
     // texture 1
     // ---------
@@ -60,6 +61,13 @@ int InitRectangle(size_t vert, float vertices[], size_t ind, unsigned int indice
     // set texture filtering parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    
+    InitShader(shadevs, shadefs);
+    return 0;
+}
+
+void InitShader(const char* shadevs, const char* shadefs){
+    Shader ourShader(shadevs, shadefs);
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
@@ -78,6 +86,4 @@ int InitRectangle(size_t vert, float vertices[], size_t ind, unsigned int indice
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
-    std::cout << VAO << std::endl;
-    return 0;
 }
