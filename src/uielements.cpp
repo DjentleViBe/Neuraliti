@@ -126,7 +126,7 @@ int INITgraphics(){
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
-
+    io.Fonts->AddFontFromFileTTF("DejaVuSansMono.ttf", 13);
     return 0;
 }
 

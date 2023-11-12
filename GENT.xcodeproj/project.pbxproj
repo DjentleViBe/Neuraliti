@@ -17,6 +17,11 @@
 		CE401F642BCBE00300648497 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F612BCBE00200648497 /* imgui.cpp */; };
 		CE401F652BCBE00300648497 /* imgui_impl_opengl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F622BCBE00200648497 /* imgui_impl_opengl3.cpp */; };
 		CE401F672BCBE12900648497 /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F662BCBE12800648497 /* imgui_impl_glfw.cpp */; };
+		CE401F682BCBECEC00648497 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = CE5A6DC52B40FADD00F70C8C /* assets */; };
+		CE401F762BCBEEF100648497 /* DejaVuSansMono-Oblique.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE401F722BCBEEF100648497 /* DejaVuSansMono-Oblique.ttf */; };
+		CE401F772BCBEEF100648497 /* DejaVuSansMono-BoldOblique.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE401F732BCBEEF100648497 /* DejaVuSansMono-BoldOblique.ttf */; };
+		CE401F782BCBEEF100648497 /* DejaVuSansMono.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE401F742BCBEEF100648497 /* DejaVuSansMono.ttf */; };
+		CE401F792BCBEEF100648497 /* DejaVuSansMono-Bold.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE401F752BCBEEF100648497 /* DejaVuSansMono-Bold.ttf */; };
 		CE4CE4302B41025700692ED2 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE42F2B41025700692ED2 /* IOKit.framework */; };
 		CE4CE4322B41026500692ED2 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4312B41026500692ED2 /* CoreVideo.framework */; };
 		CE4CE4342B41027400692ED2 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4332B41027400692ED2 /* CoreFoundation.framework */; };
@@ -53,6 +58,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				CE401F762BCBEEF100648497 /* DejaVuSansMono-Oblique.ttf in CopyFiles */,
+				CE401F772BCBEEF100648497 /* DejaVuSansMono-BoldOblique.ttf in CopyFiles */,
+				CE401F782BCBEEF100648497 /* DejaVuSansMono.ttf in CopyFiles */,
+				CE401F792BCBEEF100648497 /* DejaVuSansMono-Bold.ttf in CopyFiles */,
 				CE5B9FF52B45B71500EDD025 /* windowshader.vs in CopyFiles */,
 				CE5B9FF62B45B71500EDD025 /* windowshader.fs in CopyFiles */,
 				CEAB8CD12B412CBC005BBA63 /* simpleshader.fs in CopyFiles */,
@@ -73,6 +82,10 @@
 		CE401F622BCBE00200648497 /* imgui_impl_opengl3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_opengl3.cpp; path = dependencies/backends/imgui_impl_opengl3.cpp; sourceTree = "<group>"; };
 		CE401F632BCBE00200648497 /* imgui_tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_tables.cpp; path = dependencies/backends/imgui_tables.cpp; sourceTree = "<group>"; };
 		CE401F662BCBE12800648497 /* imgui_impl_glfw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_impl_glfw.cpp; sourceTree = "<group>"; };
+		CE401F722BCBEEF100648497 /* DejaVuSansMono-Oblique.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DejaVuSansMono-Oblique.ttf"; path = "assets/DejaVuSansMono-Oblique.ttf"; sourceTree = "<group>"; };
+		CE401F732BCBEEF100648497 /* DejaVuSansMono-BoldOblique.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DejaVuSansMono-BoldOblique.ttf"; path = "assets/DejaVuSansMono-BoldOblique.ttf"; sourceTree = "<group>"; };
+		CE401F742BCBEEF100648497 /* DejaVuSansMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = DejaVuSansMono.ttf; path = assets/DejaVuSansMono.ttf; sourceTree = "<group>"; };
+		CE401F752BCBEEF100648497 /* DejaVuSansMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DejaVuSansMono-Bold.ttf"; path = "assets/DejaVuSansMono-Bold.ttf"; sourceTree = "<group>"; };
 		CE4CE42D2B41005400692ED2 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = CabinV5.jpg; sourceTree = "<group>"; };
 		CE4CE42F2B41025700692ED2 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		CE4CE4312B41026500692ED2 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -152,6 +165,10 @@
 		CE5A6DB22B40FA1D00F70C8C = {
 			isa = PBXGroup;
 			children = (
+				CE401F752BCBEEF100648497 /* DejaVuSansMono-Bold.ttf */,
+				CE401F732BCBEEF100648497 /* DejaVuSansMono-BoldOblique.ttf */,
+				CE401F722BCBEEF100648497 /* DejaVuSansMono-Oblique.ttf */,
+				CE401F742BCBEEF100648497 /* DejaVuSansMono.ttf */,
 				CE401F662BCBE12800648497 /* imgui_impl_glfw.cpp */,
 				CE401F5F2BCBDFE300648497 /* imgui_tables.cpp */,
 				CE401F622BCBE00200648497 /* imgui_impl_opengl3.cpp */,
@@ -258,6 +275,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE401F682BCBECEC00648497 /* assets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
