@@ -10,6 +10,13 @@
 		CE2428552B41101700FFD99A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6DBE2B40FA1D00F70C8C /* main.cpp */; };
 		CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE2428562B4110B500FFD99A /* uielements.cpp */; };
 		CE2428592B411C2F00FFD99A /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6DCB2B40FADE00F70C8C /* glad.c */; };
+		CE401F5A2BCBDE1500648497 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F592BCBDE1400648497 /* imgui_demo.cpp */; };
+		CE401F5C2BCBDE4C00648497 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F5B2BCBDE4C00648497 /* imgui_draw.cpp */; };
+		CE401F5E2BCBDFAF00648497 /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */; };
+		CE401F602BCBDFE300648497 /* imgui_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F5F2BCBDFE300648497 /* imgui_tables.cpp */; };
+		CE401F642BCBE00300648497 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F612BCBE00200648497 /* imgui.cpp */; };
+		CE401F652BCBE00300648497 /* imgui_impl_opengl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F622BCBE00200648497 /* imgui_impl_opengl3.cpp */; };
+		CE401F672BCBE12900648497 /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F662BCBE12800648497 /* imgui_impl_glfw.cpp */; };
 		CE4CE4302B41025700692ED2 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE42F2B41025700692ED2 /* IOKit.framework */; };
 		CE4CE4322B41026500692ED2 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4312B41026500692ED2 /* CoreVideo.framework */; };
 		CE4CE4342B41027400692ED2 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4332B41027400692ED2 /* CoreFoundation.framework */; };
@@ -58,6 +65,14 @@
 
 /* Begin PBXFileReference section */
 		CE2428562B4110B500FFD99A /* uielements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = uielements.cpp; sourceTree = "<group>"; };
+		CE401F592BCBDE1400648497 /* imgui_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_demo.cpp; sourceTree = "<group>"; };
+		CE401F5B2BCBDE4C00648497 /* imgui_draw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_draw.cpp; sourceTree = "<group>"; };
+		CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_widgets.cpp; path = dependencies/backends/imgui_widgets.cpp; sourceTree = "<group>"; };
+		CE401F5F2BCBDFE300648497 /* imgui_tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_tables.cpp; path = dependencies/backends/imgui_tables.cpp; sourceTree = "<group>"; };
+		CE401F612BCBE00200648497 /* imgui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui.cpp; path = dependencies/backends/imgui.cpp; sourceTree = "<group>"; };
+		CE401F622BCBE00200648497 /* imgui_impl_opengl3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_opengl3.cpp; path = dependencies/backends/imgui_impl_opengl3.cpp; sourceTree = "<group>"; };
+		CE401F632BCBE00200648497 /* imgui_tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_tables.cpp; path = dependencies/backends/imgui_tables.cpp; sourceTree = "<group>"; };
+		CE401F662BCBE12800648497 /* imgui_impl_glfw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_impl_glfw.cpp; sourceTree = "<group>"; };
 		CE4CE42D2B41005400692ED2 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = CabinV5.jpg; sourceTree = "<group>"; };
 		CE4CE42F2B41025700692ED2 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		CE4CE4312B41026500692ED2 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -137,6 +152,14 @@
 		CE5A6DB22B40FA1D00F70C8C = {
 			isa = PBXGroup;
 			children = (
+				CE401F662BCBE12800648497 /* imgui_impl_glfw.cpp */,
+				CE401F5F2BCBDFE300648497 /* imgui_tables.cpp */,
+				CE401F622BCBE00200648497 /* imgui_impl_opengl3.cpp */,
+				CE401F632BCBE00200648497 /* imgui_tables.cpp */,
+				CE401F612BCBE00200648497 /* imgui.cpp */,
+				CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */,
+				CE401F5B2BCBDE4C00648497 /* imgui_draw.cpp */,
+				CE401F592BCBDE1400648497 /* imgui_demo.cpp */,
 				CE91EC702BCAA0D2000435D8 /* src */,
 				CE5B9FF42B45B71500EDD025 /* windowshader.fs */,
 				CE5B9FF32B45B71500EDD025 /* windowshader.vs */,
@@ -205,7 +228,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					CE5A6DBA2B40FA1D00F70C8C = {
 						CreatedOnToolsVersion = 15.1;
@@ -245,8 +268,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE401F672BCBE12900648497 /* imgui_impl_glfw.cpp in Sources */,
+				CE401F642BCBE00300648497 /* imgui.cpp in Sources */,
+				CE401F652BCBE00300648497 /* imgui_impl_opengl3.cpp in Sources */,
+				CE401F602BCBDFE300648497 /* imgui_tables.cpp in Sources */,
 				CEBB39542B45AA92002BFDE8 /* MathOperations.cpp in Sources */,
+				CE401F5E2BCBDFAF00648497 /* imgui_widgets.cpp in Sources */,
+				CE401F5C2BCBDE4C00648497 /* imgui_draw.cpp in Sources */,
 				CEBB39522B459B56002BFDE8 /* CreateWindow.cpp in Sources */,
+				CE401F5A2BCBDE1500648497 /* imgui_demo.cpp in Sources */,
 				CE2428592B411C2F00FFD99A /* glad.c in Sources */,
 				CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */,
 				CE2428552B41101700FFD99A /* main.cpp in Sources */,
@@ -290,6 +320,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -351,6 +382,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -377,6 +409,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = ALMS4MXZY6;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INCLUDED_SOURCE_FILE_NAMES = "";
@@ -398,6 +431,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = ALMS4MXZY6;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INCLUDED_SOURCE_FILE_NAMES = "";
