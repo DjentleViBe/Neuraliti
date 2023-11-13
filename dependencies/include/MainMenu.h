@@ -9,5 +9,5 @@
 #define MainMenu_hpp
 
 #include <stdio.h>
-void ShowMenuWindow(bool* p_open);
+void ShowMenu(bool* p_open);
 #endif /* MainMenu_hpp */
