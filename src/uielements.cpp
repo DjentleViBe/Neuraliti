@@ -13,6 +13,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "MainMenu.h"
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
@@ -126,7 +127,7 @@ int INITgraphics(){
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
-    io.Fonts->AddFontFromFileTTF("DejaVuSansMono.ttf", 13);
+    io.Fonts->AddFontFromFileTTF("RelicusDemo-Mono.ttf", 13);
     return 0;
 }
 
@@ -144,8 +145,9 @@ void Displayloop(char **argv){
         ImGui::NewFrame();
 
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-        if (show_demo_window)
-            ImGui::ShowDemoWindow(&show_demo_window);
+        //if (show_demo_window)
+        //    ImGui::ShowDemoWindow(&show_demo_window);
+        ShowMenu(&show_demo_window);
         // input
         // -----
         processInput(window);
@@ -180,8 +182,6 @@ void Displayloop(char **argv){
         //glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         
-        
-
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
