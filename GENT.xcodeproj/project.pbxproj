@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE1917A12BCBF2BC00DC8A51 /* RelicusDemo-Mono.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE19179F2BCBF2BC00DC8A51 /* RelicusDemo-Mono.ttf */; };
+		CE1917A22BCBF2BD00DC8A51 /* RelicusDemo-LightMono.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE1917A02BCBF2BC00DC8A51 /* RelicusDemo-LightMono.ttf */; };
+		CE1917A52BCC0C1400DC8A51 /* MainMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */; };
 		CE2428552B41101700FFD99A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6DBE2B40FA1D00F70C8C /* main.cpp */; };
 		CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE2428562B4110B500FFD99A /* uielements.cpp */; };
 		CE2428592B411C2F00FFD99A /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6DCB2B40FADE00F70C8C /* glad.c */; };
@@ -58,6 +61,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				CE1917A12BCBF2BC00DC8A51 /* RelicusDemo-Mono.ttf in CopyFiles */,
+				CE1917A22BCBF2BD00DC8A51 /* RelicusDemo-LightMono.ttf in CopyFiles */,
 				CE401F762BCBEEF100648497 /* DejaVuSansMono-Oblique.ttf in CopyFiles */,
 				CE401F772BCBEEF100648497 /* DejaVuSansMono-BoldOblique.ttf in CopyFiles */,
 				CE401F782BCBEEF100648497 /* DejaVuSansMono.ttf in CopyFiles */,
@@ -73,6 +78,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CE19179F2BCBF2BC00DC8A51 /* RelicusDemo-Mono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "RelicusDemo-Mono.ttf"; path = "assets/RelicusDemo-Mono.ttf"; sourceTree = "<group>"; };
+		CE1917A02BCBF2BC00DC8A51 /* RelicusDemo-LightMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "RelicusDemo-LightMono.ttf"; path = "assets/RelicusDemo-LightMono.ttf"; sourceTree = "<group>"; };
+		CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenu.cpp; sourceTree = "<group>"; };
 		CE2428562B4110B500FFD99A /* uielements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = uielements.cpp; sourceTree = "<group>"; };
 		CE401F592BCBDE1400648497 /* imgui_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_demo.cpp; sourceTree = "<group>"; };
 		CE401F5B2BCBDE4C00648497 /* imgui_draw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_draw.cpp; sourceTree = "<group>"; };
@@ -165,6 +173,8 @@
 		CE5A6DB22B40FA1D00F70C8C = {
 			isa = PBXGroup;
 			children = (
+				CE1917A02BCBF2BC00DC8A51 /* RelicusDemo-LightMono.ttf */,
+				CE19179F2BCBF2BC00DC8A51 /* RelicusDemo-Mono.ttf */,
 				CE401F752BCBEEF100648497 /* DejaVuSansMono-Bold.ttf */,
 				CE401F732BCBEEF100648497 /* DejaVuSansMono-BoldOblique.ttf */,
 				CE401F722BCBEEF100648497 /* DejaVuSansMono-Oblique.ttf */,
@@ -212,6 +222,7 @@
 				CE2428562B4110B500FFD99A /* uielements.cpp */,
 				CEBB39532B45AA92002BFDE8 /* MathOperations.cpp */,
 				CEBB39512B459B56002BFDE8 /* CreateWindow.cpp */,
+				CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -295,6 +306,7 @@
 				CE401F5C2BCBDE4C00648497 /* imgui_draw.cpp in Sources */,
 				CEBB39522B459B56002BFDE8 /* CreateWindow.cpp in Sources */,
 				CE401F5A2BCBDE1500648497 /* imgui_demo.cpp in Sources */,
+				CE1917A52BCC0C1400DC8A51 /* MainMenu.cpp in Sources */,
 				CE2428592B411C2F00FFD99A /* glad.c in Sources */,
 				CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */,
 				CE2428552B41101700FFD99A /* main.cpp in Sources */,
