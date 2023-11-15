@@ -1,8 +1,8 @@
-//
-//  KeyBindings.cpp
-//  GENT
-//
-//  Created by Vishakh Begari on 14.04.24.
-//
+#include <iostream>
+#include "KeyBindings.h"
+#include "GLFW/glfw3.h"
 
-#include "KeyBindings.hpp"
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    std::cout << key << std::endl;
+}
