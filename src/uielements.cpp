@@ -1,19 +1,18 @@
-#include "glad/glad.h"
-
 #include <stdio.h>
+#include <iostream>
+#include "glad/glad.h"
 #define GL_SILENCE_DEPRECATION
 #include "GLFW/glfw3.h" // Will drag system OpenGL headers
 #include "uielements.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
 #include "shader_s.h"
 #include "CreateWindow.hpp"
-#include <iostream>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "MainMenu.h"
+#include "KeyBindings.h"
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
@@ -140,6 +139,7 @@ void Displayloop(char **argv){
     // Main loop
     while (!glfwWindowShouldClose(window))
     {   
+        glfwSetKeyCallback(window, key_callback);
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
