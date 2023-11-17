@@ -1,8 +1,15 @@
-//
-//  ReadFile.cpp
-//  GENT
-//
-//  Created by Vishakh Begari on 16.04.24.
-//
+#include <iostream>
+#include <fstream>
+#include <string>
+#include "ReadFile.h"
 
-#include "ReadFile.hpp"
+void readfile(char const *filename){
+    std::string line;
+    std::ifstream file(filename);
+    if (file.is_open()) {
+        while (getline(file, line)) {
+            std::cout << line << "\n";
+        }
+        file.close();
+    }
+}

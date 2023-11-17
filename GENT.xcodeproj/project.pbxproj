@@ -39,6 +39,8 @@
 		CEAB8CD12B412CBC005BBA63 /* simpleshader.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */; };
 		CEBB39522B459B56002BFDE8 /* CreateWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39512B459B56002BFDE8 /* CreateWindow.cpp */; };
 		CEBB39542B45AA92002BFDE8 /* MathOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39532B45AA92002BFDE8 /* MathOperations.cpp */; };
+		CEFD8D992BCED2FD009AB22A /* ReadFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEFD8D972BCED2FD009AB22A /* ReadFile.cpp */; };
+		CEFD8D9B2BCEDFD1009AB22A /* keybinding_macos.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -62,6 +64,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				CEFD8D9B2BCEDFD1009AB22A /* keybinding_macos.txt in CopyFiles */,
 				CE1917A12BCBF2BC00DC8A51 /* RelicusDemo-Mono.ttf in CopyFiles */,
 				CE1917A22BCBF2BD00DC8A51 /* RelicusDemo-LightMono.ttf in CopyFiles */,
 				CE401F762BCBEEF100648497 /* DejaVuSansMono-Oblique.ttf in CopyFiles */,
@@ -122,6 +125,8 @@
 		CEAB8CD22B413A68005BBA63 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CEBB39512B459B56002BFDE8 /* CreateWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CreateWindow.cpp; sourceTree = "<group>"; };
 		CEBB39532B45AA92002BFDE8 /* MathOperations.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MathOperations.cpp; sourceTree = "<group>"; };
+		CEFD8D972BCED2FD009AB22A /* ReadFile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ReadFile.cpp; sourceTree = "<group>"; };
+		CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = keybinding_macos.txt; path = assets/keybinding_macos.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +180,7 @@
 		CE5A6DB22B40FA1D00F70C8C = {
 			isa = PBXGroup;
 			children = (
+				CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */,
 				CE1917A02BCBF2BC00DC8A51 /* RelicusDemo-LightMono.ttf */,
 				CE19179F2BCBF2BC00DC8A51 /* RelicusDemo-Mono.ttf */,
 				CE401F752BCBEEF100648497 /* DejaVuSansMono-Bold.ttf */,
@@ -226,6 +232,7 @@
 				CEBB39512B459B56002BFDE8 /* CreateWindow.cpp */,
 				CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */,
 				CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */,
+				CEFD8D972BCED2FD009AB22A /* ReadFile.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -305,6 +312,7 @@
 				CE401F652BCBE00300648497 /* imgui_impl_opengl3.cpp in Sources */,
 				CE401F602BCBDFE300648497 /* imgui_tables.cpp in Sources */,
 				CEBB39542B45AA92002BFDE8 /* MathOperations.cpp in Sources */,
+				CEFD8D992BCED2FD009AB22A /* ReadFile.cpp in Sources */,
 				CE401F5E2BCBDFAF00648497 /* imgui_widgets.cpp in Sources */,
 				CE401F5C2BCBDE4C00648497 /* imgui_draw.cpp in Sources */,
 				CEBB39522B459B56002BFDE8 /* CreateWindow.cpp in Sources */,
