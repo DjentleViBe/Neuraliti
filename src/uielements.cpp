@@ -13,7 +13,6 @@
 #include "imgui_impl_opengl3.h"
 #include "MainMenu.h"
 #include "KeyBindings.h"
-#include "ReadFile.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -55,7 +54,6 @@ unsigned int VBO, VAO, EBO;
 unsigned int VBO_box, VAO_box, EBO_box;
 GLFWwindow* window;
 unsigned int texture1, texture_box;
-int os;
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -130,21 +128,7 @@ int INITgraphics(){
     #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
     io.Fonts->AddFontFromFileTTF("RelicusDemo-Mono.ttf", 13);
-    // read config file for keybinding
-    #if defined _WIN32
-    os = 0;
-    printf("windows");
-    
-    #elif defined __APPLE__
-    os = 1;
-    char const *p = "keybinding_macos.txt";
-    readfile(p);
-    printf("macos");
-    #elif defined __linux__
-    os = 2;
-    printf("linux");
-    #endif
-    
+    readkeybindings();
     
     return 0;
 }
