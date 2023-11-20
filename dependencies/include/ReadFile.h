@@ -2,5 +2,5 @@
 #define ReadFile_h
 
 #include <stdio.h>
-void readfile(char const *filename);
+std::vector<std::string> readfile(char const *filename);
 #endif /* ReadFile_hpp */
