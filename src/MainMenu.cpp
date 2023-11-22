@@ -2,64 +2,72 @@
 #include "imgui.h"
 #include "stdio.h"
 #include <iostream>
+
+std::string superkey = "";
+
 void ShowMenu(bool* p_open)
 {
+    #if defined _WIN32
+    superkey = "CTRL";
+    #elif defined __APPLE__
+    superkey = "CMD";
+    #endif
     if(p_open){
         if (ImGui::BeginMainMenuBar())
         {
             if (ImGui::BeginMenu("File"))
             {
                 //ShowExampleMenuFile();
-                if (ImGui::MenuItem("New", "CTRL+N")){std::cout << "new" << std::endl;}
-                if (ImGui::MenuItem("Open", "CTRL+O")){}
+                if (ImGui::MenuItem("New", (superkey + "+N").c_str())){std::cout << "new" << std::endl;}
+                if (ImGui::MenuItem("Open", (superkey + "+O").c_str())){}
                 if (ImGui::MenuItem("Open Recent", "")){}
-                if (ImGui::MenuItem("Close", "CTRL+W")){}
-                if (ImGui::MenuItem("Save", "CTRL+S")){}
-                if (ImGui::MenuItem("Save As...", "CTRL+S")){}
-                if (ImGui::MenuItem("Message...", "CTRL+M")){}
-                if (ImGui::MenuItem("Print...", "CTRL+P")){}
+                if (ImGui::MenuItem("Close", (superkey + "+W").c_str())){}
+                if (ImGui::MenuItem("Save", (superkey + "+S").c_str())){}
+                if (ImGui::MenuItem("Save As...", (superkey + "+S").c_str())){}
+                if (ImGui::MenuItem("Message...", (superkey + "+M").c_str())){}
+                if (ImGui::MenuItem("Print...", (superkey + "+P").c_str())){}
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Edit"))
             {
-                if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+                if (ImGui::MenuItem("Undo", (superkey + "+Z").c_str())) {}
                 if (ImGui::MenuItem("Redo", "SHIFT+CTRL+Z", false, false)) {}  // Disabled item
                 ImGui::Separator();
-                if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-                if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-                if (ImGui::MenuItem("Paste", "CTRL+V")) {}
-                if (ImGui::MenuItem("Duplicate", "CTRL+D")) {}
+                if (ImGui::MenuItem("Cut", (superkey + "+X").c_str())) {}
+                if (ImGui::MenuItem("Copy", (superkey + "+C").c_str())) {}
+                if (ImGui::MenuItem("Paste", (superkey + "+V").c_str())) {}
+                if (ImGui::MenuItem("Duplicate", (superkey + "+D").c_str())) {}
                 if (ImGui::MenuItem("Paste Replace", "")) {}
-                if (ImGui::MenuItem("Select All", "CTRL+A")) {}
+                if (ImGui::MenuItem("Select All", (superkey + "+A").c_str())) {}
                 if (ImGui::MenuItem("Font", "")) {}
-                if (ImGui::MenuItem("Zoom In", "CTRL++")) {}
-                if (ImGui::MenuItem("Zoom Out", "CTRL+-")) {}
-                if (ImGui::MenuItem("TidyUp", "SHIFT+CTRL+R")) {}
+                if (ImGui::MenuItem("Zoom In", (superkey + "++").c_str())) {}
+                if (ImGui::MenuItem("Zoom Out", (superkey + "+-").c_str())) {}
+                if (ImGui::MenuItem("TidyUp", ("SHIFT+" + superkey + "+R").c_str())) {}
                 if (ImGui::MenuItem("(Dis)Connect Selection", "CTRL+K")) {}
-                if (ImGui::MenuItem("Triggerize", "CTRL+T")) {}
-                if (ImGui::MenuItem("Clear Console", "SHIFT+CTRL+L")) {}
-                if (ImGui::MenuItem("Edit Mode", "CTRL+E")) {}
+                if (ImGui::MenuItem("Triggerize", (superkey + "+T").c_str())) {}
+                if (ImGui::MenuItem("Clear Console", ("SHIFT+" + superkey + "+L").c_str())) {}
+                if (ImGui::MenuItem("Edit Mode", (superkey + "+E").c_str())) {}
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Put"))
             {
-                if (ImGui::MenuItem("Object", "CTRL+1")) {}
-                if (ImGui::MenuItem("Message", "CTRL+2")) {}
-                if (ImGui::MenuItem("Number", "CTRL+3")) {}
-                if (ImGui::MenuItem("List", "CTRL+4")) {}
+                if (ImGui::MenuItem("Object", (superkey + "+1").c_str())) {}
+                if (ImGui::MenuItem("Message", (superkey + "+2").c_str())) {}
+                if (ImGui::MenuItem("Number", (superkey + "+3").c_str())) {}
+                if (ImGui::MenuItem("List", (superkey + "+4").c_str())) {}
                 if (ImGui::MenuItem("Symbol", "")) {}
-                if (ImGui::MenuItem("Comment", "CTRL+5")) {}
-                if (ImGui::MenuItem("Bang", "SHIFT+CTRL+B")) {}
-                if (ImGui::MenuItem("Toggle", "SHIFT+CTRL+T")) {}
-                if (ImGui::MenuItem("Number2", "SHIFT+CTRL+N")) {}
-                if (ImGui::MenuItem("VSlider", "SHIFT+CTRL+V")) {}
-                if (ImGui::MenuItem("HSlider", "SHIFT+CTRL+J")) {}
-                if (ImGui::MenuItem("Vradio", "SHIFT+CTRL+D")) {}
-                if (ImGui::MenuItem("Hradio", "SHIFT+CTRL+I")) {}
-                if (ImGui::MenuItem("VU Meter", "SHIFT+CTRL+U")) {}
-                if (ImGui::MenuItem("VU Meter", "SHIFT+CTRL+C")) {}
-                if (ImGui::MenuItem("Graph", "SHIFT+CTRL+G")) {}
-                if (ImGui::MenuItem("Array", "SHIFT+CTRL+A")) {}
+                if (ImGui::MenuItem("Comment", (superkey + "+5").c_str())) {}
+                if (ImGui::MenuItem("Bang", ("SHIFT+" + superkey + "+B").c_str())) {}
+                if (ImGui::MenuItem("Toggle", ("SHIFT+" + superkey + "+T").c_str())) {}
+                if (ImGui::MenuItem("Number2", ("SHIFT+" + superkey + "+N").c_str())) {}
+                if (ImGui::MenuItem("VSlider", ("SHIFT+" + superkey + "+V").c_str())) {}
+                if (ImGui::MenuItem("HSlider", ("SHIFT+" + superkey + "+J").c_str())) {}
+                if (ImGui::MenuItem("Vradio", ("SHIFT+" + superkey + "+D").c_str())) {}
+                if (ImGui::MenuItem("Hradio", ("SHIFT+" + superkey + "+I").c_str())) {}
+                if (ImGui::MenuItem("VU Meter", ("SHIFT+" + superkey + "+U").c_str())) {}
+                if (ImGui::MenuItem("VU Meter", ("SHIFT+" + superkey + "+C").c_str())) {}
+                if (ImGui::MenuItem("Graph", ("SHIFT+" + superkey + "+G").c_str())) {}
+                if (ImGui::MenuItem("Array", ("SHIFT+" + superkey + "+A").c_str())) {}
                 
                 //ShowExampleMenuFile();
                 ImGui::EndMenu();
