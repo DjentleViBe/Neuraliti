@@ -131,13 +131,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
     if(glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS){
         switch(key){
-            case 78:
-                std::cout << "yes" << std::endl;
+            case GLFW_KEY_N:
+                std::cout << "N" << std::endl;
+                break;
+            case GLFW_KEY_O:
+                std::cout << "O" << std::endl;
                 break;
         }
     }
-    
-    
 }
 
 void assignbinding(std::vector<std::string> bind){
