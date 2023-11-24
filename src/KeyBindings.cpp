@@ -129,13 +129,131 @@
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if(glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS){
+    if(glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS &&
+       glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) != GLFW_PRESS){
         switch(key){
+            // File
             case GLFW_KEY_N:
                 std::cout << "N" << std::endl;
                 break;
             case GLFW_KEY_O:
                 std::cout << "O" << std::endl;
+                break;
+            case GLFW_KEY_W:
+                std::cout << "W" << std::endl;
+                break;
+            case GLFW_KEY_S:
+                std::cout << "S" << std::endl;
+                break;
+            case GLFW_KEY_M:
+                std::cout << "M" << std::endl;
+                break;
+            case GLFW_KEY_P:
+                std::cout << "P" << std::endl;
+                break;
+            
+            // Edit
+            case GLFW_KEY_Z:
+                std::cout << "z" << std::endl;
+                break;
+            case GLFW_KEY_X:
+                std::cout << "X" << std::endl;
+                break;
+            case GLFW_KEY_C:
+                std::cout << "C" << std::endl;
+                break;
+            case GLFW_KEY_V:
+                std::cout << "V" << std::endl;
+                break;
+            case GLFW_KEY_D:
+                std::cout << "D" << std::endl;
+                break;
+            case GLFW_KEY_A:
+                std::cout << "A" << std::endl;
+                break;
+            case 93:
+                std::cout << "+" << std::endl;
+                break;
+            case 47:
+                std::cout << "-" << std::endl;
+                break;
+            case GLFW_KEY_K:
+                std::cout << "K" << std::endl;
+                break;
+            case GLFW_KEY_T:
+                std::cout << "T" << std::endl;
+                break;
+            case GLFW_KEY_E:
+                std::cout << "E" << std::endl;
+                break;
+                
+            // Put
+            case GLFW_KEY_1:
+                std::cout << "1" << std::endl;
+                break;
+            case GLFW_KEY_2:
+                std::cout << "2" << std::endl;
+                break;
+            case GLFW_KEY_3:
+                std::cout << "3" << std::endl;
+                break;
+            case GLFW_KEY_4:
+                std::cout << "4" << std::endl;
+                break;
+            case GLFW_KEY_5:
+                std::cout << "5" << std::endl;
+                break;
+        }
+    }
+    
+    if(glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS &&
+       glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS){
+        switch(key){
+            case GLFW_KEY_S:
+                std::cout << "Save As..." << std::endl;
+                break;
+            case GLFW_KEY_Z:
+                std::cout << "Redo" << std::endl;
+                break;
+            case GLFW_KEY_R:
+                std::cout << "tidy Up" << std::endl;
+                break;
+            case GLFW_KEY_L:
+                std::cout << "Clear Console" << std::endl;
+                break;
+            // Put
+            case GLFW_KEY_B:
+                std::cout << "Bang" << std::endl;
+                break;
+            case GLFW_KEY_T:
+                std::cout << "Toggle" << std::endl;
+                break;
+            case GLFW_KEY_N:
+                std::cout << "Number2" << std::endl;
+                break;
+            case GLFW_KEY_V:
+                std::cout << "VSlider" << std::endl;
+                break;
+            case GLFW_KEY_J:
+                std::cout << "HSlider" << std::endl;
+                break;
+            case GLFW_KEY_D:
+                std::cout << "Vradio" << std::endl;
+                break;
+            case GLFW_KEY_I:
+                std::cout << "Hradio" << std::endl;
+                break;
+            case GLFW_KEY_U:
+                std::cout << "VU Meter" << std::endl;
+                break;
+            case GLFW_KEY_E:
+                std::cout << "Equilizer" << std::endl;
+                break;
+            case GLFW_KEY_G:
+                std::cout << "Graph" << std::endl;
+                break;
+            case GLFW_KEY_A:
+                std::cout << "Array" << std::endl;
                 break;
         }
     }

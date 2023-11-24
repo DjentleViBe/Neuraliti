@@ -23,7 +23,7 @@ void ShowMenu(bool* p_open)
                 if (ImGui::MenuItem("Open Recent", "")){}
                 if (ImGui::MenuItem("Close", (superkey + "+W").c_str())){}
                 if (ImGui::MenuItem("Save", (superkey + "+S").c_str())){}
-                if (ImGui::MenuItem("Save As...", (superkey + "+S").c_str())){}
+                if (ImGui::MenuItem("Save As...", ("SHIFT+" + superkey + "+S").c_str())){}
                 if (ImGui::MenuItem("Message...", (superkey + "+M").c_str())){}
                 if (ImGui::MenuItem("Print...", (superkey + "+P").c_str())){}
                 ImGui::EndMenu();
@@ -31,7 +31,7 @@ void ShowMenu(bool* p_open)
             if (ImGui::BeginMenu("Edit"))
             {
                 if (ImGui::MenuItem("Undo", (superkey + "+Z").c_str())) {}
-                if (ImGui::MenuItem("Redo", "SHIFT+CTRL+Z", false, false)) {}  // Disabled item
+                if (ImGui::MenuItem("Redo", ("SHIFT+"+superkey+"+Z").c_str(), false, false)) {}  // Disabled item
                 ImGui::Separator();
                 if (ImGui::MenuItem("Cut", (superkey + "+X").c_str())) {}
                 if (ImGui::MenuItem("Copy", (superkey + "+C").c_str())) {}
@@ -43,7 +43,7 @@ void ShowMenu(bool* p_open)
                 if (ImGui::MenuItem("Zoom In", (superkey + "++").c_str())) {}
                 if (ImGui::MenuItem("Zoom Out", (superkey + "+-").c_str())) {}
                 if (ImGui::MenuItem("TidyUp", ("SHIFT+" + superkey + "+R").c_str())) {}
-                if (ImGui::MenuItem("(Dis)Connect Selection", "CTRL+K")) {}
+                if (ImGui::MenuItem("(Dis)Connect Selection", (superkey + "+K").c_str())) {}
                 if (ImGui::MenuItem("Triggerize", (superkey + "+T").c_str())) {}
                 if (ImGui::MenuItem("Clear Console", ("SHIFT+" + superkey + "+L").c_str())) {}
                 if (ImGui::MenuItem("Edit Mode", (superkey + "+E").c_str())) {}
@@ -65,7 +65,7 @@ void ShowMenu(bool* p_open)
                 if (ImGui::MenuItem("Vradio", ("SHIFT+" + superkey + "+D").c_str())) {}
                 if (ImGui::MenuItem("Hradio", ("SHIFT+" + superkey + "+I").c_str())) {}
                 if (ImGui::MenuItem("VU Meter", ("SHIFT+" + superkey + "+U").c_str())) {}
-                if (ImGui::MenuItem("VU Meter", ("SHIFT+" + superkey + "+C").c_str())) {}
+                if (ImGui::MenuItem("Equilizer", ("SHIFT+" + superkey + "+E").c_str())) {}
                 if (ImGui::MenuItem("Graph", ("SHIFT+" + superkey + "+G").c_str())) {}
                 if (ImGui::MenuItem("Array", ("SHIFT+" + superkey + "+A").c_str())) {}
                 
