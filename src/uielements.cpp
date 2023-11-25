@@ -127,7 +127,19 @@ int INITgraphics(){
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
     #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
-    io.Fonts->AddFontFromFileTTF("RelicusDemo-Mono.ttf", 13);
+    ImFontConfig config;
+    
+    static const ImWchar myGlyphRanges[] = {
+        0x2318, 0x2318, // cmd
+        0x21E7, 0x21E7, // shift
+        0
+    };
+    io.Fonts->AddFontFromFileTTF("Courier-New.ttf", 18);
+    static ImFontConfig cfg;
+    cfg.OversampleH = cfg.OversampleV = 2;
+    cfg.MergeMode = true;
+    io.Fonts->AddFontFromFileTTF("DejaVuSansMono.ttf", 18, &cfg, myGlyphRanges);
+    io.Fonts->Build();
     readkeybindings();
     
     return 0;
