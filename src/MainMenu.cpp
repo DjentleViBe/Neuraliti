@@ -17,15 +17,16 @@ void ShowMenu(bool* p_open)
         {
             if (ImGui::BeginMenu("File"))
             {
-                //ImGui::DebugTextEncoding(_S("⌘"));
-                //ShowExampleMenuFile();
                 if (ImGui::MenuItem("New", (superkey + " N").c_str())){std::cout << "new" << std::endl;}
                 if (ImGui::MenuItem("Open", (superkey + " O").c_str())){}
                 if (ImGui::MenuItem("Open Recent", "")){}
+                ImGui::Separator();
                 if (ImGui::MenuItem("Close", (superkey + " W").c_str())){}
                 if (ImGui::MenuItem("Save", (superkey + " S").c_str())){}
                 if (ImGui::MenuItem("Save As...", ("⇧ " + superkey + " S").c_str())){}
+                ImGui::Separator();
                 if (ImGui::MenuItem("Message...", (superkey + " M").c_str())){}
+                ImGui::Separator();
                 if (ImGui::MenuItem("Print...", (superkey + " P").c_str())){}
                 ImGui::EndMenu();
             }
@@ -40,6 +41,7 @@ void ShowMenu(bool* p_open)
                 if (ImGui::MenuItem("Duplicate", (superkey + " D").c_str())) {}
                 if (ImGui::MenuItem("Paste Replace", "")) {}
                 if (ImGui::MenuItem("Select All", (superkey + " A").c_str())) {}
+                ImGui::Separator();
                 if (ImGui::MenuItem("Font", "")) {}
                 if (ImGui::MenuItem("Zoom In", (superkey + " +").c_str())) {}
                 if (ImGui::MenuItem("Zoom Out", (superkey + " -").c_str())) {}
@@ -47,6 +49,7 @@ void ShowMenu(bool* p_open)
                 if (ImGui::MenuItem("(Dis)Connect Selection", (superkey + " K").c_str())) {}
                 if (ImGui::MenuItem("Triggerize", (superkey + " T").c_str())) {}
                 if (ImGui::MenuItem("Clear Console", ("⇧ " + superkey + " L").c_str())) {}
+                ImGui::Separator();
                 if (ImGui::MenuItem("Edit Mode", (superkey + " E").c_str())) {}
                 ImGui::EndMenu();
             }
@@ -58,6 +61,7 @@ void ShowMenu(bool* p_open)
                 if (ImGui::MenuItem("List", (superkey + " 4").c_str())) {}
                 if (ImGui::MenuItem("Symbol", "")) {}
                 if (ImGui::MenuItem("Comment", (superkey + " 5").c_str())) {}
+                ImGui::Separator();
                 if (ImGui::MenuItem("Bang", ("⇧ " + superkey + " B").c_str())) {}
                 if (ImGui::MenuItem("Toggle", ("⇧ " + superkey + " T").c_str())) {}
                 if (ImGui::MenuItem("Number2", ("⇧ " + superkey + " N").c_str())) {}
@@ -66,7 +70,9 @@ void ShowMenu(bool* p_open)
                 if (ImGui::MenuItem("Vradio", ("⇧ " + superkey + " D").c_str())) {}
                 if (ImGui::MenuItem("Hradio", ("⇧ " + superkey + " I").c_str())) {}
                 if (ImGui::MenuItem("VU Meter", ("⇧ " + superkey + " U").c_str())) {}
+                if (ImGui::MenuItem("Canvas", ("⇧ " + superkey + " C").c_str())) {}
                 if (ImGui::MenuItem("Equilizer", ("⇧ " + superkey + " E").c_str())) {}
+                ImGui::Separator();
                 if (ImGui::MenuItem("Graph", ("⇧ " + superkey + " G").c_str())) {}
                 if (ImGui::MenuItem("Array", ("⇧ " + superkey + " A").c_str())) {}
                 
