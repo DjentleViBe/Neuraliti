@@ -246,6 +246,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             case GLFW_KEY_U:
                 std::cout << "VU Meter" << std::endl;
                 break;
+            case GLFW_KEY_C:
+                std::cout << "Canvas" << std::endl;
+                break;
             case GLFW_KEY_E:
                 std::cout << "Equilizer" << std::endl;
                 break;
