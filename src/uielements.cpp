@@ -21,8 +21,8 @@ void processInput(GLFWwindow *window);
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
 ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-int 					window_width 			= 	1193;
-int 					window_height 			= 	1003;
+int 					window_width 			= 	1393;
+int 					window_height 			= 	1193;
 float vertices[] = {
         // positions          // colors           // texture coords
          1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
@@ -118,7 +118,7 @@ int INITgraphics(){
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsLight();
     //ImGui::StyleColorsLight();
 
     // Setup Platform/Renderer backends
@@ -130,15 +130,18 @@ int INITgraphics(){
     ImFontConfig config;
     
     static const ImWchar myGlyphRanges[] = {
-        0x2318, 0x2318, // cmd
         0x21E7, 0x21E7, // shift
+        0x2318, 0x2318, // cmd
         0
     };
-    io.Fonts->AddFontFromFileTTF("Courier-New.ttf", 18);
+    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 18);
     static ImFontConfig cfg;
     cfg.OversampleH = cfg.OversampleV = 2;
     cfg.MergeMode = true;
-    io.Fonts->AddFontFromFileTTF("DejaVuSansMono.ttf", 18, &cfg, myGlyphRanges);
+    #if defined __APPLE__
+    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 18, &cfg,
+                                 myGlyphRanges);
+    #endif
     io.Fonts->Build();
     readkeybindings();
     
@@ -147,6 +150,7 @@ int INITgraphics(){
 
 void Displayloop(char **argv){
     bool show_demo_window = true;
+    ImGuiIO io = ImGui::GetIO();
     Shader ourShader("simpleshader.vs", "simpleshader.fs");
     Shader ourwinShader("windowshader.vs", "windowshader.fs");
     glfwMakeContextCurrent(window);
@@ -154,14 +158,37 @@ void Displayloop(char **argv){
     // Main loop
     while (!glfwWindowShouldClose(window))
     {   
+        glfwGetWindowSize(window, &window_width, &window_height);
         glfwSetKeyCallback(window, key_callback);
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        
+        //
+        ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
 
-        // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-        //if (show_demo_window)
-        //    ImGui::ShowDemoWindow(&show_demo_window);
+        ImGui::Begin("Window A");
+        ImGui::Text("This is main window");
+        ImGui::End();
+        
+        
+        //
+        ImGui::SetNextWindowSize(ImVec2(window_width - (window_width / 4.0), window_height - window_height * 5.0 / 6.0));
+        ImGui::SetNextWindowPos(ImVec2(window_width / 4.0, (window_height * 5.0 / 6.0)));
+
+        ImGui::Begin("Properties");
+        ImGui::Text("This is the properties window");
+        ImGui::End();
+        
+        //
+        ImGui::SetNextWindowSize(ImVec2((window_width / 4.0), window_height - window_height * 5.0 / 6.0));
+        ImGui::SetNextWindowPos(ImVec2(0, (window_height * 5.0 / 6.0)));
+
+        ImGui::Begin("Debug");
+        ImGui::Text("This is the debug window");
+        ImGui::End();
+        
         ShowMenu(&show_demo_window);
         // input
         // -----

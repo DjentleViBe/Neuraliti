@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CE0183952BD0252600F50BFB /* Courier-New.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE0183912BD0216600F50BFB /* Courier-New.ttf */; };
-		CE01839A2BD03FA400F50BFB /* DejaVuSansMono.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE0183992BD03FA400F50BFB /* DejaVuSansMono.ttf */; };
+		CE0183A02BD04BBE00F50BFB /* FreeMono.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE01839F2BD04BBE00F50BFB /* FreeMono.ttf */; };
+		CE0183A22BD04C2700F50BFB /* FreeMonoBold.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE0183A12BD04C2700F50BFB /* FreeMonoBold.ttf */; };
 		CE1917A52BCC0C1400DC8A51 /* MainMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */; };
 		CE1917A82BCC1D0000DC8A51 /* KeyBindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */; };
 		CE2428552B41101700FFD99A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6DBE2B40FA1D00F70C8C /* main.cpp */; };
@@ -60,8 +60,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				CE01839A2BD03FA400F50BFB /* DejaVuSansMono.ttf in CopyFiles */,
-				CE0183952BD0252600F50BFB /* Courier-New.ttf in CopyFiles */,
+				CE0183A22BD04C2700F50BFB /* FreeMonoBold.ttf in CopyFiles */,
+				CE0183A02BD04BBE00F50BFB /* FreeMono.ttf in CopyFiles */,
 				CEFD8D9B2BCEDFD1009AB22A /* keybinding_macos.txt in CopyFiles */,
 				CE5B9FF52B45B71500EDD025 /* windowshader.vs in CopyFiles */,
 				CE5B9FF62B45B71500EDD025 /* windowshader.fs in CopyFiles */,
@@ -74,8 +74,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CE0183912BD0216600F50BFB /* Courier-New.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Courier-New.ttf"; path = "assets/Courier-New.ttf"; sourceTree = "<group>"; };
-		CE0183992BD03FA400F50BFB /* DejaVuSansMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = DejaVuSansMono.ttf; path = assets/DejaVuSansMono.ttf; sourceTree = "<group>"; };
+		CE01839F2BD04BBE00F50BFB /* FreeMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeMono.ttf; path = assets/FreeMono.ttf; sourceTree = "<group>"; };
+		CE0183A12BD04C2700F50BFB /* FreeMonoBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeMonoBold.ttf; path = assets/FreeMonoBold.ttf; sourceTree = "<group>"; };
 		CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenu.cpp; sourceTree = "<group>"; };
 		CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyBindings.cpp; sourceTree = "<group>"; };
 		CE2428562B4110B500FFD99A /* uielements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = uielements.cpp; sourceTree = "<group>"; };
@@ -168,8 +168,8 @@
 		CE5A6DB22B40FA1D00F70C8C = {
 			isa = PBXGroup;
 			children = (
-				CE0183992BD03FA400F50BFB /* DejaVuSansMono.ttf */,
-				CE0183912BD0216600F50BFB /* Courier-New.ttf */,
+				CE0183A12BD04C2700F50BFB /* FreeMonoBold.ttf */,
+				CE01839F2BD04BBE00F50BFB /* FreeMono.ttf */,
 				CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */,
 				CE401F662BCBE12800648497 /* imgui_impl_glfw.cpp */,
 				CE401F5F2BCBDFE300648497 /* imgui_tables.cpp */,

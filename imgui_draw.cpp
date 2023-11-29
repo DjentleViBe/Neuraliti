@@ -172,7 +172,7 @@ using namespace IMGUI_STB_NAMESPACE;
 // [SECTION] Style functions
 //-----------------------------------------------------------------------------
 
-void ImGui::StyleColorsDark(ImGuiStyle* dst)
+void ImGui::StyleColorsLight(ImGuiStyle* dst)
 {
     ImGuiStyle* style = dst ? dst : &ImGui::GetStyle();
     ImVec4* colors = style->Colors;
@@ -293,7 +293,7 @@ void ImGui::StyleColorsClassic(ImGuiStyle* dst)
 }
 
 // Those light colors are better suited with a thicker font than the default one + FrameBorder
-void ImGui::StyleColorsLight(ImGuiStyle* dst)
+void ImGui::StyleColorsDark(ImGuiStyle* dst)
 {
     ImGuiStyle* style = dst ? dst : &ImGui::GetStyle();
     ImVec4* colors = style->Colors;
