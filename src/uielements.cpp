@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <ctime>
 #include "glad/glad.h"
 #define GL_SILENCE_DEPRECATION
 #include "GLFW/glfw3.h" // Will drag system OpenGL headers
@@ -13,6 +14,7 @@
 #include "imgui_impl_opengl3.h"
 #include "MainMenu.h"
 #include "KeyBindings.h"
+#include "Extras.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -61,6 +63,7 @@ static void glfw_error_callback(int error, const char* description)
 }
 
 int INITgraphics(){
+    addlogs("Initialisation started\n");
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -134,17 +137,17 @@ int INITgraphics(){
         0x2318, 0x2318, // cmd
         0
     };
-    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 18);
+    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 16);
     static ImFontConfig cfg;
     cfg.OversampleH = cfg.OversampleV = 2;
     cfg.MergeMode = true;
     #if defined __APPLE__
-    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 18, &cfg,
+    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 16, &cfg,
                                  myGlyphRanges);
     #endif
     io.Fonts->Build();
     readkeybindings();
-    
+    addlogs("Initialisation ended\n");
     return 0;
 }
 
@@ -170,6 +173,10 @@ void Displayloop(char **argv){
 
         ImGui::Begin("Window A");
         ImGui::Text("This is main window");
+        ImGui::Combo("Verbose", &verbose,
+                    "0\0"
+                    "1\0");
+        
         ImGui::End();
         
         
@@ -177,16 +184,23 @@ void Displayloop(char **argv){
         ImGui::SetNextWindowSize(ImVec2(window_width - (window_width / 4.0), window_height - window_height * 5.0 / 6.0));
         ImGui::SetNextWindowPos(ImVec2(window_width / 4.0, (window_height * 5.0 / 6.0)));
 
-        ImGui::Begin("Properties");
-        ImGui::Text("This is the properties window");
+        ImGui::Begin("Debug");
+        time_t now = time(0);
+        // convert now to string form
+        const char *date_time = ctime(&now);
+        ImGui::Text("%s", date_time);
+        //ImGui::Text("This is the debug window");
+        ImGui::TextUnformatted(logs.c_str());
+        ImGui::SetScrollY(ImGui::GetScrollMaxY());
+        
         ImGui::End();
         
         //
         ImGui::SetNextWindowSize(ImVec2((window_width / 4.0), window_height - window_height * 5.0 / 6.0));
         ImGui::SetNextWindowPos(ImVec2(0, (window_height * 5.0 / 6.0)));
 
-        ImGui::Begin("Debug");
-        ImGui::Text("This is the debug window");
+        ImGui::Begin("Properties");
+        ImGui::Text("This is the properties window");
         ImGui::End();
         
         ShowMenu(&show_demo_window);
