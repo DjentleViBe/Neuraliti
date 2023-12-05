@@ -2,5 +2,9 @@
 #define Windowing_h
 
 #include <stdio.h>
+#include "imgui.h"
+#include "imfilebrowser.h"
 
-#endif /* Windowing_hpp */
+void editprefwindow(bool editpref, ImGui::FileBrowser fileDialog);
+
+#endif /* Windowing_h */

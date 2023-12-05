@@ -9,5 +9,6 @@
 #define MainMenu_h
 
 #include <stdio.h>
+extern bool editpref;
 void ShowMenu(bool* p_open);
 #endif /* MainMenu_hpp */

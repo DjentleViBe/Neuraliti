@@ -15,10 +15,12 @@
 #include "MainMenu.h"
 #include "KeyBindings.h"
 #include "Extras.h"
+#include "imfilebrowser.h"
+#include "Windowing.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
-
+bool show_demo_window;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
@@ -137,16 +139,19 @@ int INITgraphics(){
         0x2318, 0x2318, // cmd
         0
     };
-    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 16);
+    addlogs("Font loading\n");
+    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 17);
     static ImFontConfig cfg;
     cfg.OversampleH = cfg.OversampleV = 2;
     cfg.MergeMode = true;
     #if defined __APPLE__
-    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 16, &cfg,
+    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 17, &cfg,
                                  myGlyphRanges);
     #endif
     io.Fonts->Build();
+    addlogs("Font loaded\n");
     readkeybindings();
+    
     addlogs("Initialisation ended\n");
     return 0;
 }
@@ -154,6 +159,7 @@ int INITgraphics(){
 void Displayloop(char **argv){
     bool show_demo_window = true;
     ImGuiIO io = ImGui::GetIO();
+    ImGui::FileBrowser fileDialog;
     Shader ourShader("simpleshader.vs", "simpleshader.fs");
     Shader ourwinShader("windowshader.vs", "windowshader.fs");
     glfwMakeContextCurrent(window);
@@ -173,10 +179,13 @@ void Displayloop(char **argv){
 
         ImGui::Begin("Window A");
         ImGui::Text("This is main window");
-        ImGui::Combo("Verbose", &verbose,
-                    "0\0"
-                    "1\0");
+        // open file dialog when user clicks this button
         
+                
+        if(fileDialog.HasSelected()){
+            std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+            fileDialog.ClearSelected();
+        }
         ImGui::End();
         
         
@@ -189,6 +198,12 @@ void Displayloop(char **argv){
         // convert now to string form
         const char *date_time = ctime(&now);
         ImGui::Text("%s", date_time);
+        if(editpref){
+            editprefwindow(editpref, fileDialog);
+            ImGui::End();
+            //ImGui::ShowDemoWindow(&editpref);
+        }
+        
         //ImGui::Text("This is the debug window");
         ImGui::TextUnformatted(logs.c_str());
         ImGui::SetScrollY(ImGui::GetScrollMaxY());
@@ -200,7 +215,9 @@ void Displayloop(char **argv){
         ImGui::SetNextWindowPos(ImVec2(0, (window_height * 5.0 / 6.0)));
 
         ImGui::Begin("Properties");
-        ImGui::Text("This is the properties window");
+        ImGui::Combo("Verbose", &verbose,
+                    "0\0"
+                    "1\0");
         ImGui::End();
         
         ShowMenu(&show_demo_window);

@@ -4,6 +4,7 @@
 #include <iostream>
 #define _S(_LITERAL)    (const char*)u8##_LITERAL
 std::string superkey = "";
+bool editpref;
 
 void ShowMenu(bool* p_open)
 {
@@ -87,6 +88,18 @@ void ShowMenu(bool* p_open)
             if (ImGui::BeginMenu("Media"))
             {
                 //ShowExampleMenuFile();
+                if (ImGui::MenuItem("Audio Settings...")) {}
+                if (ImGui::MenuItem("MIDI Settings...")) {}
+                if (ImGui::BeginMenu("Preferences")) {
+                    if(ImGui::MenuItem("Edit Preferences...")){
+                        editpref = true;
+                    };
+                    ImGui::Separator();
+                    if(ImGui::MenuItem("Save to...")){};
+                    if(ImGui::MenuItem("Load from...")){};
+                    ImGui::EndMenu();
+                            }
+
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Window"))
