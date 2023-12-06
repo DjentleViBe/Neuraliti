@@ -199,7 +199,7 @@ void Displayloop(char **argv){
         const char *date_time = ctime(&now);
         ImGui::Text("%s", date_time);
         if(editpref){
-            editprefwindow(editpref, fileDialog);
+            editprefwindow(fileDialog);
             ImGui::End();
             //ImGui::ShowDemoWindow(&editpref);
         }
