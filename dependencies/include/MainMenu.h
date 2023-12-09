@@ -9,6 +9,12 @@
 #define MainMenu_h
 
 #include <stdio.h>
+#include <map>
+
+extern bool saveas;
+extern bool openfile;
 extern bool editpref;
+extern std::map<std::string, std::string> appsettings;
+
 void ShowMenu(bool* p_open);
 #endif /* MainMenu_hpp */
