@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <ctime>
+#include <map>
 #include "glad/glad.h"
 #define GL_SILENCE_DEPRECATION
 #include "GLFW/glfw3.h" // Will drag system OpenGL headers
@@ -20,6 +21,10 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
+std::map<std::string, std::string> appsettings;
+std::vector<std::string> fontlist;
+const char* homeDir = std::getenv("HOME");
+
 bool show_demo_window;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -65,7 +70,14 @@ static void glfw_error_callback(int error, const char* description)
 }
 
 int INITgraphics(){
+    
     addlogs("Initialisation started\n");
+    appsettings["defaultfolder"] = std::string(homeDir) + "/Documents/Neuraliti";
+    addlogs("Default folder : " + appsettings["defaultfolder"] + "\n");
+    appsettings["defaultfont"] = "FreeMono.ttf";
+    fontlist = listfiles(appsettings["defaultfolder"] + "/fonts");
+    addlogs("Default font : " + appsettings["defaultfont"] + "\n");
+    
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -140,12 +152,12 @@ int INITgraphics(){
         0
     };
     addlogs("Font loading\n");
-    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 17);
+    io.Fonts->AddFontFromFileTTF(appsettings["defaultfont"].c_str() , 17);
     static ImFontConfig cfg;
     cfg.OversampleH = cfg.OversampleV = 2;
     cfg.MergeMode = true;
     #if defined __APPLE__
-    io.Fonts->AddFontFromFileTTF("FreeMono.ttf", 17, &cfg,
+    io.Fonts->AddFontFromFileTTF(appsettings["defaultfont"].c_str() , 17, &cfg,
                                  myGlyphRanges);
     #endif
     io.Fonts->Build();
@@ -178,7 +190,7 @@ void Displayloop(char **argv){
         ImGui::SetNextWindowPos(ImVec2(0, 0));
 
         ImGui::Begin("Window A");
-        ImGui::Text("This is main window");
+        ImGui::Text("NEURALITI");
         // open file dialog when user clicks this button
         
                 

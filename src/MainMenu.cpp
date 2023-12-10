@@ -4,6 +4,8 @@
 #include <iostream>
 #define _S(_LITERAL)    (const char*)u8##_LITERAL
 std::string superkey = "";
+bool saveas;
+bool openfile;
 bool editpref;
 
 void ShowMenu(bool* p_open)
