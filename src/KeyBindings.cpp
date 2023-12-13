@@ -3,7 +3,7 @@
 #include <map>
 #include "KeyBindings.h"
 #include "GLFW/glfw3.h"
-#include "ReadFile.h"
+#include "Extras.h"
 
 #define     GLFW_KEY_SPACE          32
 #define     GLFW_KEY_APOSTROPHE     39 /* ' */
@@ -278,8 +278,7 @@ void readkeybindings(){
     #elif defined __APPLE__
     char const *p = "keybinding_macos.txt";
     bind = readfile(p);
-    assignbinding(bind);
-    printf("macos");
+    //assignbinding(bind);
     #elif defined __linux__
     printf("linux");
     #endif
