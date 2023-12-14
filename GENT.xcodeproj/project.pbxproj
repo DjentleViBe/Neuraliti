@@ -16,6 +16,7 @@
 		CE2428552B41101700FFD99A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6DBE2B40FA1D00F70C8C /* main.cpp */; };
 		CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE2428562B4110B500FFD99A /* uielements.cpp */; };
 		CE2428592B411C2F00FFD99A /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6DCB2B40FADE00F70C8C /* glad.c */; };
+		CE355C852BD2AE2F00E7627E /* prefs.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE355C842BD2AE2F00E7627E /* prefs.json */; };
 		CE401F5A2BCBDE1500648497 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F592BCBDE1400648497 /* imgui_demo.cpp */; };
 		CE401F5C2BCBDE4C00648497 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F5B2BCBDE4C00648497 /* imgui_draw.cpp */; };
 		CE401F5E2BCBDFAF00648497 /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */; };
@@ -37,7 +38,6 @@
 		CEAB8CD12B412CBC005BBA63 /* simpleshader.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */; };
 		CEBB39522B459B56002BFDE8 /* CreateGeom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39512B459B56002BFDE8 /* CreateGeom.cpp */; };
 		CEBB39542B45AA92002BFDE8 /* MathOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39532B45AA92002BFDE8 /* MathOperations.cpp */; };
-		CEFD8D992BCED2FD009AB22A /* ReadFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEFD8D972BCED2FD009AB22A /* ReadFile.cpp */; };
 		CEFD8D9B2BCEDFD1009AB22A /* keybinding_macos.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +62,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				CE355C852BD2AE2F00E7627E /* prefs.json in CopyFiles */,
 				CE0183AB2BD2923C00F50BFB /* FreeMonoBold.ttf in CopyFiles */,
 				CE0183AC2BD2923C00F50BFB /* FreeMono.ttf in CopyFiles */,
 				CEFD8D9B2BCEDFD1009AB22A /* keybinding_macos.txt in CopyFiles */,
@@ -83,6 +84,7 @@
 		CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenu.cpp; sourceTree = "<group>"; };
 		CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyBindings.cpp; sourceTree = "<group>"; };
 		CE2428562B4110B500FFD99A /* uielements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = uielements.cpp; sourceTree = "<group>"; };
+		CE355C842BD2AE2F00E7627E /* prefs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = prefs.json; path = assets/prefs.json; sourceTree = "<group>"; };
 		CE401F592BCBDE1400648497 /* imgui_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_demo.cpp; sourceTree = "<group>"; };
 		CE401F5B2BCBDE4C00648497 /* imgui_draw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_draw.cpp; sourceTree = "<group>"; };
 		CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_widgets.cpp; path = dependencies/backends/imgui_widgets.cpp; sourceTree = "<group>"; };
@@ -117,7 +119,6 @@
 		CEAB8CD22B413A68005BBA63 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CEBB39512B459B56002BFDE8 /* CreateGeom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CreateGeom.cpp; sourceTree = "<group>"; };
 		CEBB39532B45AA92002BFDE8 /* MathOperations.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MathOperations.cpp; sourceTree = "<group>"; };
-		CEFD8D972BCED2FD009AB22A /* ReadFile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ReadFile.cpp; sourceTree = "<group>"; };
 		CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = keybinding_macos.txt; path = assets/keybinding_macos.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,6 +173,7 @@
 		CE5A6DB22B40FA1D00F70C8C = {
 			isa = PBXGroup;
 			children = (
+				CE355C842BD2AE2F00E7627E /* prefs.json */,
 				CE0183AA2BD2923C00F50BFB /* FreeMono.ttf */,
 				CE0183A92BD2923C00F50BFB /* FreeMonoBold.ttf */,
 				CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */,
@@ -220,7 +222,6 @@
 				CEBB39512B459B56002BFDE8 /* CreateGeom.cpp */,
 				CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */,
 				CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */,
-				CEFD8D972BCED2FD009AB22A /* ReadFile.cpp */,
 				CE0183A32BD130B200F50BFB /* Extras.cpp */,
 				CE0183A62BD1CBB700F50BFB /* Windowing.cpp */,
 			);
@@ -304,7 +305,6 @@
 				CE401F652BCBE00300648497 /* imgui_impl_opengl3.cpp in Sources */,
 				CE401F602BCBDFE300648497 /* imgui_tables.cpp in Sources */,
 				CEBB39542B45AA92002BFDE8 /* MathOperations.cpp in Sources */,
-				CEFD8D992BCED2FD009AB22A /* ReadFile.cpp in Sources */,
 				CE401F5E2BCBDFAF00648497 /* imgui_widgets.cpp in Sources */,
 				CE401F5C2BCBDE4C00648497 /* imgui_draw.cpp in Sources */,
 				CEBB39522B459B56002BFDE8 /* CreateGeom.cpp in Sources */,
