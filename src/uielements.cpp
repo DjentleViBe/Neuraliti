@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ctime>
 #include <map>
+#include <string>
 #include "glad/glad.h"
 #define GL_SILENCE_DEPRECATION
 #include "GLFW/glfw3.h" // Will drag system OpenGL headers
@@ -18,11 +19,12 @@
 #include "Extras.h"
 #include "imfilebrowser.h"
 #include "Windowing.h"
+#include "picojson.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 std::map<std::string, std::string> appsettings;
-std::vector<std::string> fontlist;
+std::vector<std::string> fontlist, configlist;
 const char* homeDir = std::getenv("HOME");
 
 bool show_demo_window;
@@ -69,15 +71,37 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
+int loadconfig(std::string path){
+    // read default preferences //
+    std::string defaultprefs;
+    defaultprefs = readfileconcat(path.c_str());
+    // Parse the JSON string
+    picojson::value v;
+    std::string err = picojson::parse(v, defaultprefs);
+    
+    // Check for parsing errors
+    if (!err.empty()) {
+        std::cerr << "Error parsing JSON: " << err << std::endl;
+        return 1;
+    }
+    
+    // Access JSON values
+    std::string name = v.get("Media").get("Preferences").to_str();
+    addlogs("Initialisation started\n");
+    appsettings["defaultfolder"] = std::string(homeDir) + v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("defaultfolder").to_str();
+    //double age = v.get("id").get<double>();
+    addlogs("Default folder : " + appsettings["defaultfolder"] + "\n");
+    appsettings["defaultfont"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("font").to_str();
+    addlogs("Default font : " + appsettings["defaultfont"] + "\n");
+    appsettings["fontsize"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("fontsize").to_str();
+    fontlist = listfiles(appsettings["defaultfolder"] + "/fonts", ".ttf");
+    configlist = listfiles(appsettings["defaultfolder"], ".json");
+    return 0;
+}
+
 int INITgraphics(){
     
-    addlogs("Initialisation started\n");
-    appsettings["defaultfolder"] = std::string(homeDir) + "/Documents/Neuraliti";
-    addlogs("Default folder : " + appsettings["defaultfolder"] + "\n");
-    appsettings["defaultfont"] = "FreeMono.ttf";
-    fontlist = listfiles(appsettings["defaultfolder"] + "/fonts");
-    addlogs("Default font : " + appsettings["defaultfont"] + "\n");
-    
+    loadconfig("prefs.json");
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -152,7 +176,7 @@ int INITgraphics(){
         0
     };
     addlogs("Font loading\n");
-    io.Fonts->AddFontFromFileTTF(appsettings["defaultfont"].c_str() , 17);
+    io.Fonts->AddFontFromFileTTF(appsettings["defaultfont"].c_str() , std::stof(appsettings["fontsize"]));
     static ImFontConfig cfg;
     cfg.OversampleH = cfg.OversampleV = 2;
     cfg.MergeMode = true;
