@@ -16,15 +16,6 @@
 		CE4CE4362B41027E00692ED2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4352B41027E00692ED2 /* Cocoa.framework */; };
 		CE4CE4382B41028300692ED2 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4372B41028300692ED2 /* OpenGL.framework */; };
 		CEAB8C902B411F75005BBA63 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CEAB8C8F2B411F75005BBA63 /* libglfw.3.3.dylib */; };
-		CEAB8C9A2B411FBD005BBA63 /* imgui_impl_opengl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEAB8C912B411FBC005BBA63 /* imgui_impl_opengl3.cpp */; };
-		CEAB8C9B2B411FBD005BBA63 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEAB8C922B411FBC005BBA63 /* imgui.cpp */; };
-		CEAB8C9C2B411FBD005BBA63 /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEAB8C932B411FBD005BBA63 /* imgui_widgets.cpp */; };
-		CEAB8C9D2B411FBD005BBA63 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEAB8C942B411FBD005BBA63 /* imgui_demo.cpp */; };
-		CEAB8C9E2B411FBD005BBA63 /* implot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEAB8C952B411FBD005BBA63 /* implot.cpp */; };
-		CEAB8C9F2B411FBD005BBA63 /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEAB8C962B411FBD005BBA63 /* imgui_impl_glfw.cpp */; };
-		CEAB8CA02B411FBD005BBA63 /* imgui_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEAB8C972B411FBD005BBA63 /* imgui_tables.cpp */; };
-		CEAB8CA12B411FBD005BBA63 /* implot_items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEAB8C982B411FBD005BBA63 /* implot_items.cpp */; };
-		CEAB8CA22B411FBD005BBA63 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEAB8C992B411FBD005BBA63 /* imgui_draw.cpp */; };
 		CEAB8CCF2B412CB5005BBA63 /* CabinV5.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE4CE42D2B41005400692ED2 /* CabinV5.jpg */; };
 		CEAB8CD02B412CB9005BBA63 /* simpleshader.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */; };
 		CEAB8CD12B412CBC005BBA63 /* simpleshader.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */; };
@@ -77,15 +68,6 @@
 		CE5A6DCB2B40FADE00F70C8C /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
 		CE5A6DCD2B40FADE00F70C8C /* dependencies */ = {isa = PBXFileReference; lastKnownFileType = folder; path = dependencies; sourceTree = "<group>"; };
 		CEAB8C8F2B411F75005BBA63 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = dependencies/library/libglfw.3.3.dylib; sourceTree = "<group>"; };
-		CEAB8C912B411FBC005BBA63 /* imgui_impl_opengl3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_opengl3.cpp; path = dependencies/backends/imgui_impl_opengl3.cpp; sourceTree = "<group>"; };
-		CEAB8C922B411FBC005BBA63 /* imgui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui.cpp; path = dependencies/backends/imgui.cpp; sourceTree = "<group>"; };
-		CEAB8C932B411FBD005BBA63 /* imgui_widgets.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_widgets.cpp; path = dependencies/backends/imgui_widgets.cpp; sourceTree = "<group>"; };
-		CEAB8C942B411FBD005BBA63 /* imgui_demo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_demo.cpp; path = dependencies/backends/imgui_demo.cpp; sourceTree = "<group>"; };
-		CEAB8C952B411FBD005BBA63 /* implot.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = implot.cpp; path = dependencies/backends/implot.cpp; sourceTree = "<group>"; };
-		CEAB8C962B411FBD005BBA63 /* imgui_impl_glfw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_glfw.cpp; path = dependencies/backends/imgui_impl_glfw.cpp; sourceTree = "<group>"; };
-		CEAB8C972B411FBD005BBA63 /* imgui_tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_tables.cpp; path = dependencies/backends/imgui_tables.cpp; sourceTree = "<group>"; };
-		CEAB8C982B411FBD005BBA63 /* implot_items.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = implot_items.cpp; path = dependencies/backends/implot_items.cpp; sourceTree = "<group>"; };
-		CEAB8C992B411FBD005BBA63 /* imgui_draw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_draw.cpp; path = dependencies/backends/imgui_draw.cpp; sourceTree = "<group>"; };
 		CEAB8CAB2B4127E9005BBA63 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = CabinV5.jpg; sourceTree = "<group>"; };
 		CEAB8CAD2B41281A005BBA63 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = CabinV5.jpg; path = UI_Elements/CabinV5.jpg; sourceTree = "<group>"; };
 		CEAB8CAF2B41282F005BBA63 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = CabinV5.jpg; path = UI_Elements/CabinV5.jpg; sourceTree = "<group>"; };
@@ -148,15 +130,6 @@
 				CEAB8CD22B413A68005BBA63 /* .gitignore */,
 				CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */,
 				CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */,
-				CEAB8C942B411FBD005BBA63 /* imgui_demo.cpp */,
-				CEAB8C992B411FBD005BBA63 /* imgui_draw.cpp */,
-				CEAB8C962B411FBD005BBA63 /* imgui_impl_glfw.cpp */,
-				CEAB8C912B411FBC005BBA63 /* imgui_impl_opengl3.cpp */,
-				CEAB8C972B411FBD005BBA63 /* imgui_tables.cpp */,
-				CEAB8C932B411FBD005BBA63 /* imgui_widgets.cpp */,
-				CEAB8C922B411FBC005BBA63 /* imgui.cpp */,
-				CEAB8C982B411FBD005BBA63 /* implot_items.cpp */,
-				CEAB8C952B411FBD005BBA63 /* implot.cpp */,
 				CE2428572B411BA800FFD99A /* _exec */,
 				CE4CE42C2B41005400692ED2 /* UI_Elements */,
 				CE5A6DCB2B40FADE00F70C8C /* glad.c */,
@@ -250,15 +223,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEAB8C9A2B411FBD005BBA63 /* imgui_impl_opengl3.cpp in Sources */,
-				CEAB8C9B2B411FBD005BBA63 /* imgui.cpp in Sources */,
-				CEAB8C9C2B411FBD005BBA63 /* imgui_widgets.cpp in Sources */,
-				CEAB8C9D2B411FBD005BBA63 /* imgui_demo.cpp in Sources */,
-				CEAB8C9E2B411FBD005BBA63 /* implot.cpp in Sources */,
-				CEAB8C9F2B411FBD005BBA63 /* imgui_impl_glfw.cpp in Sources */,
-				CEAB8CA02B411FBD005BBA63 /* imgui_tables.cpp in Sources */,
-				CEAB8CA12B411FBD005BBA63 /* implot_items.cpp in Sources */,
-				CEAB8CA22B411FBD005BBA63 /* imgui_draw.cpp in Sources */,
 				CE2428592B411C2F00FFD99A /* glad.c in Sources */,
 				CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */,
 				CE2428552B41101700FFD99A /* main.cpp in Sources */,
