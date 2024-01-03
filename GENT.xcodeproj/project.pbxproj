@@ -19,6 +19,7 @@
 		CEAB8CCF2B412CB5005BBA63 /* CabinV5.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE4CE42D2B41005400692ED2 /* CabinV5.jpg */; };
 		CEAB8CD02B412CB9005BBA63 /* simpleshader.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */; };
 		CEAB8CD12B412CBC005BBA63 /* simpleshader.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */; };
+		CEBB39522B459B56002BFDE8 /* CreateWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39512B459B56002BFDE8 /* CreateWindow.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -74,6 +75,7 @@
 		CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = simpleshader.fs; path = assets/simpleshader.fs; sourceTree = "<group>"; };
 		CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = simpleshader.vs; path = assets/simpleshader.vs; sourceTree = "<group>"; };
 		CEAB8CD22B413A68005BBA63 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		CEBB39512B459B56002BFDE8 /* CreateWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CreateWindow.cpp; path = dependencies/backends/CreateWindow.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 		CE5A6DB22B40FA1D00F70C8C = {
 			isa = PBXGroup;
 			children = (
+				CEBB39512B459B56002BFDE8 /* CreateWindow.cpp */,
 				CEAB8CD22B413A68005BBA63 /* .gitignore */,
 				CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */,
 				CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */,
@@ -223,6 +226,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEBB39522B459B56002BFDE8 /* CreateWindow.cpp in Sources */,
 				CE2428592B411C2F00FFD99A /* glad.c in Sources */,
 				CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */,
 				CE2428552B41101700FFD99A /* main.cpp in Sources */,
@@ -350,6 +354,7 @@
 		CE5A6DC32B40FA1D00F70C8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ALMS4MXZY6;
@@ -370,6 +375,7 @@
 		CE5A6DC42B40FA1D00F70C8C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ALMS4MXZY6;
