@@ -1,5 +1,5 @@
-#ifndef Windowing_h
-#define Windowing_h
+#ifndef windowing_h
+#define windowing_h
 
 #include <stdio.h>
 #include "imgui.h"

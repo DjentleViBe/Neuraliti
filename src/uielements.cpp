@@ -10,15 +10,15 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "shader_s.h"
-#include "CreateGeom.h"
+#include "creategeom.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include "MainMenu.h"
-#include "KeyBindings.h"
+#include "menu.h"
+#include "keybindings.h"
 #include "Extras.h"
 #include "imfilebrowser.h"
-#include "Windowing.h"
+#include "windowing.h"
 #include "picojson.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
