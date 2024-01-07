@@ -1,6 +1,6 @@
 
 
-#include "CreateGeom.h"
+#include "creategeom.h"
 #define GL_SILENCE_DEPRECATION
 #include "GLFW/glfw3.h"
 #include "shader_s.h"
