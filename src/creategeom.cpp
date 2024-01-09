@@ -5,6 +5,11 @@
 #include "GLFW/glfw3.h"
 #include "shader_s.h"
 #include "stb_image.h"
+#include "uielements.h"
+
+#define OBJ_W 150.0f // in px
+#define OBJ_H 42.0f // in px
+
 void InitShader(const char* shadevs, const char* shadefs);
 
 void DrawRectangle(){
@@ -26,8 +31,22 @@ void DrawRectangle(){
     glFlush();
 }
 
-int InitRectangle(size_t vert, float vertices[], size_t ind, unsigned int indices[], unsigned int &texture, unsigned int &VBO, unsigned int &VAO, unsigned int &EBO, const char* shadevs, const char* shadefs){
-    
+float* drawobject(float x, float y){
+    // convert object pixels to screen sizes
+    static float vertices[] = {
+            // positions          // colors           // texture coords
+            x + OBJ_W/(float)window_width,  y, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // top right
+            x + OBJ_W/(float)window_width, y - OBJ_H/(float)window_height, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // bottom right
+            x, y - OBJ_H/(float)window_height, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // bottom left
+            x, y, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],     // top left
+        };
+    ;
+    return vertices;
+}
+
+int InitRectangle(size_t vert, float x, float y, size_t ind, unsigned int indices[], unsigned int &texture, unsigned int &VBO, unsigned int &VAO, unsigned int &EBO, const char* shadevs, const char* shadefs){
+    float *vertices;
+    vertices = drawobject(x, y);
     // objects /////////////////
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
