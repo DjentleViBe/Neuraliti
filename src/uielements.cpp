@@ -24,6 +24,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "textgen.h"
+#define SCR_WIDTH 1280.0f
+#define SCR_HEIGHT 960.0f
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -43,20 +45,20 @@ bool show_demo_window;
 ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 int 					window_width 			= 	1280;
 int 					window_height 			= 	960;
+float primary_color_1[] = {0.93725, 0.89019, 0.79215};
+float primary_color_2[] = {0.12941, 0.12941, 0.15294};
 float vertices[] = {
         // positions          // colors           // texture coords
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,    // top right
-        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,    // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,    // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,     // top left
+         0.5f,  0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // top right
+        0.5f, -0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // bottom right
+        -0.5f, -0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // bottom left
+        -0.5f,  0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],     // top left
     };
 unsigned int indices[] = {
         0, 1, 3, // first triangle
         1, 2, 3  // second triangle
     };
 
-float primary_color_1[] = {0.93725, 0.89019, 0.79215};
-float primary_color_2[] = {0.12941, 0.12941, 0.15294};
 float box1vert[] = {
         // positions          // colors           // texture coords
          0.5f,  0.5f, 0.0f,  primary_color_2[0], primary_color_2[1], primary_color_2[2],  // top right
@@ -68,7 +70,6 @@ unsigned int box1ind[] = {
         0, 1, 3, // first triangle
         1, 1, 1  // second triangle
     };
-
 
 unsigned int VBO, VAO, EBO;
 unsigned int VBO_box, VAO_box, EBO_box;
@@ -175,7 +176,6 @@ int INITgraphics(){
     if (window == NULL)
         return 1;
     glfwMakeContextCurrent(window);
-    
 
     glfwSwapInterval(1); // Enable vsync
     // Setup Platform/Renderer backends
@@ -185,8 +185,8 @@ int INITgraphics(){
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
-    InitRectangle(sizeof(vertices), vertices, sizeof(indices), indices, texture1, VBO, VAO, EBO, "simpleshader.vs", "simpleshader.fs");
+    
+    InitRectangle(sizeof(vertices), -0.45, 0.0f, sizeof(indices), indices, texture1, VBO, VAO, EBO, "simpleshader.vs", "simpleshader.fs");
     //InitRectangle(sizeof(box1vert), box1vert, sizeof(box1ind), box1ind, texture_box, VBO_box, VAO_box, EBO_box, "windowshader.vs", "windowshader.fs");
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -217,20 +217,31 @@ int INITgraphics(){
     return 0;
 }
 
-GLuint calculate_view(Shader ourShader){
+GLuint calculate_view(Shader ourShader, float wid, float hei, glm::vec3 point){
     
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)window_width / (float)window_height, 0.1f, 1000.0f);
+    //glm::mat4 projection = glm::perspective(glm::radians(45.0f),(float) wid / (float)hei, 0.1f, 10.0f);
+    //glm::mat4 projection = glm::ortho(-1.0, 1.0, -1.0, 1.0);
+    //projection = glm::scale(projection, glm::vec3(0.5, 0.5, 1.0));
     // Camera matrix
     glm::mat4 View = glm::lookAt(
         glm::vec3(0,0,3), // Camera is at (0,0,0), in World Space
         glm::vec3(0,0,0), // and looks at the origin
         glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
         );
-
+    
     // Model matrix: an identity matrix (model will be at the origin)
     glm::mat4 Model = glm::mat4(1.0f);
+    // Step 1: Translate the point to the origin
+    glm::mat4 translateToOrigin = glm::translate(glm::mat4(1.0f), -point);
+
+    // Step 2: Perform scaling operation
+    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(SCR_WIDTH / wid, SCR_HEIGHT / hei, 1));
+
+    // Step 3: Translate the point back to its original position
+    glm::mat4 translateBack = glm::translate(glm::mat4(1.0f), point);
+    //glm::mat4 scaling = glm::scale(glm::mat4(1), glm::vec3(SCR_WIDTH / wid,1,1));
     // Our ModelViewProjection: multiplication of our 3 matrices
-    mvp = projection * View * Model;
+    mvp = translateBack * scaleMatrix * translateToOrigin;
     GLuint MatrixID = glGetUniformLocation(ourShader.ID, "ProjMat");
     return MatrixID;
 }
@@ -238,8 +249,11 @@ GLuint calculate_view(Shader ourShader){
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     //std::cout << window_width << "\n";
     //glViewport(0, 0, height, height);
-    //Shader ourShader("simpleshader.vs", "simpleshader.fs");
-    //calculate_view(ourShader);
+    Shader ourShader("simpleshader.vs", "simpleshader.fs");
+    //scale window
+    addlogs("scaled");
+    //std::cout << (float)window_width/(float)window_height << "\n";
+    //calculate_view(ourShader, (float)window_width, (float)window_height);
 }
 
 void processInput(GLFWwindow *window) {
@@ -268,13 +282,14 @@ void Displayloop(char **argv){
     // calculate object position
     int logo_x = 0.80 * window_width;
     int logo_y = 0.89 * window_height;
-    calculate_view(ourShader);
-    //glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    calculate_view(ourShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     // Main loop
     
     while (!glfwWindowShouldClose(window))
     {
-        //glViewport(0,0,window_width,window_height);
+        calculate_view(ourShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
+        //glViewport(0,0,1280,960);
         //glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
         glfwGetWindowSize(window, &window_width, &window_height);
         glfwSetKeyCallback(window, key_callback);
