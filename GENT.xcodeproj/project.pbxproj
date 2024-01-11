@@ -24,9 +24,14 @@
 		CE4CE4382B41028300692ED2 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4372B41028300692ED2 /* OpenGL.framework */; };
 		CE5B9FF52B45B71500EDD025 /* windowshader.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE5B9FF32B45B71500EDD025 /* windowshader.vs */; };
 		CE5B9FF62B45B71500EDD025 /* windowshader.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE5B9FF42B45B71500EDD025 /* windowshader.fs */; };
+		CE5F698E2BD4791C00317B2A /* textgen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE5F698D2BD4791C00317B2A /* textgen.cpp */; };
+		CE5F69E52BD4863D00317B2A /* libfreetype.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE5F69E42BD4863D00317B2A /* libfreetype.6.dylib */; };
+		CE5F6DFC2BD5696600317B2A /* glm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE5F6DFB2BD5696600317B2A /* glm.cpp */; };
 		CE8335092BD423B300650CBA /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8335062BD423B300650CBA /* glad.c */; };
 		CE83350A2BD423B300650CBA /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8335072BD423B300650CBA /* imgui_draw.cpp */; };
 		CE83350B2BD423B300650CBA /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8335082BD423B300650CBA /* imgui_impl_glfw.cpp */; };
+		CE97EC0D2BD473C2000CB114 /* text.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE97EC0B2BD473C2000CB114 /* text.vs */; };
+		CE97EC0E2BD473C2000CB114 /* text.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE97EC0C2BD473C2000CB114 /* text.fs */; };
 		CEAB8C902B411F75005BBA63 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CEAB8C8F2B411F75005BBA63 /* libglfw.3.3.dylib */; };
 		CEAB8CD02B412CB9005BBA63 /* simpleshader.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */; };
 		CEAB8CD12B412CBC005BBA63 /* simpleshader.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */; };
@@ -56,6 +61,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				CE97EC0D2BD473C2000CB114 /* text.vs in CopyFiles */,
+				CE97EC0E2BD473C2000CB114 /* text.fs in CopyFiles */,
 				CEFD8D9B2BCEDFD1009AB22A /* keybinding_macos.txt in CopyFiles */,
 				CE5B9FF52B45B71500EDD025 /* windowshader.vs in CopyFiles */,
 				CE5B9FF62B45B71500EDD025 /* windowshader.fs in CopyFiles */,
@@ -92,9 +99,15 @@
 		CE5A6DCD2B40FADE00F70C8C /* dependencies */ = {isa = PBXFileReference; lastKnownFileType = folder; path = dependencies; sourceTree = "<group>"; };
 		CE5B9FF32B45B71500EDD025 /* windowshader.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = windowshader.vs; path = assets/windowshader.vs; sourceTree = "<group>"; };
 		CE5B9FF42B45B71500EDD025 /* windowshader.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = windowshader.fs; path = assets/windowshader.fs; sourceTree = "<group>"; };
+		CE5F698D2BD4791C00317B2A /* textgen.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = textgen.cpp; path = src/textgen.cpp; sourceTree = "<group>"; };
+		CE5F69E42BD4863D00317B2A /* libfreetype.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreetype.6.dylib; path = dependencies/library/libfreetype.6.dylib; sourceTree = "<group>"; };
+		CE5F6DFB2BD5696600317B2A /* glm.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = glm.cpp; path = dependencies/backends/glm.cpp; sourceTree = "<group>"; };
 		CE8335062BD423B300650CBA /* glad.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = glad.c; path = dependencies/backends/glad.c; sourceTree = "<group>"; };
 		CE8335072BD423B300650CBA /* imgui_draw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_draw.cpp; path = dependencies/backends/imgui_draw.cpp; sourceTree = "<group>"; };
 		CE8335082BD423B300650CBA /* imgui_impl_glfw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_glfw.cpp; path = dependencies/backends/imgui_impl_glfw.cpp; sourceTree = "<group>"; };
+		CE97EC082BD46FA2000CB114 /* textgen.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = textgen.cpp; sourceTree = "<group>"; };
+		CE97EC0B2BD473C2000CB114 /* text.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = text.vs; path = assets/text.vs; sourceTree = "<group>"; };
+		CE97EC0C2BD473C2000CB114 /* text.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = text.fs; path = assets/text.fs; sourceTree = "<group>"; };
 		CEAB8C8F2B411F75005BBA63 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = dependencies/library/libglfw.3.3.dylib; sourceTree = "<group>"; };
 		CEAB8CAB2B4127E9005BBA63 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = CabinV5.jpg; sourceTree = "<group>"; };
 		CEAB8CAD2B41281A005BBA63 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = CabinV5.jpg; path = UI_Elements/CabinV5.jpg; sourceTree = "<group>"; };
@@ -112,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE5F69E52BD4863D00317B2A /* libfreetype.6.dylib in Frameworks */,
 				CEAB8C902B411F75005BBA63 /* libglfw.3.3.dylib in Frameworks */,
 				CE4CE4382B41028300692ED2 /* OpenGL.framework in Frameworks */,
 				CE4CE4362B41027E00692ED2 /* Cocoa.framework in Frameworks */,
@@ -134,6 +148,7 @@
 		CE4CE42E2B41025700692ED2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE5F69E42BD4863D00317B2A /* libfreetype.6.dylib */,
 				CEAB8CAB2B4127E9005BBA63 /* CabinV5.jpg */,
 				CEAB8CAD2B41281A005BBA63 /* CabinV5.jpg */,
 				CEAB8CAF2B41282F005BBA63 /* CabinV5.jpg */,
@@ -150,6 +165,10 @@
 		CE5A6DB22B40FA1D00F70C8C = {
 			isa = PBXGroup;
 			children = (
+				CE5F6DFB2BD5696600317B2A /* glm.cpp */,
+				CE5F698D2BD4791C00317B2A /* textgen.cpp */,
+				CE97EC0C2BD473C2000CB114 /* text.fs */,
+				CE97EC0B2BD473C2000CB114 /* text.vs */,
 				CE8335062BD423B300650CBA /* glad.c */,
 				CE8335072BD423B300650CBA /* imgui_draw.cpp */,
 				CE8335082BD423B300650CBA /* imgui_impl_glfw.cpp */,
@@ -196,6 +215,7 @@
 				CE1917A62BCC1D0000DC8A51 /* keybindings.cpp */,
 				CE0183A32BD130B200F50BFB /* extras.cpp */,
 				CE0183A62BD1CBB700F50BFB /* windowing.cpp */,
+				CE97EC082BD46FA2000CB114 /* textgen.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -291,6 +311,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE5F6DFC2BD5696600317B2A /* glm.cpp in Sources */,
+				CE5F698E2BD4791C00317B2A /* textgen.cpp in Sources */,
 				CE8335092BD423B300650CBA /* glad.c in Sources */,
 				CE83350A2BD423B300650CBA /* imgui_draw.cpp in Sources */,
 				CE83350B2BD423B300650CBA /* imgui_impl_glfw.cpp in Sources */,
@@ -304,8 +326,8 @@
 				CEBB39522B459B56002BFDE8 /* creategeom.cpp in Sources */,
 				CE1917A52BCC0C1400DC8A51 /* menu.cpp in Sources */,
 				CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */,
-				CE2428552B41101700FFD99A /* main.cpp in Sources */,
 				CE1917A82BCC1D0000DC8A51 /* keybindings.cpp in Sources */,
+				CE2428552B41101700FFD99A /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,16 +460,14 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = ALMS4MXZY6;
 				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/include/**";
 				INCLUDED_SOURCE_FILE_NAMES = "";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/dependencies/library";
 				OTHER_CPLUSPLUSFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
-				USER_HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/dependencies/include/**",
-					"$(SRCROOT)/dependencies/backends/",
-				);
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/dependencies/include/**";
 			};
 			name = Debug;
 		};
@@ -460,16 +480,14 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = ALMS4MXZY6;
 				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/include/**";
 				INCLUDED_SOURCE_FILE_NAMES = "";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/dependencies/library";
 				OTHER_CPLUSPLUSFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
-				USER_HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/dependencies/include/**",
-					"$(SRCROOT)/dependencies/backends/",
-				);
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/dependencies/include/**";
 			};
 			name = Release;
 		};
