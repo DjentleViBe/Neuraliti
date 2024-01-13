@@ -2,6 +2,7 @@
 #define creategeom_h
 
 #include <stdio.h>
-void DrawRectangle();
-int InitRectangle(size_t vert, float x, float y, size_t ind, unsigned int indices[], unsigned int &texture, unsigned int &VBO, unsigned int &VAO, unsigned int &EBO, const char* shadevs, const char* shadefs);
+#include "datatypes.hpp"
+
+int createobj(NeuralObj MyObj);
 #endif /* creategeom_h */
