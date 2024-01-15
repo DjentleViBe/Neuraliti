@@ -1,88 +1,25 @@
-
-
 #include "creategeom.h"
 #define GL_SILENCE_DEPRECATION
 #include "GLFW/glfw3.h"
 #include "shader_s.h"
 #include "stb_image.h"
 #include "uielements.h"
-
-#define OBJ_W 150.0f // in px
-#define OBJ_H 42.0f // in px
+#include "datatypes.hpp"
+#include "loadfont.hpp"
 
 void InitShader(const char* shadevs, const char* shadefs);
-
-void DrawRectangle(){
-    //glClear( GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-     
-    //glMatrixMode(GL_MODELVIEW); //Switch to the drawing perspective
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity(); //Reset the drawing perspective
-    glColor3f(1.0, 1.0, 1.0);
-    glBegin(GL_QUADS); //Begin quadrilateral coordinates
-     
-    //Trapezoid
-    glVertex3f(0.0f, -1.0f, 0.0f);
-    glVertex3f(0.0f, 1.0f, 0.0f);
-    glVertex3f(0.0f, -0.5f, 0.0f);
-    glVertex3f(0.0f, 0.5f, 0.0f);
- 
-    glEnd(); //End quadrilateral coordinates
-    glFlush();
-}
 
 float* drawobject(float x, float y){
     // convert object pixels to screen sizes
     static float vertices[] = {
             // positions          // colors           // texture coords
-            x + OBJ_W/(float)window_width,  y, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // top right
-            x + OBJ_W/(float)window_width, y - OBJ_H/(float)window_height, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // bottom right
-            x, y - OBJ_H/(float)window_height, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // bottom left
-            x, y, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],     // top left
+            x + OBJ_W/(float)window_width,  y, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],  1.0f, 0.0f,  // top right
+            x + OBJ_W/(float)window_width, y - OBJ_H/(float)window_height, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],  1.0f, 1.0f,  // bottom right
+            x, y - OBJ_H/(float)window_height, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],   0.0f, 1.0f,   // bottom left
+            x, y, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    0.0f, 0.0f // top left
         };
     ;
     return vertices;
-}
-
-int InitRectangle(size_t vert, float x, float y, size_t ind, unsigned int indices[], unsigned int &texture, unsigned int &VBO, unsigned int &VAO, unsigned int &EBO, const char* shadevs, const char* shadefs){
-    float *vertices;
-    vertices = drawobject(x, y);
-    // objects /////////////////
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vert, vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ind, indices, GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    // texture coord attribute
-    //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    //glEnableVertexAttribArray(2);
-
-    // texture 1
-    // ---------
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-     // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    
-    InitShader(shadevs, shadefs);
-    return 0;
 }
 
 void InitShader(const char* shadevs, const char* shadefs){
@@ -105,4 +42,87 @@ void InitShader(const char* shadevs, const char* shadefs){
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+}
+
+int createobj(NeuralObj MyObj){
+    // create the background box
+    float *vertices;
+    vertices = drawobject(MyObj.x, MyObj.y);
+    unsigned int indices[] = {
+            0, 1, 3, // first triangle
+            1, 2, 3  // second triangle
+        };
+    // objects /////////////////
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, 128, vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    // texture coord attribute
+    //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    //glEnableVertexAttribArray(2);
+
+    glGenTextures(1, &texture_obj);
+    glBindTexture(GL_TEXTURE_2D, texture_obj);
+    // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    // set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    
+    // if object type is 0
+    // render font
+    if(MyObj.objtype == 0){
+        glGenVertexArrays(1, &VAOfont);
+        glGenBuffers(1, &VBOfont);
+        glGenBuffers(1, &EBOfont);
+
+        glBindVertexArray(VAOfont);
+
+        glBindBuffer(GL_ARRAY_BUFFER, VBOfont);
+        glBufferData(GL_ARRAY_BUFFER, 128, vertices, GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOfont);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+        // position attribute
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+        // color attribute
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
+        // texture coord attribute
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glEnableVertexAttribArray(2);
+        
+        glGenTextures(1, &texture_obj);
+        glBindTexture(GL_TEXTURE_2D, texture_obj);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        
+        stbi_set_flip_vertically_on_load(true);
+        //int channels;
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        unsigned char *map = loadfont("../assets/fonts/FreeMonoBold.ttf", "Hello World!");
+        std::cout << &map;
+        //GLenum format = channels == 4 ? GL_RGBA : GL_RGB;
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, BMP_W, BMP_H, 0, GL_RED, GL_UNSIGNED_BYTE, map);
+    }
+    
+    return 0;
 }
