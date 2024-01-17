@@ -7,7 +7,6 @@
 #define GL_SILENCE_DEPRECATION
 #include "GLFW/glfw3.h" // Will drag system OpenGL headers
 #include "uielements.h"
-#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "shader_s.h"
 #include "creategeom.h"
@@ -23,7 +22,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "textgen.h"
+#include "loadfont.hpp"
+#include "datatypes.hpp"
+
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
 
@@ -35,46 +36,33 @@ const char* homeDir = std::getenv("HOME");
 picojson::value v;
 GLuint MatrixID;
 glm::mat4 mvp;
-GLuint programID;
-//Shader ourShader("simpleshader.vs", "simpleshader.fs");
 
 bool show_demo_window;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
-ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-int 					window_width 			= 	1280;
-int 					window_height 			= 	960;
-float primary_color_1[] = {0.93725, 0.89019, 0.79215};
-float primary_color_2[] = {0.12941, 0.12941, 0.15294};
+ImVec4 clear_color          = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+int window_width 			= 1280;
+int window_height 			= 960;
+float primary_color_1[]     = {0.93725, 0.89019, 0.79215};
+float primary_color_2[]     = {0.12941, 0.12941, 0.15294};
+float primary_color_3[]     = {1.0, 1.0, 1.0};
 float vertices[] = {
         // positions          // colors           // texture coords
-         0.5f,  0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // top right
-        0.5f, -0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // bottom right
-        -0.5f, -0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    // bottom left
-        -0.5f,  0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],     // top left
+         0.5f,  0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],   1.0f, 0.0f, // top right
+        0.5f, -0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],   1.0f, 1.0f, // bottom right
+        -0.5f, -0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],   0.0f, 1.0f, // bottom left
+        -0.5f,  0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    0.0f, 0.0f // top left
     };
 unsigned int indices[] = {
         0, 1, 3, // first triangle
         1, 2, 3  // second triangle
     };
 
-float box1vert[] = {
-        // positions          // colors           // texture coords
-         0.5f,  0.5f, 0.0f,  primary_color_2[0], primary_color_2[1], primary_color_2[2],  // top right
-         0.5f, -0.5f, 0.0f,  primary_color_2[0], primary_color_2[1], primary_color_2[2],  // bottom right
-        -0.5f, -0.5f, 0.0f,  primary_color_2[0], primary_color_2[1], primary_color_2[2], // bottom left
-        -0.5f,  0.5f, 0.0f,  primary_color_2[0], primary_color_2[1], primary_color_2[2] // top left
-    };
-unsigned int box1ind[] = {
-        0, 1, 3, // first triangle
-        1, 1, 1  // second triangle
-    };
-
-unsigned int VBO, VAO, EBO;
+unsigned int VBO, VAO, EBO, VBOfont, VAOfont, EBOfont;
 unsigned int VBO_box, VAO_box, EBO_box;
 GLFWwindow* window;
-unsigned int texture1, texture_box;
+unsigned int texture_obj;
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -164,13 +152,8 @@ int INITgraphics(){
         const char* glsl_version = "#version 130";
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-        //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-        //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
     #endif
 
-    // Create window with graphics context
-    //const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    //window = glfwCreateWindow(mode->width, mode->height, "GENT",  NULL, NULL);
     window = glfwCreateWindow(window_width, window_height, "GENT",  NULL, NULL);
     //glfwSetWindowAspectRatio(window,1189,1000);
     if (window == NULL)
@@ -185,9 +168,11 @@ int INITgraphics(){
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-    
-    InitRectangle(sizeof(vertices), -0.45, 0.0f, sizeof(indices), indices, texture1, VBO, VAO, EBO, "simpleshader.vs", "simpleshader.fs");
-    //InitRectangle(sizeof(box1vert), box1vert, sizeof(box1ind), box1ind, texture_box, VBO_box, VAO_box, EBO_box, "windowshader.vs", "windowshader.fs");
+    NeuralObj MyObj;
+    MyObj.x = -0.45f;
+    MyObj.y = 0.0f;
+    MyObj.objtype = 0;
+    createobj(MyObj);
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -217,7 +202,7 @@ int INITgraphics(){
     return 0;
 }
 
-GLuint calculate_view(Shader ourShader, float wid, float hei, glm::vec3 point){
+GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point){
     
     //glm::mat4 projection = glm::perspective(glm::radians(45.0f),(float) wid / (float)hei, 0.1f, 10.0f);
     //glm::mat4 projection = glm::ortho(-1.0, 1.0, -1.0, 1.0);
@@ -242,14 +227,15 @@ GLuint calculate_view(Shader ourShader, float wid, float hei, glm::vec3 point){
     //glm::mat4 scaling = glm::scale(glm::mat4(1), glm::vec3(SCR_WIDTH / wid,1,1));
     // Our ModelViewProjection: multiplication of our 3 matrices
     mvp = translateBack * scaleMatrix * translateToOrigin;
-    GLuint MatrixID = glGetUniformLocation(ourShader.ID, "ProjMat");
+    GLuint MatrixID = glGetUniformLocation(mainShader.ID, "ProjMat");
     return MatrixID;
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     //std::cout << window_width << "\n";
     //glViewport(0, 0, height, height);
-    Shader ourShader("simpleshader.vs", "simpleshader.fs");
+    Shader ourShader("../assets/simpleshader.vs", "../assets/simpleshader.fs");
+    Shader fontShader("../assets/objshader.vs", "../assets/objshader.fs");
     //scale window
     addlogs("scaled");
     //std::cout << (float)window_width/(float)window_height << "\n";
@@ -266,39 +252,27 @@ void Displayloop(char **argv){
     bool show_demo_window = true;
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
-    //Shader ourwinShader("windowshader.vs", "windowshader.fs");
-    Shader ourShader("simpleshader.vs", "simpleshader.fs");
-    Shader shader("text.vs", "text.fs");
-    //glm::mat4 projection = glm::ortho(0.0f, 1400.0f, 0.0f, 1260.0f, 0.1f, 100.0f);
-    
-    //mvp = glm::mat4(1.0f);
-    //glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(window_width), 0.0f, static_cast<float>(window_height));
-    
-    //shader.use();
-    fontface("../assets/fonts/FreeMonoBold.ttf");
+    Shader ourShader("../assets/simpleshader.vs", "../assets/simpleshader.fs");
+    Shader fontShader("../assets/objshader.vs", "../assets/objshader.fs");
+
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-    
-    // calculate object position
-    int logo_x = 0.80 * window_width;
-    int logo_y = 0.89 * window_height;
+
     calculate_view(ourShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
+    calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     // Main loop
     
     while (!glfwWindowShouldClose(window))
     {
         calculate_view(ourShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
-        //glViewport(0,0,1280,960);
-        //glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+        calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
+        
         glfwGetWindowSize(window, &window_width, &window_height);
         glfwSetKeyCallback(window, key_callback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
-        //RenderText(shader, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-        //std::cout << 1200.0f / (2 * window_width);
-        //RenderText(shader, "NEURALITI", logo_x, logo_y, 1.0f, glm::vec3(0.1294f, 0.1294f, 0.1490f));
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -351,37 +325,40 @@ void Displayloop(char **argv){
         // input
         // -----
         processInput(window);
-        
-        //glfwGetWindowSize(window, &window_width, &window_height);
-        // Poll and handle events (inputs, window resize, etc.)
-        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
-        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
-        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-        
-        // bind textures on corresponding texture units
-        //first primitive
+        /*
+        fontShader.use();
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture1);
-        ourShader.use();
-        glBindVertexArray(VAO);
+        glBindTexture(GL_TEXTURE_2D, texturefont);
+        glBindVertexArray(VAOfont);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        // second primitive
+        
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), verticesbox);
+        
+        ourShader.use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture_box);
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
         
         /*
-        glActiveTexture(GL_TEXTURE1);
+        ourShader.use();
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture_box);
-        ourwinShader.use();
-        glBindVertexArray(VAO_box);
+        glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         */
+        fontShader.use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture_obj);
+        glBindVertexArray(VAOfont);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        
+        
+        // second primitive
+        
         ImGui::Render();
-        
-        //glfwGetFramebufferSize(window, &display_w, &display_h);
-        
-        //glViewport(0, 0, display_w, display_h);
-        //glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-        //glClear(GL_COLOR_BUFFER_BIT);
+
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         
         glfwSwapBuffers(window);
