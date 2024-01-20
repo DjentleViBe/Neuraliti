@@ -4,5 +4,6 @@
 #include <stdio.h>
 #include "datatypes.hpp"
 
-int createobj(NeuralObj MyObj);
+NeuralObj createobj(NeuralObj &MyObj);
+
 #endif /* creategeom_h */
