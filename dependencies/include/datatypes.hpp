@@ -2,6 +2,9 @@
 #define datatypes_hpp
 #include "stdio.h"
 #include <string>
+#define GL_SILENCE_DEPRECATION
+#include "GLFW/glfw3.h"
+#include "glad/glad.h"
 
 class NeuralObj {       // The class
   public:               // Access specifier
@@ -9,6 +12,10 @@ class NeuralObj {       // The class
     float x;            // x position
     float y;            // y position
     std::string myString;  // Attribute (string variable)
+    unsigned int VAO, VBO, EBO;
+    unsigned int texture;
+    float* color;
+    float verts[32];
 };
 
 #endif
