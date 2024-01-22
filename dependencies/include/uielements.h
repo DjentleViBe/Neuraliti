@@ -5,10 +5,8 @@
 #define BMP_W OBJ_W
 #define BMP_H OBJ_H
 
-extern unsigned int VAO, VBO, EBO, VBOfont, VAOfont, EBOfont;
 extern int window_width, window_height;
-extern float primary_color_2[];
-extern unsigned int texture_obj;
+
 int INITgraphics();
 void Displayloop(char **argv);
 

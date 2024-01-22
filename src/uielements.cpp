@@ -36,6 +36,7 @@ const char* homeDir = std::getenv("HOME");
 picojson::value v;
 GLuint MatrixID;
 glm::mat4 mvp;
+NeuralObj MyObj1, MyObj2;
 
 bool show_demo_window;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
@@ -47,22 +48,8 @@ int window_height 			= 960;
 float primary_color_1[]     = {0.93725, 0.89019, 0.79215};
 float primary_color_2[]     = {0.12941, 0.12941, 0.15294};
 float primary_color_3[]     = {1.0, 1.0, 1.0};
-float vertices[] = {
-        // positions          // colors           // texture coords
-         0.5f,  0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],   1.0f, 0.0f, // top right
-        0.5f, -0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],   1.0f, 1.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],   0.0f, 1.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,   primary_color_2[0], primary_color_2[1], primary_color_2[2],    0.0f, 0.0f // top left
-    };
-unsigned int indices[] = {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
 
-unsigned int VBO, VAO, EBO, VBOfont, VAOfont, EBOfont;
-unsigned int VBO_box, VAO_box, EBO_box;
 GLFWwindow* window;
-unsigned int texture_obj;
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -168,11 +155,7 @@ int INITgraphics(){
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-    NeuralObj MyObj;
-    MyObj.x = -0.45f;
-    MyObj.y = 0.0f;
-    MyObj.objtype = 0;
-    createobj(MyObj);
+    
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -234,8 +217,7 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point){
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     //std::cout << window_width << "\n";
     //glViewport(0, 0, height, height);
-    Shader ourShader("../assets/simpleshader.vs", "../assets/simpleshader.fs");
-    Shader fontShader("../assets/objshader.vs", "../assets/objshader.fs");
+    Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
     //scale window
     addlogs("scaled");
     //std::cout << (float)window_width/(float)window_height << "\n";
@@ -252,21 +234,34 @@ void Displayloop(char **argv){
     bool show_demo_window = true;
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
-    Shader ourShader("../assets/simpleshader.vs", "../assets/simpleshader.fs");
-    Shader fontShader("../assets/objshader.vs", "../assets/objshader.fs");
+    Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
+    Shader fontShader("../assets/fontshader.vs", "../assets/fontshader.fs");
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
-    calculate_view(ourShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
-    calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
+    //calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f));
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    
+    MyObj1.x = -0.45f;
+    MyObj1.y = 0.1f;
+    MyObj1.objtype = 1;
+    MyObj1.color = primary_color_2;
+    MyObj1 = createobj(MyObj1);
+    
+    MyObj2.x = -0.45f;
+    MyObj2.y = 0.1f;
+    MyObj2.objtype = 0;
+    MyObj2.color = primary_color_3;
+    MyObj2 = createobj(MyObj2);
+
+    
+    //std::cout << "First  :" << MyObj1.VAO << "\n";
     // Main loop
     
     while (!glfwWindowShouldClose(window))
     {
-        calculate_view(ourShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
-        calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
+        //calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
         
         glfwGetWindowSize(window, &window_width, &window_height);
         glfwSetKeyCallback(window, key_callback);
@@ -276,6 +271,25 @@ void Displayloop(char **argv){
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        
+        /*
+        
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), verticesbox);
+       */
+        
+        objShader.use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, MyObj1.texture);
+        glBindVertexArray(MyObj1.VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        
+        
+        fontShader.use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, MyObj2.texture);
+        glBindVertexArray(MyObj2.VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
         //
         ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
@@ -325,35 +339,6 @@ void Displayloop(char **argv){
         // input
         // -----
         processInput(window);
-        /*
-        fontShader.use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texturefont);
-        glBindVertexArray(VAOfont);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), verticesbox);
-        
-        ourShader.use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture_box);
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
-        
-        /*
-        ourShader.use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture_box);
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        */
-        fontShader.use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture_obj);
-        glBindVertexArray(VAOfont);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        
         
         // second primitive
         
@@ -370,9 +355,9 @@ void Displayloop(char **argv){
     ImGui::DestroyContext();
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    glDeleteVertexArrays(1, &MyObj1.VAO);
+    glDeleteBuffers(1, &MyObj1.VBO);
+    glDeleteBuffers(1, &MyObj1.EBO);
 
     glfwDestroyWindow(window);
     glfwTerminate();
