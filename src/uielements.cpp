@@ -34,7 +34,7 @@ std::map<std::string, std::string> appsettings;
 std::vector<std::string> fontlist, configlist, fontsizelist;
 const char* homeDir = std::getenv("HOME");
 picojson::value v;
-GLuint MatrixID;
+GLuint MatrixID_1, MatrixID_2;
 glm::mat4 mvp;
 NeuralObj MyObj1, MyObj2;
 
@@ -198,7 +198,7 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point){
         );
     
     // Model matrix: an identity matrix (model will be at the origin)
-    glm::mat4 Model = glm::mat4(1.0f);
+    //glm::mat4 Model = glm::mat4(1.0f);
     // Step 1: Translate the point to the origin
     glm::mat4 translateToOrigin = glm::translate(glm::mat4(1.0f), -point);
 
@@ -209,19 +209,19 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point){
     glm::mat4 translateBack = glm::translate(glm::mat4(1.0f), point);
     //glm::mat4 scaling = glm::scale(glm::mat4(1), glm::vec3(SCR_WIDTH / wid,1,1));
     // Our ModelViewProjection: multiplication of our 3 matrices
-    mvp = translateBack * scaleMatrix * translateToOrigin;
-    GLuint MatrixID = glGetUniformLocation(mainShader.ID, "ProjMat");
-    return MatrixID;
+    mvp =  translateBack * scaleMatrix * translateToOrigin;
+    //GLuint MatrixID = glGetUniformLocation(mainShader.ID, "ProjMat");
+    return 0;
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     //std::cout << window_width << "\n";
     //glViewport(0, 0, height, height);
-    Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
+    //Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
+    //Shader fontShader("../assets/objshader.vs", "../assets/objshader.fs");
     //scale window
-    addlogs("scaled");
-    //std::cout << (float)window_width/(float)window_height << "\n";
-    //calculate_view(ourShader, (float)window_width, (float)window_height);
+    
+    //addlogs("scaled");
 }
 
 void processInput(GLFWwindow *window) {
@@ -240,7 +240,9 @@ void Displayloop(char **argv){
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
-    //calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f));
+    calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
+    //calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
+    
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     
     MyObj1.x = -0.45f;
@@ -255,43 +257,39 @@ void Displayloop(char **argv){
     MyObj2.color = primary_color_3;
     MyObj2 = createobj(MyObj2);
 
-    
-    //std::cout << "First  :" << MyObj1.VAO << "\n";
-    // Main loop
-    
     while (!glfwWindowShouldClose(window))
     {
-        //calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.0f,0.0f));
+        
+        //calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.1f,0.0f));
         
         glfwGetWindowSize(window, &window_width, &window_height);
         glfwSetKeyCallback(window, key_callback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
+        
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         
-        /*
-        
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), verticesbox);
-       */
-        
+        calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
         objShader.use();
+        MatrixID_1 = glGetUniformLocation(objShader.ID, "ProjMat");
+        glUniformMatrix4fv(MatrixID_1, 1, GL_FALSE, &mvp[0][0]);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, MyObj1.texture);
         glBindVertexArray(MyObj1.VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
-        
         fontShader.use();
+        //calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
+        MatrixID_2 = glGetUniformLocation(fontShader.ID, "ProjMat");
+        glUniformMatrix4fv(MatrixID_2, 1, GL_FALSE, &mvp[0][0]);
+        
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, MyObj2.texture);
         glBindVertexArray(MyObj2.VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
-        //
         ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
         ImGui::SetNextWindowPos(ImVec2(0, 0));
 
@@ -359,6 +357,10 @@ void Displayloop(char **argv){
     glDeleteBuffers(1, &MyObj1.VBO);
     glDeleteBuffers(1, &MyObj1.EBO);
 
+    glDeleteVertexArrays(1, &MyObj2.VAO);
+    glDeleteBuffers(1, &MyObj2.VBO);
+    glDeleteBuffers(1, &MyObj2.EBO);
+    
     glfwDestroyWindow(window);
     glfwTerminate();
 
