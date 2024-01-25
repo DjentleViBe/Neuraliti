@@ -16,6 +16,7 @@ class NeuralObj {       // The class
     unsigned int texture;
     float* color;
     float verts[32];
+    GLuint Matrix;
 };
 
 #endif

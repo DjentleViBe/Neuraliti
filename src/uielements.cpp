@@ -34,7 +34,6 @@ std::map<std::string, std::string> appsettings;
 std::vector<std::string> fontlist, configlist, fontsizelist;
 const char* homeDir = std::getenv("HOME");
 picojson::value v;
-GLuint MatrixID_1, MatrixID_2;
 glm::mat4 mvp;
 NeuralObj MyObj1, MyObj2;
 
@@ -273,8 +272,8 @@ void Displayloop(char **argv){
         
         calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
         objShader.use();
-        MatrixID_1 = glGetUniformLocation(objShader.ID, "ProjMat");
-        glUniformMatrix4fv(MatrixID_1, 1, GL_FALSE, &mvp[0][0]);
+        MyObj1.Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
+        glUniformMatrix4fv(MyObj1.Matrix, 1, GL_FALSE, &mvp[0][0]);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, MyObj1.texture);
         glBindVertexArray(MyObj1.VAO);
@@ -282,8 +281,8 @@ void Displayloop(char **argv){
         
         fontShader.use();
         //calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
-        MatrixID_2 = glGetUniformLocation(fontShader.ID, "ProjMat");
-        glUniformMatrix4fv(MatrixID_2, 1, GL_FALSE, &mvp[0][0]);
+        MyObj2.Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
+        glUniformMatrix4fv(MyObj2.Matrix, 1, GL_FALSE, &mvp[0][0]);
         
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, MyObj2.texture);
