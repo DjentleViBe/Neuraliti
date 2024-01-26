@@ -4,9 +4,11 @@
 #define OBJ_H 64.0f // in px
 #define BMP_W OBJ_W
 #define BMP_H OBJ_H
+#include <map>
+#include "stdio.h"
 
 extern int window_width, window_height;
-
+extern std::map<std::string, std::string> appsettings;
 int INITgraphics();
 void Displayloop(char **argv);
 
