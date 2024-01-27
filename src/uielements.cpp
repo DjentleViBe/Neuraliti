@@ -186,8 +186,8 @@ int INITgraphics(){
 
 GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point){
     
-    //glm::mat4 projection = glm::perspective(glm::radians(45.0f),(float) wid / (float)hei, 0.1f, 10.0f);
-    //glm::mat4 projection = glm::ortho(-1.0, 1.0, -1.0, 1.0);
+    glm::mat4 projection = glm::perspective(glm::radians(35.0f), 1.0f, 0.1f, 100.0f);
+    //glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.5f, 1.5f);
     //projection = glm::scale(projection, glm::vec3(0.5, 0.5, 1.0));
     // Camera matrix
     glm::mat4 View = glm::lookAt(
@@ -208,7 +208,7 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point){
     glm::mat4 translateBack = glm::translate(glm::mat4(1.0f), point);
     //glm::mat4 scaling = glm::scale(glm::mat4(1), glm::vec3(SCR_WIDTH / wid,1,1));
     // Our ModelViewProjection: multiplication of our 3 matrices
-    mvp =  translateBack * scaleMatrix * translateToOrigin;
+    mvp =  projection * View * translateBack * scaleMatrix * translateToOrigin;
     //GLuint MatrixID = glGetUniformLocation(mainShader.ID, "ProjMat");
     return 0;
 }
@@ -223,9 +223,24 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     //addlogs("scaled");
 }
 
+void mouse_callback(GLFWwindow* window, double xpos, double ypos){
+    int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+    if (state == GLFW_PRESS){
+            std::cout << xpos << "\n";
+        }
+}
+
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+        
+        std::cout << "pressed" << "\n";
+    }
 }
 
 void Displayloop(char **argv){
@@ -243,7 +258,8 @@ void Displayloop(char **argv){
     //calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
     
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     MyObj1.x = -0.45f;
     MyObj1.y = 0.1f;
     MyObj1.objtype = 1;
@@ -265,7 +281,7 @@ void Displayloop(char **argv){
         glfwSetKeyCallback(window, key_callback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        
+       
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
