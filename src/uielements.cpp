@@ -37,6 +37,7 @@ picojson::value v;
 glm::mat4 mvp;
 NeuralObj MyObj1, MyObj2;
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
+double zoomlevel = 3.0;
 bool show_demo_window;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -193,7 +194,7 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point, 
     Xpos -= transX * 0.01;
     Ypos += transY * 0.01;
     glm::mat4 View = glm::lookAt(
-        glm::vec3(0, 0, 3), // Camera is at (0,0,0), in World Space
+        glm::vec3(0, 0, zoomlevel), // Camera is at (0,0,0), in World Space
         glm::vec3(Xpos, Ypos, 0), // and looks at the origin
         glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
         );
