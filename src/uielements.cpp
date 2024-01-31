@@ -246,7 +246,6 @@ void processInput(GLFWwindow *window) {
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-        
         std::cout << "pressed" << "\n";
     }
 }
@@ -272,12 +271,14 @@ void Displayloop(char **argv){
     MyObj1.y = 0.1f;
     MyObj1.objtype = 1;
     MyObj1.color = primary_color_2;
+    MyObj1.objname = "Hello World!";
     MyObj1 = createobj(MyObj1);
     
     MyObj2.x = -0.45f;
     MyObj2.y = 0.1f;
     MyObj2.objtype = 0;
     MyObj2.color = primary_color_3;
+    MyObj2.objname = "Hello World!";
     MyObj2 = createobj(MyObj2);
 
     while (!glfwWindowShouldClose(window))
