@@ -5,6 +5,7 @@
 #define GL_SILENCE_DEPRECATION
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
+#include <vector>
 
 class NeuralObj {       // The class
   public:               // Access specifier
@@ -17,6 +18,7 @@ class NeuralObj {       // The class
     float* color;
     float verts[32];
     GLuint Matrix;
+    std::vector<NeuralObj*> outlets;
 };
 
 #endif

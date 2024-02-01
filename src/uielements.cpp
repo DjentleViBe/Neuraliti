@@ -24,6 +24,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "loadfont.hpp"
 #include "datatypes.hpp"
+#include "createobjs.hpp"
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
@@ -36,6 +37,7 @@ const char* homeDir = std::getenv("HOME");
 picojson::value v;
 glm::mat4 mvp;
 NeuralObj MyObj1, MyObj2;
+
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
 double zoomlevel = 3.0;
 bool show_demo_window;
@@ -267,19 +269,26 @@ void Displayloop(char **argv){
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
-    MyObj1.x = -0.45f;
+    
+    /*MyObj1.x = -0.45f;
     MyObj1.y = 0.1f;
     MyObj1.objtype = 1;
     MyObj1.color = primary_color_2;
     MyObj1.objname = "Hello World!";
     MyObj1 = createobj(MyObj1);
     
+    MyObj1 = createrect(MyObj1, -0.45f, 0.1f, 1, primary_color_2, "Hello World!");
+    
     MyObj2.x = -0.45f;
     MyObj2.y = 0.1f;
     MyObj2.objtype = 0;
     MyObj2.color = primary_color_3;
     MyObj2.objname = "Hello World!";
-    MyObj2 = createobj(MyObj2);
+    MyObj2 = createobj(MyObj2);*/
+    
+    auto result = createobj1(-0.45f, 0.1f);
+    MyObj1 = std::get<0>(result);
+    MyObj2 = std::get<1>(result);
 
     while (!glfwWindowShouldClose(window))
     {
