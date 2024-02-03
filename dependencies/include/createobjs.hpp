@@ -8,5 +8,6 @@
 #include "creategeom.h"
 
 NeuralObj createrect(NeuralObj MyObj, float x, float y, float objtype, float color[], std::string objname);
-std::tuple<NeuralObj, NeuralObj> createobj1(float x, float y);
+std::tuple<NeuralObj, NeuralObj> createobj1(float x, float y, std::string objname);
+
 #endif /* createobjs_hpp */
