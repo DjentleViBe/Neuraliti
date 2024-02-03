@@ -31,10 +31,10 @@ NeuralObj createfont(NeuralObj MyObj, float x, float y, float objtype, float col
     return MyObj;
 }
 
-std::tuple<NeuralObj, NeuralObj> createobj1(float x, float y){
+std::tuple<NeuralObj, NeuralObj> createobj1(float x, float y, std::string objname){
     NeuralObj MyObj3, MyObj4;
-    MyObj3 = createrect(MyObj3, x, y, 0, primary_color_4, "Hello World");
-    MyObj4 = createfont(MyObj4, x, y, 0, primary_color_5, "Hello World");
+    MyObj3 = createrect(MyObj3, x, y, 0, primary_color_4, objname);
+    MyObj4 = createfont(MyObj4, x, y, 0, primary_color_5, objname);
     
     return std::make_tuple(MyObj3, MyObj4);
 }
