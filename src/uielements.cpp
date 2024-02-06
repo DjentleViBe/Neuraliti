@@ -25,6 +25,7 @@
 #include "loadfont.hpp"
 #include "datatypes.hpp"
 #include "createobjs.hpp"
+#include "fileoperations.hpp"
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
@@ -183,6 +184,8 @@ int INITgraphics(){
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     addlogs("Initialisation ended\n");
+    addlogs("Opening file");
+    readpdfile("../Untitled-1.pd");
     return 0;
 }
 

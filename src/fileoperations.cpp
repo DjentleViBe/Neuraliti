@@ -1,8 +1,11 @@
-//
-//  fileoperations.cpp
-//  GENT
-//
-//  Created by Vishakh Begari on 29.04.24.
-//
-
 #include "fileoperations.hpp"
+#include <string>
+#include "stdio.h"
+#include "stdlib.h"
+#include "extras.h"
+
+int readpdfile(std::string path){
+    std::vector<std::string> lines;
+    lines = readfile(path.c_str());
+    return 0;
+}
