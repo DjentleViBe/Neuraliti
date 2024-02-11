@@ -26,6 +26,7 @@
 #include "datatypes.hpp"
 #include "createobjs.hpp"
 #include "fileoperations.hpp"
+#include "initobjs.hpp"
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
@@ -185,7 +186,7 @@ int INITgraphics(){
     
     addlogs("Initialisation ended\n");
     addlogs("Opening file");
-    readpdfile("../Untitled-1.pd");
+    initobjs("../Untitled-1.pd");
     return 0;
 }
 

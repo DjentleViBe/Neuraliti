@@ -33,6 +33,7 @@
 		CE83350B2BD423B300650CBA /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8335082BD423B300650CBA /* imgui_impl_glfw.cpp */; };
 		CE9776D52BDF1ACE00F69729 /* createobjs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE9776D32BDF1ACE00F69729 /* createobjs.cpp */; };
 		CE9776D82BDFE8B100F69729 /* fileoperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE9776D62BDFE8B100F69729 /* fileoperations.cpp */; };
+		CE9776DB2BE011EE00F69729 /* initobjs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE9776D92BE011EE00F69729 /* initobjs.cpp */; };
 		CEAB8C902B411F75005BBA63 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CEAB8C8F2B411F75005BBA63 /* libglfw.3.3.dylib */; };
 		CEBB39522B459B56002BFDE8 /* creategeom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39512B459B56002BFDE8 /* creategeom.cpp */; };
 		CEBB39542B45AA92002BFDE8 /* mathoperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39532B45AA92002BFDE8 /* mathoperations.cpp */; };
@@ -106,6 +107,7 @@
 		CE8335082BD423B300650CBA /* imgui_impl_glfw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_glfw.cpp; path = dependencies/backends/imgui_impl_glfw.cpp; sourceTree = "<group>"; };
 		CE9776D32BDF1ACE00F69729 /* createobjs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = createobjs.cpp; sourceTree = "<group>"; };
 		CE9776D62BDFE8B100F69729 /* fileoperations.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = fileoperations.cpp; sourceTree = "<group>"; };
+		CE9776D92BE011EE00F69729 /* initobjs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = initobjs.cpp; sourceTree = "<group>"; };
 		CEAB8C8F2B411F75005BBA63 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = dependencies/library/libglfw.3.3.dylib; sourceTree = "<group>"; };
 		CEAB8CAB2B4127E9005BBA63 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = CabinV5.jpg; sourceTree = "<group>"; };
 		CEAB8CAD2B41281A005BBA63 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = CabinV5.jpg; path = UI_Elements/CabinV5.jpg; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				CE4E3DFE2BD92A23007BD84F /* loadfont.cpp */,
 				CE9776D32BDF1ACE00F69729 /* createobjs.cpp */,
 				CE9776D62BDFE8B100F69729 /* fileoperations.cpp */,
+				CE9776D92BE011EE00F69729 /* initobjs.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				CE1917A82BCC1D0000DC8A51 /* keybindings.cpp in Sources */,
 				CE9776D82BDFE8B100F69729 /* fileoperations.cpp in Sources */,
 				CE2428552B41101700FFD99A /* main.cpp in Sources */,
+				CE9776DB2BE011EE00F69729 /* initobjs.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
