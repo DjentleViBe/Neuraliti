@@ -267,22 +267,22 @@ void Displayloop(char **argv){
     glfwSwapInterval(1);
 
     calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
-    //calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
     
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     
     // loop through objects here
-    NeuralObj MyObj1, MyObj2;
-    auto result = createobj1(-0.45f, 0.1f, "Hello World!");
-    MyObj1 = std::get<0>(result);
-    MyObj2 = std::get<1>(result);
-    
-    NeuralObj MyObj3, MyObj4;
-    result = createobj1(0.45f, 0.2f, "Hello World!");
-    MyObj3 = std::get<0>(result);
-    MyObj4 = std::get<1>(result);
+    NeuralObj **MyObj_rect = new NeuralObj*[objnumber];
+    for (int i = 0; i < objnumber; ++i) {
+        auto result = createobj1(Xposition[i], Yposition[i], "Hello World!");
+        MyObj_rect[i] = new NeuralObj(std::get<0>(result));
+    }
+    NeuralObj **MyObj_font = new NeuralObj*[objnumber];
+    for (int i = 0; i < objnumber; ++i) {
+        auto result = createobj1(Xposition[i], Yposition[i], "Hello World!");
+        MyObj_font[i] = new NeuralObj(std::get<1>(result));
+    }
 
     while (!glfwWindowShouldClose(window))
     {
@@ -297,37 +297,24 @@ void Displayloop(char **argv){
         
         calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
         objShader.use();
-        MyObj1.Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
-        glUniformMatrix4fv(MyObj1.Matrix, 1, GL_FALSE, &mvp[0][0]);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, MyObj1.texture);
-        glBindVertexArray(MyObj1.VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        for (int i = 0; i < objnumber; ++i) {
+            MyObj_rect[i]->Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_rect[i]->Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, MyObj_rect[i]->texture);
+            glBindVertexArray(MyObj_rect[i]->VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
         
         fontShader.use();
-        MyObj2.Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
-        glUniformMatrix4fv(MyObj2.Matrix, 1, GL_FALSE, &mvp[0][0]);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, MyObj2.texture);
-        glBindVertexArray(MyObj2.VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        
-        
-        objShader.use();
-        MyObj3.Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
-        glUniformMatrix4fv(MyObj3.Matrix, 1, GL_FALSE, &mvp[0][0]);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, MyObj3.texture);
-        glBindVertexArray(MyObj3.VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        
-        fontShader.use();
-        MyObj4.Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
-        glUniformMatrix4fv(MyObj4.Matrix, 1, GL_FALSE, &mvp[0][0]);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, MyObj4.texture);
-        glBindVertexArray(MyObj4.VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        for (int i = 0; i < objnumber; ++i) {
+            MyObj_font[i]->Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_font[i]->Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, MyObj_font[i]->texture);
+            glBindVertexArray(MyObj_font[i]->VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
         
         ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
         ImGui::SetNextWindowPos(ImVec2(0, 0));
@@ -392,13 +379,13 @@ void Displayloop(char **argv){
     ImGui::DestroyContext();
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &MyObj1.VAO);
+    /*glDeleteVertexArrays(1, &MyObj1.VAO);
     glDeleteBuffers(1, &MyObj1.VBO);
     glDeleteBuffers(1, &MyObj1.EBO);
 
     glDeleteVertexArrays(1, &MyObj2.VAO);
     glDeleteBuffers(1, &MyObj2.VBO);
-    glDeleteBuffers(1, &MyObj2.EBO);
+    glDeleteBuffers(1, &MyObj2.EBO);*/
     
     glfwDestroyWindow(window);
     glfwTerminate();
