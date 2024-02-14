@@ -194,7 +194,6 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point, 
     
     glm::mat4 projection = glm::perspective(glm::radians(35.0f), 1.0f, 0.1f, 100.0f);
     //glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.5f, 1.5f);
-    //projection = glm::scale(projection, glm::vec3(0.5, 0.5, 1.0));
     // Camera matrix
     Xpos -= transX * 0.01;
     Ypos += transY * 0.01;
@@ -203,9 +202,6 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point, 
         glm::vec3(Xpos, Ypos, 0), // and looks at the origin
         glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
         );
-    //std::cout << transX << "\n";
-    // Model matrix: an identity matrix (model will be at the origin)
-    //glm::mat4 Model = glm::mat4(1.0f);
     // Step 1: Translate the point to the origin
     glm::mat4 translateToOrigin = glm::translate(glm::mat4(1.0f), -point);
 
@@ -214,7 +210,6 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point, 
 
     // Step 3: Translate the point back to its original position
     glm::mat4 translateBack = glm::translate(glm::mat4(1.0f), point);
-    //glm::mat4 scaling = glm::scale(glm::mat4(1), glm::vec3(SCR_WIDTH / wid,1,1));
     // Our ModelViewProjection: multiplication of our 3 matrices
     mvp =  projection * View * translateBack * scaleMatrix * translateToOrigin;
     //GLuint MatrixID = glGetUniformLocation(mainShader.ID, "ProjMat");
@@ -275,12 +270,12 @@ void Displayloop(char **argv){
     // loop through objects here
     NeuralObj **MyObj_rect = new NeuralObj*[objnumber];
     for (int i = 0; i < objnumber; ++i) {
-        auto result = createobj1(Xposition[i], Yposition[i], "Hello World!");
+        auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
         MyObj_rect[i] = new NeuralObj(std::get<0>(result));
     }
     NeuralObj **MyObj_font = new NeuralObj*[objnumber];
     for (int i = 0; i < objnumber; ++i) {
-        auto result = createobj1(Xposition[i], Yposition[i], "Hello World!");
+        auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
         MyObj_font[i] = new NeuralObj(std::get<1>(result));
     }
 
