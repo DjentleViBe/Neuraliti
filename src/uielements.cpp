@@ -309,8 +309,9 @@ void Displayloop(char **argv){
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        ShowMenu(&show_demo_window);
         ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::SetNextWindowPos(ImVec2(0, 20));
 
         ImGui::Begin("Window A");
         ImGui::Text("NEURALITI");
@@ -352,7 +353,7 @@ void Displayloop(char **argv){
                     "1\0");
         ImGui::End();
         
-        ShowMenu(&show_demo_window);
+        
         // input
         // -----
         processInput(window);
