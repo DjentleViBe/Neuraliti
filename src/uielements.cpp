@@ -265,7 +265,7 @@ void Displayloop(char **argv){
     
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetMouseButtonCallback(window, mouse_button_callback);
+    //glfwSetMouseButtonCallback(window, mouse_button_callback);
     
     // loop through objects here
     NeuralObj **MyObj_rect = new NeuralObj*[objnumber];
@@ -285,10 +285,6 @@ void Displayloop(char **argv){
         glfwSetKeyCallback(window, key_callback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-       
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
         
         calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
         objShader.use();
@@ -310,7 +306,9 @@ void Displayloop(char **argv){
             glBindVertexArray(MyObj_font[i]->VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
-        
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
         ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
         ImGui::SetNextWindowPos(ImVec2(0, 0));
 
