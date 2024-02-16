@@ -299,7 +299,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/Users/vishakhbegari/Documents/GitHub/GENT-CrossPlatform/runall.sh\n";
+			shellScript = "/Users/vishakhbegari/Documents/GitHub/GENT-CrossPlatform/copyall.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -326,8 +326,8 @@
 				CE9776D52BDF1ACE00F69729 /* createobjs.cpp in Sources */,
 				CE1917A82BCC1D0000DC8A51 /* keybindings.cpp in Sources */,
 				CE9776D82BDFE8B100F69729 /* fileoperations.cpp in Sources */,
-				CE2428552B41101700FFD99A /* main.cpp in Sources */,
 				CE9776DB2BE011EE00F69729 /* initobjs.cpp in Sources */,
+				CE2428552B41101700FFD99A /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

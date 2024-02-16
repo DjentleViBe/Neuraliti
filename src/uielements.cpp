@@ -27,6 +27,7 @@
 #include "createobjs.hpp"
 #include "fileoperations.hpp"
 #include "initobjs.hpp"
+#include "mach-o/dyld.h"
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
@@ -38,6 +39,7 @@ std::vector<std::string> fontlist, configlist, fontsizelist;
 const char* homeDir = std::getenv("HOME");
 picojson::value v;
 glm::mat4 mvp;
+std::string CurrentDir;
 
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
 double zoomlevel = 3.0;
@@ -96,12 +98,12 @@ void loadfont(ImGuiIO& io){
         0
     };
     addlogs("Font loading\n");
-    io.Fonts->AddFontFromFileTTF(("../assets/fonts/" + appsettings["defaultfont"]).c_str() , std::stof(appsettings["fontsize"]));
+    io.Fonts->AddFontFromFileTTF((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str() , std::stof(appsettings["fontsize"]));
     static ImFontConfig cfg;
     cfg.OversampleH = cfg.OversampleV = 2;
     cfg.MergeMode = true;
     #if defined __APPLE__
-    io.Fonts->AddFontFromFileTTF(("../assets/fonts/" +appsettings["defaultfont"]).c_str() , 17, &cfg,
+    io.Fonts->AddFontFromFileTTF((CurrentDir + "/assets/fonts/" +appsettings["defaultfont"]).c_str() , 17, &cfg,
                                  myGlyphRanges);
     #endif
     io.Fonts->Build();
@@ -109,15 +111,22 @@ void loadfont(ImGuiIO& io){
 }
 
 int INITgraphics(){
-    std::string currentDir = GetCurrentWorkingDirectory();
-    if (!currentDir.empty()) {
-        std::cout << "Current working directory: " << currentDir << std::endl;
+    
+    char path[1024];
+    uint32_t size = sizeof(path);
+    if (_NSGetExecutablePath(path, &size) == 0){
+        printf("executable path is %s\n", path);
     }
-    else {
-        std::cerr << "Error: Unable to retrieve current working directory." << std::endl;
-        }
+    else{
+        printf("buffer too small; need size %u\n", size);
+        return 1;
+    }
+    std::cout << "read";
     // Initial startup
-    loadconfig("../prefs.json");
+    addlogs("Opening preferences\n");
+    CurrentDir = std::string(path).erase(std::string(path).size() - 9);
+    
+    loadconfig(CurrentDir + "/prefs.json");
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -178,15 +187,15 @@ int INITgraphics(){
     ImGui_ImplOpenGL3_Init(glsl_version);
     
     loadfont(io);
-    readkeybindings();
+    //readkeybindings();
     
     //glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     addlogs("Initialisation ended\n");
-    addlogs("Opening file");
-    initobjs("../Untitled-1.pd");
+    addlogs("Opening file\n");
+    initobjs(CurrentDir + "/Untitled-1.pd");
     return 0;
 }
 
@@ -227,7 +236,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos){
-    Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
+    Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
     double deltaX = xpos - tempmouseX;
     double deltaY = ypos - tempmouseY;
@@ -256,11 +265,11 @@ void Displayloop(char **argv){
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
     
-    Shader fontShader("../assets/fontshader.vs", "../assets/fontshader.fs");
-    Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
+    Shader fontShader((CurrentDir + "/bin/fontshader.vs").c_str(), (CurrentDir + "/bin/fontshader.fs").c_str());
+    Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-
+    
     calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
     
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
