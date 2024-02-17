@@ -8,7 +8,8 @@ Neuraliti is a Git repository dedicated to the development of audio synthesis to
 
 ## Usage
 1. Clone the repository or download as .zip file.
-2. Launch /bin/GENT.
+2. navigate to /bin in Terminal
+3. Launch GENT.
 
 ## Collaborating
 Please feel free to send an Email if you would like to make contributions to this project.
