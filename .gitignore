@@ -4,3 +4,6 @@ GENT.xcodeproj/xcuserdata*
 *.pbxproj
 GENT.xcodeproj/xcsharedata/*
 glm
+.vscode
+_exec*
+bin
