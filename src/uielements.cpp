@@ -3,31 +3,31 @@
 #include <ctime>
 #include <map>
 #include <string>
-#include "glad/glad.h"
+#include "../dependencies/include/glad/glad.h"
 #define GL_SILENCE_DEPRECATION
-#include "GLFW/glfw3.h" // Will drag system OpenGL headers
-#include "uielements.h"
-#include "stb_image.h"
-#include "shader_s.h"
-#include "creategeom.h"
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include "menu.h"
-#include "keybindings.h"
-#include "extras.h"
-#include "imfilebrowser.h"
-#include "windowing.h"
-#include "picojson.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include "loadfont.hpp"
-#include "datatypes.hpp"
-#include "createobjs.hpp"
-#include "fileoperations.hpp"
-#include "initobjs.hpp"
-#include "mach-o/dyld.h"
+#include "../dependencies/include/GLFW/glfw3.h" // Will drag system OpenGL headers
+#include "../dependencies/include/uielements.h"
+#include "../dependencies/include/stb_image.h"
+#include "../dependencies/include/shader_s.h"
+#include "../dependencies/include/creategeom.h"
+#include "../dependencies/include/imgui.h"
+#include "../dependencies/include/imgui_impl_glfw.h"
+#include "../dependencies/include/imgui_impl_opengl3.h"
+#include "../dependencies/include/menu.h"
+#include "../dependencies/include/keybindings.h"
+#include "../dependencies/include/extras.h"
+#include "../dependencies/include/imfilebrowser.h"
+#include "../dependencies/include/windowing.h"
+#include "../dependencies/include/picojson.h"
+#include "../dependencies/include/glm/glm.hpp"
+#include "../dependencies/include/glm/gtc/matrix_transform.hpp"
+#include "../dependencies/include/glm/gtc/type_ptr.hpp"
+#include "../dependencies/include/loadfont.hpp"
+#include "../dependencies/include/datatypes.hpp"
+#include "../dependencies/include/createobjs.hpp"
+#include "../dependencies/include/fileoperations.hpp"
+#include "../dependencies/include/initobjs.hpp"
+#include <mach-o/dyld.h>
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
@@ -36,14 +36,14 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 std::map<std::string, std::string> appsettings;
 std::vector<std::string> fontlist, configlist, fontsizelist;
-const char* homeDir = std::getenv("HOME");
+const char* homeDir;
 picojson::value v;
 glm::mat4 mvp;
 std::string CurrentDir;
 
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
 double zoomlevel = 3.0;
-bool show_demo_window;
+bool show_demo_window = true;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
@@ -74,7 +74,6 @@ int loadconfig(std::string path){
         std::cerr << "Error parsing JSON: " << err << std::endl;
         return 1;
     }
-    
     // Access JSON values
     std::string name = v.get("Media").get("Preferences").to_str();
     addlogs("Initialisation started\n");
@@ -112,6 +111,8 @@ void loadfont(ImGuiIO& io){
 
 int INITgraphics(){
     
+    homeDir = std::getenv("HOME");
+    std::cout << std::string(homeDir);
     char path[1024];
     uint32_t size = sizeof(path);
     if (_NSGetExecutablePath(path, &size) == 0){
@@ -121,11 +122,10 @@ int INITgraphics(){
         printf("buffer too small; need size %u\n", size);
         return 1;
     }
-    std::cout << "read";
     // Initial startup
     addlogs("Opening preferences\n");
     CurrentDir = std::string(path).erase(std::string(path).size() - 9);
-    
+    std::cout << CurrentDir;
     loadconfig(CurrentDir + "/prefs.json");
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
@@ -259,9 +259,8 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     }
 }
 
-void Displayloop(char **argv){
+void Displayloop(){
     //int display_w, display_h;
-    bool show_demo_window = true;
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
     
@@ -287,7 +286,7 @@ void Displayloop(char **argv){
         auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
         MyObj_font[i] = new NeuralObj(std::get<1>(result));
     }
-
+    
     while (!glfwWindowShouldClose(window))
     {
         glfwGetWindowSize(window, &window_width, &window_height);

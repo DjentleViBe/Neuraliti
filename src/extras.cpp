@@ -1,10 +1,10 @@
-#include "extras.h"
+#include "../dependencies/include/extras.h"
 #include <stdio.h>
 #include <iostream>
 #include <vector>
 #include <filesystem>
 #include <fstream>
-#include "menu.h"
+#include "../dependencies/include/menu.h"
 
 // Platform-specific headers
 #if defined(_WIN32)

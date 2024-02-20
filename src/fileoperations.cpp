@@ -1,8 +1,8 @@
-#include "fileoperations.hpp"
+#include "../dependencies/include/fileoperations.hpp"
 #include <string>
 #include "stdio.h"
 #include "stdlib.h"
-#include "extras.h"
+#include "../dependencies/include/extras.h"
 #include <sstream>
 #include <vector>
 #include <iostream>

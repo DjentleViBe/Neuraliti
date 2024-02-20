@@ -1,5 +1,5 @@
-#include "initobjs.hpp"
-#include "fileoperations.hpp"
+#include "../dependencies/include/initobjs.hpp"
+#include "../dependencies/include/fileoperations.hpp"
 #include "stdio.h"
 #include "iostream"
 #include <vector>

@@ -1,4 +1,4 @@
-#include "stdc++.h"
+#include "../dependencies/include/stdc++.h"
 using namespace std;
 
 float* concatenate(float arr1[], float arr2[], int m, int n, size_t arra2)

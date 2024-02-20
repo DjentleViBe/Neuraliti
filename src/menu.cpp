@@ -1,5 +1,5 @@
-#include "menu.h"
-#include "imgui.h"
+#include "../dependencies/include/menu.h"
+#include "../dependencies/include/imgui.h"
 #include "stdio.h"
 #include <iostream>
 #define _S(_LITERAL)    (const char*)u8##_LITERAL
