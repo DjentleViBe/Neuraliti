@@ -33,9 +33,6 @@ all: $(EXEC)
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(HEADERS_C) $(HEADERS_CPP)| $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ -I$(INCDIR)
 
-#$(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS_C) | $(OBJDIR)
-#	$(CC) $(CFLAGS) -c $< -o $@ -I$(INCDIR)
-
 # Link object files to create executable
 $(EXEC): $(OBJS) | $(BINDIR)
 	$(CC) $(CFLAGS) $(OBJS) -L$(LIBDIR) $(LIBS) $(FRAMEWORKS) -o $(EXEC)
