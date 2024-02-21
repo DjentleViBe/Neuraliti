@@ -10,6 +10,7 @@
 extern int window_width, window_height;
 extern double zoomlevel;
 extern std::map<std::string, std::string> appsettings;
+extern std::string CurrentDir;
 int INITgraphics();
 void Displayloop();
 

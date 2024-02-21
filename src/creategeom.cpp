@@ -115,7 +115,7 @@ NeuralObj createobj(NeuralObj &MyObj){
         stbi_set_flip_vertically_on_load(true);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        unsigned char *map = loadfont(("../assets/fonts/" + appsettings["defaultfont"]).c_str(), MyObj.objname);
+        unsigned char *map = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), MyObj.objname);
         //GLenum format = channels == 4 ? GL_RGBA : GL_RGB;
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, BMP_W, BMP_H, 0, GL_RED, GL_UNSIGNED_BYTE, map);
     }
