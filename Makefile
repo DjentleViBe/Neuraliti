@@ -1,7 +1,7 @@
 CC = /usr/bin/clang++
 
 # Compiler flags
-CFLAGS = -std=c++20 -Wall -g
+CFLAGS = -std=c++20 -Wall -g -Wno-deprecated
 
 MAKEFILE_DIR := $(CURDIR)
 # Directories
@@ -47,6 +47,8 @@ $(BINDIR):
 setup:
 	cp prefs.json bin/.
 	cp -r assets/* bin/.
+
+.PHONY: clean
 # Clean up
 clean:
 	rm -rf $(OBJDIR) $(BINDIR)
