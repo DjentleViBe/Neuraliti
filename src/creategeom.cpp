@@ -50,7 +50,7 @@ float* drawobject(float x, float y, float* color, float vertices[]){
 void InitShader(const char* shadevs, const char* shadefs){
     Shader ourShader(shadevs, shadefs);
     // load image, create texture and generate mipmaps
-    int width, height, nrChannels;
+    // int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
     /*unsigned char *data = //stbi_load(std::filesystem::path("./UI_Elements/CabinV5.jpg").c_str(), &width, //&height, &nrChannels, 0);
