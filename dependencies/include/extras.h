@@ -17,5 +17,6 @@ std::vector<std::string> readfile(char const *filename);
 std::string readfileconcat(char const *filename);
 std::string GetCurrentWorkingDirectory();
 void overwriteLine(const std::string& filename, int lineNumber, const std::string& newContent);
-
+void printMatrix(const std::vector<std::vector<int>>& matrix, std::string verbose);
+void printvector(const std::vector<int> vec, std::string verbose);
 #endif /* extras_h */
