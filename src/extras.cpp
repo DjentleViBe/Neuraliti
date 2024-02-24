@@ -153,3 +153,29 @@ void overwriteLine(const std::string& filename, int lineNumber, const std::strin
 
     std::cout << "Line " << lineNumber << " overwritten successfully." << std::endl;
 }
+
+void printMatrix(const std::vector<std::vector<int>>& matrix, std::string verbose) {
+    // Get the number of rows and columns in the matrix
+    int rows = matrix.size();
+    int cols = matrix[0].size(); // Assuming all rows have the same number of elements
+
+    // Print the matrix
+    std::cout << verbose << "\n";
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+void printvector(const std::vector<int> vec, std::string verbose){
+    std::cout << verbose << "\n";
+    for (int i = 0; i < vec.size(); ++i) {
+        std::cout << vec[i];
+        if (i != vec.size() - 1) {
+            std::cout << ", ";
+        }
+    }
+    std::cout << std::endl;
+}
