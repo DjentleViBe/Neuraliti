@@ -16,7 +16,7 @@
 #include "../dependencies/include/menu.h"
 #include "../dependencies/include/keybindings.h"
 #include "../dependencies/include/extras.h"
-#include "../dependencies/include/imfilebrowser.h"
+//#include "../dependencies/include/imfilebrowser.h"
 #include "../dependencies/include/windowing.h"
 #include "../dependencies/include/picojson.h"
 #include "../dependencies/include/glm/glm.hpp"
@@ -61,7 +61,7 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
-int loadconfig(std::string path){
+int loadconfig(const std::string& path){
     // read default preferences //
     std::string defaultprefs;
     defaultprefs = readfileconcat(path.c_str());
@@ -75,7 +75,7 @@ int loadconfig(std::string path){
         return 1;
     }
     // Access JSON values
-    std::string name = v.get("Media").get("Preferences").to_str();
+    //std::string name = v.get("Media").get("Preferences").to_str();
     addlogs("Initialisation started\n");
     appsettings["defaultfolder"] = std::string(homeDir) + v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("defaultfolder").to_str();
     //double age = v.get("id").get<double>();
@@ -199,7 +199,7 @@ int INITgraphics(){
     return 0;
 }
 
-GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point, double transX, double transY){
+GLuint calculate_view(float wid, float hei, glm::vec3 point, double transX, double transY){
     
     glm::mat4 projection = glm::perspective(glm::radians(35.0f), 1.0f, 0.1f, 100.0f);
     //glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.5f, 1.5f);
@@ -236,12 +236,12 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos){
-    Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
+    //Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
     double deltaX = xpos - tempmouseX;
     double deltaY = ypos - tempmouseY;
     if (state == GLFW_PRESS){
-        calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), deltaX * 0.1, deltaY * 0.1);
+        calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), deltaX * 0.1, deltaY * 0.1);
         }
     tempmouseX = xpos;
     tempmouseY = ypos;
@@ -252,8 +252,7 @@ void processInput(GLFWwindow *window) {
         glfwSetWindowShouldClose(window, true);
 }
 
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-{
+void mouse_button_callback(GLFWwindow* window, int button, int action){
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
         std::cout << "pressed" << "\n";
     }
@@ -269,7 +268,7 @@ void Displayloop(){
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
     
-    calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
+    calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
     
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -294,7 +293,7 @@ void Displayloop(){
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
+        calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
         objShader.use();
         for (int i = 0; i < objnumber; ++i) {
             MyObj_rect[i]->Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
@@ -379,6 +378,8 @@ void Displayloop(){
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    delete[] MyObj_font;
+    delete[] MyObj_rect;
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     /*glDeleteVertexArrays(1, &MyObj1.VAO);
