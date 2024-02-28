@@ -13,6 +13,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../dependencies/include/stb_image.h"
 
+int sentence_width = 0;
 unsigned char* loadfont(std::string fontname,std::string sentence)
 {
     // load font file //
@@ -36,10 +37,10 @@ unsigned char* loadfont(std::string fontname,std::string sentence)
     {
         printf("failed\n");
     }
-    
-    int b_w = BMP_W; // bitmap width //
-    int b_h = BMP_H; // bitmap height //
-    int l_h = 64; // line height //
+    //sentence_width = sentence.length() * 42;
+    int b_w = sentence_width; // bitmap width //
+    int b_h = globalfontsize * 3; // bitmap height //
+    int l_h = globalfontsize * 3; // line height //
     
     // create a bitmap for the phrase //
     unsigned char* bitmap = (unsigned char *)calloc(b_w * b_h, sizeof(unsigned char));
