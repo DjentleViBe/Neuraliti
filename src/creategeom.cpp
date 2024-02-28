@@ -10,8 +10,9 @@
 
 void InitShader(const char* shadevs, const char* shadefs);
 
-float* drawobject(float x, float y, float* color, float vertices[]){
-    vertices[0] = x + OBJ_W/(float)window_width;
+float* drawobject(float x, float y, float* color, float vertices[], float sent_width, float sent_height){
+    //width = 1024;
+    vertices[0] = x + sent_width/(float)window_width;
     vertices[1] = y;
     vertices[2] = 0.0f;
     vertices[3] = color[0];
@@ -19,8 +20,8 @@ float* drawobject(float x, float y, float* color, float vertices[]){
     vertices[5] = color[2];
     vertices[6] = 1.0;
     vertices[7] = 0.0;
-    vertices[8] = x + OBJ_W/(float)window_width;
-    vertices[9] = y - OBJ_H/(float)window_height;
+    vertices[8] = x + sent_width/(float)window_width;
+    vertices[9] = y - sent_height/(float)window_height;
     vertices[10] = 0.0f;
     vertices[11] = color[0];
     vertices[12] = color[1];
@@ -28,7 +29,7 @@ float* drawobject(float x, float y, float* color, float vertices[]){
     vertices[14] = 1.0f;
     vertices[15] = 1.0f;
     vertices[16] = x;
-    vertices[17] = y - OBJ_H/(float)window_height;
+    vertices[17] = y - sent_height/(float)window_height;
     vertices[18] = 0.0f;
     vertices[19] = color[0];
     vertices[20] = color[1];;
@@ -70,10 +71,12 @@ void InitShader(const char* shadevs, const char* shadefs){
 }
 
 NeuralObj createobj(NeuralObj &MyObj){
+    // if object type is 0
+    // render font
     // create the background box
-    
+    sentence_width = MyObj.objname.length() * 42;
     //float *vertices;
-    drawobject(MyObj.x, MyObj.y, MyObj.color, MyObj.verts);
+    drawobject(MyObj.x, MyObj.y, MyObj.color, MyObj.verts, fmax(sentence_width, globalfontsize * 3.0), globalfontsize * 3.0);
     unsigned int indices[] = {
             0, 1, 3, // first triangle
             1, 2, 3  // second triangle
@@ -107,9 +110,6 @@ NeuralObj createobj(NeuralObj &MyObj){
     // set texture filtering parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    
-    // if object type is 0
-    // render font
     if(MyObj.objtype == 0){
         
         stbi_set_flip_vertically_on_load(true);
@@ -117,7 +117,8 @@ NeuralObj createobj(NeuralObj &MyObj){
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         unsigned char *map = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), MyObj.objname);
         //GLenum format = channels == 4 ? GL_RGBA : GL_RGB;
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, BMP_W, BMP_H, 0, GL_RED, GL_UNSIGNED_BYTE, map);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, fmax(sentence_width, globalfontsize * 3.0), globalfontsize * 3.0, 0, GL_RED, GL_UNSIGNED_BYTE, map);
     }
+    
     return MyObj;
 }
