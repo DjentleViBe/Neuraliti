@@ -40,7 +40,7 @@ const char* homeDir;
 picojson::value v;
 glm::mat4 mvp;
 std::string CurrentDir;
-
+int globalfontsize = 0;
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
 double zoomlevel = 3.0;
 bool show_demo_window = true;
@@ -83,6 +83,7 @@ int loadconfig(const std::string& path){
     appsettings["defaultfont"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("font").to_str();
     addlogs("Default font : " + appsettings["defaultfont"] + "\n");
     appsettings["fontsize"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("fontsize").to_str();
+    globalfontsize = stoi(appsettings["fontsize"]);
     fontlist = listfiles(appsettings["defaultfolder"] + "/fonts", ".ttf");
     configlist = listfiles(appsettings["defaultfolder"], ".json");
     fontsizelist = {"12", "13", "14", "15", "16", "17", "18"};
