@@ -74,8 +74,7 @@ NeuralObj createobj(NeuralObj &MyObj){
     // if object type is 0
     // render font
     // create the background box
-    sentence_width = MyObj.objname.length() * 42;
-    //float *vertices;
+    sentence_width = MyObj.objname.length() * globalfontsize * 2.0;
     drawobject(MyObj.x, MyObj.y, MyObj.color, MyObj.verts, fmax(sentence_width, globalfontsize * 3.0), globalfontsize * 3.0);
     unsigned int indices[] = {
             0, 1, 3, // first triangle

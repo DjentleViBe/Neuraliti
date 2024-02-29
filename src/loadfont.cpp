@@ -37,7 +37,7 @@ unsigned char* loadfont(std::string fontname,std::string sentence)
     {
         printf("failed\n");
     }
-    //sentence_width = sentence.length() * 42;
+    
     int b_w = sentence_width; // bitmap width //
     int b_h = globalfontsize * 3; // bitmap height //
     int l_h = globalfontsize * 3; // line height //
