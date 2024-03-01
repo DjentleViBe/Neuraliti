@@ -53,6 +53,8 @@ int window_height 			= 960;
 float primary_color_1[]     = {0.93725, 0.89019, 0.79215};
 float primary_color_2[]     = {0.12941, 0.12941, 0.15294};
 float primary_color_3[]     = {1.0, 1.0, 1.0};
+std::vector<int> globalinlets;
+std::vector<int> globaloutlets;
 
 GLFWwindow* window;
 
@@ -197,6 +199,8 @@ int INITgraphics(){
     addlogs("Initialisation ended\n");
     addlogs("Opening file\n");
     initobjs(CurrentDir + "/Untitled-1.pd");
+    printvector(globalinlets, "Inlets");
+    printvector(globaloutlets, "Outlets");
     return 0;
 }
 
@@ -266,6 +270,8 @@ void Displayloop(){
     
     Shader fontShader((CurrentDir + "/bin/fontshader.vs").c_str(), (CurrentDir + "/bin/fontshader.fs").c_str());
     Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
+    Shader nodeShader((CurrentDir + "/bin/inletshader.vs").c_str(), (CurrentDir + "/bin/inletshader.fs").c_str());
+    
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
     
@@ -274,17 +280,21 @@ void Displayloop(){
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     //glfwSetMouseButtonCallback(window, mouse_button_callback);
-    
+
+    //nodeShader.use();
     // loop through objects here
     NeuralObj *MyObj_rect = new NeuralObj[objnumber];
     for (int i = 0; i < objnumber; ++i) {
-        MyObj_rect[i] = createobj1(Xposition[i], Yposition[i], objectnames[i], 0);
+        //MyObj_rect[i].Inletnum = globalinlets[i];
+        //MyObj_rect[i].Outletnum = globaloutlets[i];
+        MyObj_rect[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0);
+
     }
     NeuralObj *MyObj_font = new NeuralObj[objnumber];
     for (int i = 0; i < objnumber; ++i) {
-        MyObj_font[i] = createobj1(Xposition[i], Yposition[i], objectnames[i], 1);
+        MyObj_font[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1);
     }
-    
+
     while (!glfwWindowShouldClose(window))
     {
         glfwGetWindowSize(window, &window_width, &window_height);
@@ -293,14 +303,21 @@ void Displayloop(){
         glClear(GL_COLOR_BUFFER_BIT);
         
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
-        objShader.use();
+        
         for (int i = 0; i < objnumber; ++i) {
+            objShader.use();
             MyObj_rect[i].Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
             glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, MyObj_rect[i].texture);
             glBindVertexArray(MyObj_rect[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+            nodeShader.use();
+            MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glBindVertexArray(MyObj_rect[i].quadVAO);
+            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Inletnum); 
         }
         
         fontShader.use();
@@ -312,6 +329,11 @@ void Displayloop(){
             glBindVertexArray(MyObj_font[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
+        
+        
+        //glBindVertexArray(0);
+
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
