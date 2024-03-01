@@ -276,15 +276,13 @@ void Displayloop(){
     //glfwSetMouseButtonCallback(window, mouse_button_callback);
     
     // loop through objects here
-    NeuralObj **MyObj_rect = new NeuralObj*[objnumber];
+    NeuralObj *MyObj_rect = new NeuralObj[objnumber];
     for (int i = 0; i < objnumber; ++i) {
-        auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
-        MyObj_rect[i] = new NeuralObj(std::get<0>(result));
+        MyObj_rect[i] = createobj1(Xposition[i], Yposition[i], objectnames[i], 0);
     }
-    NeuralObj **MyObj_font = new NeuralObj*[objnumber];
+    NeuralObj *MyObj_font = new NeuralObj[objnumber];
     for (int i = 0; i < objnumber; ++i) {
-        auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
-        MyObj_font[i] = new NeuralObj(std::get<1>(result));
+        MyObj_font[i] = createobj1(Xposition[i], Yposition[i], objectnames[i], 1);
     }
     
     while (!glfwWindowShouldClose(window))
@@ -297,21 +295,21 @@ void Displayloop(){
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
         objShader.use();
         for (int i = 0; i < objnumber; ++i) {
-            MyObj_rect[i]->Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_rect[i]->Matrix, 1, GL_FALSE, &mvp[0][0]);
+            MyObj_rect[i].Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, MyObj_rect[i]->texture);
-            glBindVertexArray(MyObj_rect[i]->VAO);
+            glBindTexture(GL_TEXTURE_2D, MyObj_rect[i].texture);
+            glBindVertexArray(MyObj_rect[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
         
         fontShader.use();
         for (int i = 0; i < objnumber; ++i) {
-            MyObj_font[i]->Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_font[i]->Matrix, 1, GL_FALSE, &mvp[0][0]);
+            MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_font[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, MyObj_font[i]->texture);
-            glBindVertexArray(MyObj_font[i]->VAO);
+            glBindTexture(GL_TEXTURE_2D, MyObj_font[i].texture);
+            glBindVertexArray(MyObj_font[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
         ImGui_ImplOpenGL3_NewFrame();
