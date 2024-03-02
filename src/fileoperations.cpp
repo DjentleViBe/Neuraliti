@@ -13,7 +13,7 @@ std::vector<float> Xposition;
 std::vector<float> Yposition;
 std::vector<std::string> objectnames;
 
-int readpdfile(std::string path){
+std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
     std::vector<std::string> lines;
     char delimiter = ' ';
     lines = readfile(path.c_str());
@@ -90,10 +90,10 @@ int readpdfile(std::string path){
         }
     }
     printMatrix(connectionmatrix, "Connection matrix");
-    printvector(objinlets, "Inlets");
-    printvector(objoutlets, "Outlets");
+    //printvector(objinlets, "Inlets");
+    //printvector(objoutlets, "Outlets");
 
-    return 0;
+    return std::make_tuple(objinlets, objoutlets);
 }
 
 
