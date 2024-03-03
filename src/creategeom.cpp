@@ -7,11 +7,25 @@
 #include "../dependencies/include/datatypes.hpp"
 #include "../dependencies/include/loadfont.hpp"
 #include <string>
+#include "../dependencies/include/glm/glm.hpp"
+#include "../dependencies/include/glm/gtc/matrix_transform.hpp"
+#include "../dependencies/include/glm/gtc/type_ptr.hpp"
+
+float quadVertices[] = {
+    // positions     // colors
+    -0.01f,  0.01f,  1.0f, 0.0f, 0.0f,
+     0.01f, -0.01f,  0.0f, 1.0f, 0.0f,
+    -0.01f, -0.01f,  0.0f, 0.0f, 1.0f,
+
+    -0.01f,  0.01f,  1.0f, 0.0f, 0.0f,
+     0.01f, -0.01f,  0.0f, 1.0f, 0.0f,   
+     0.01f,  0.01f,  0.0f, 1.0f, 1.0f		    		
+    }; 
 
 void InitShader(const char* shadevs, const char* shadefs);
 
 float* drawobject(float x, float y, float* color, float vertices[], float sent_width, float sent_height){
-    //width = 1024;
+    
     vertices[0] = x + sent_width/(float)window_width;
     vertices[1] = y;
     vertices[2] = 0.0f;
@@ -119,5 +133,47 @@ NeuralObj createobj(NeuralObj &MyObj){
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, fmax(sentence_width, globalfontsize * 3.0), globalfontsize * 3.0, 0, GL_RED, GL_UNSIGNED_BYTE, map);
     }
     
+    // generate a list of 100 quad locations/translation-vectors
+    // ---------------------------------------------------------
+    glm::vec2 translations[MyObj.Inletnum];
+    int index = 0;
+    float offset = 0.0f;
+    
+    for (int x = 0; x <= MyObj.Inletnum; x++)
+        {
+            glm::vec2 translation;
+            translation.x = MyObj.x + offset;
+            //translation.y = (float)y / 10.0f + offset;
+            translation.y = MyObj.y;
+            translations[index++] = translation;
+            offset += 0.1f;
+        }
+    //std::cout << translations;
+    // store instance data in an array buffer
+    // --------------------------------------
+    glGenBuffers(1, &MyObj.instanceVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, MyObj.instanceVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * 10, &translations[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // ------------------------------------------------------------------
+    
+    glGenVertexArrays(1, &MyObj.quadVAO);
+    glGenBuffers(1, &MyObj.quadVBO);
+    glBindVertexArray(MyObj.quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, MyObj.quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
+    // also set instance data
+    glEnableVertexAttribArray(2);
+    glBindBuffer(GL_ARRAY_BUFFER, MyObj.instanceVBO); // this attribute comes from a different vertex buffer
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glVertexAttribDivisor(2, 1); // tell OpenGL this is an instanced vertex attribute.
+        
     return MyObj;
 }
