@@ -12,6 +12,8 @@ extern double zoomlevel;
 extern std::map<std::string, std::string> appsettings;
 extern std::string CurrentDir;
 extern int globalfontsize;
+extern std::vector<int> globalinlets;
+extern std::vector<int> globaloutlets;
 
 int INITgraphics();
 void Displayloop();

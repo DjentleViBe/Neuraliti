@@ -14,11 +14,15 @@ class NeuralObj {       // The class
     float y;            // y position
     std::string objname;  // Attribute (string variable)
     unsigned int VAO, VBO, EBO;
+    unsigned int quadVAO, quadVBO, instanceVBO;
     unsigned int texture;
     float* color;
     float verts[32];
     GLuint Matrix;
-    std::vector<NeuralObj*> outlets;
+    int Inletnum;
+    int Outletnum;
+    int *Inlets;        // store inlet types
+    int *Outlets;       // store outlet types
 };
 
 #endif

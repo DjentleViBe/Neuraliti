@@ -9,5 +9,5 @@ extern std::vector<float> Yposition;
 extern std::vector<std::string> objectnames;
 extern int objnumber;
 
-int readpdfile(std::string path);
+std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path);
 #endif /* fileoperations_hpp */
