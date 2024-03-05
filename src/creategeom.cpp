@@ -13,13 +13,13 @@
 
 float quadVertices[] = {
     // positions     // colors
-    -0.01f,  0.01f,  1.0f, 0.0f, 0.0f,
-     0.01f, -0.01f,  0.0f, 1.0f, 0.0f,
-    -0.01f, -0.01f,  0.0f, 0.0f, 1.0f,
+    0.0f,  0.02f,  1.0f, 0.0f, 0.0f,
+     0.02f, 0.0f,  0.0f, 1.0f, 0.0f,
+    0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
 
-    -0.01f,  0.01f,  1.0f, 0.0f, 0.0f,
-     0.01f, -0.01f,  0.0f, 1.0f, 0.0f,   
-     0.01f,  0.01f,  0.0f, 1.0f, 1.0f		    		
+    0.0f,  0.02f,  1.0f, 0.0f, 0.0f,
+     0.02f, 0.0f,  0.0f, 1.0f, 0.0f,   
+     0.02f,  0.02f,  0.0f, 1.0f, 1.0f		    		
     }; 
 
 void InitShader(const char* shadevs, const char* shadefs);
@@ -146,7 +146,7 @@ NeuralObj createobj(NeuralObj &MyObj){
             //translation.y = (float)y / 10.0f + offset;
             translation.y = MyObj.y;
             translations[index++] = translation;
-            offset += 0.1f;
+            offset += fmax(sentence_width, globalfontsize * 3.0) / window_width - 0.02f;
         }
     //std::cout << translations;
     // store instance data in an array buffer
