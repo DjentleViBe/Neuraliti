@@ -14,7 +14,8 @@ class NeuralObj {       // The class
     float y;            // y position
     std::string objname;  // Attribute (string variable)
     unsigned int VAO, VBO, EBO;
-    unsigned int quadVAO, quadVBO, instanceVBO;
+    unsigned int inquadVAO, inquadVBO, instanceVBO;
+    unsigned int outquadVAO, outquadVBO, outstanceVBO;
     unsigned int texture;
     float* color;
     float verts[32];
