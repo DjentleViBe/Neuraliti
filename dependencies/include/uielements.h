@@ -7,6 +7,14 @@
 #include <map>
 #include "stdio.h"
 
+extern float primary_color_1[3]; // grey
+extern float primary_color_2[3]; 
+extern float primary_color_3[3]; // white
+extern float primary_color_4[3]; // orange
+extern float primary_color_5[3]; // green
+extern float primary_color_6[3]; // yellow
+extern float primary_color_7[3]; // dark green
+
 extern int window_width, window_height;
 extern double zoomlevel;
 extern std::map<std::string, std::string> appsettings;
