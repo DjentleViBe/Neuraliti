@@ -290,12 +290,20 @@ void Displayloop(){
     NeuralObj *MyObj_rect = new NeuralObj[objnumber];
     for (int i = 0; i < objnumber; ++i) {
         MyObj_rect[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0);
-
+        MyObj_rect[i].Inlets = new int*[MyObj_rect[i].Inletnum];
+        MyObj_rect[i].Outlets = new int*[MyObj_rect[i].Outletnum];
     }
     NeuralObj *MyObj_font = new NeuralObj[objnumber];
     for (int i = 0; i < objnumber; ++i) {
         MyObj_font[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1);
     }
+    // inlet outlet mapping
+    MyObj_rect[1].Inlets[0] = new int[4];
+    MyObj_rect[0].Outlets[0] = new int[4];
+    MyObj_rect[1].Inlets[0] = MyObj_rect[0].Outlets[0];
+    MyObj_rect[0].Outlets[0][0] = 10;
+    MyObj_rect[0].Outlets[0][1] = 20;
+    std::cout << MyObj_rect[1].Inlets[0][1] * 20 << "\n";
 
     while (!glfwWindowShouldClose(window))
     {
@@ -335,6 +343,8 @@ void Displayloop(){
             glBindVertexArray(MyObj_font[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
+
+        
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
