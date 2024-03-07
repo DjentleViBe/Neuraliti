@@ -22,8 +22,8 @@ class NeuralObj {       // The class
     GLuint Matrix;
     int Inletnum;
     int Outletnum;
-    int *Inlets;        // store inlet types
-    int *Outlets;       // store outlet types
+    int **Inlets;        // store inlet types
+    int **Outlets;       // store outlet types
 };
 
 #endif
