@@ -26,4 +26,15 @@ class NeuralObj {       // The class
     int **Outlets;       // store outlet types
 };
 
+class NeuralLines {
+  public:
+    float startx;
+    float starty;
+    float endx;
+    float endy;
+    unsigned int VAO, VBO, EBO;
+    GLuint Matrix;
+    unsigned int texture;
+};
+
 #endif
