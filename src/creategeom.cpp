@@ -22,7 +22,7 @@ float* drawnodes(float wid, float* color){
 
     0.0f,  wid,  color[0], color[1], color[2],
      wid, 0.0f,  color[0], color[1], color[2],   
-     0.02f,  wid,  color[0], color[1], color[2]		    		
+     wid,  wid,  color[0], color[1], color[2]		    		
     }; 
     return quadVertices;
 }
@@ -86,6 +86,7 @@ void InitShader(const char* shadevs, const char* shadefs){
     }
     stbi_image_free(data);*/
 }
+
 NeuralObj createinlets(NeuralObj &MyObj){
     glm::vec2 translations[MyObj.Inletnum];
     int index = 0;
@@ -226,5 +227,54 @@ NeuralObj createobj(NeuralObj &MyObj){
     createinlets(MyObj);
     createoutlets(MyObj);
 
+    return MyObj;
+}
+
+float* drawline(float wid, float* color){
+    float* quadLines = new float[24]{
+    // positions     // colors
+    0.1f,  0.1f, color[0],color[1],color[2],
+    0.1f, -0.1f, color[0],color[1],color[2],
+    -0.1f, -0.1f, color[0],color[1],color[2],
+    -0.1f,  0.1f,  color[0],color[1],color[2]		
+    }; 
+    return quadLines;
+}
+
+NeuralLines createlines(NeuralLines &MyObj){
+    float *lineVertices = drawline(0.2, primary_color_2);
+
+    unsigned int indices[] = {
+            0, 1, 3, // first triangle
+            1, 2, 3  // second triangle
+        };
+
+    glGenVertexArrays(1, &MyObj.VAO);
+    glGenBuffers(1, &MyObj.VBO);
+    glGenBuffers(1, &MyObj.EBO);
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    glBindVertexArray(MyObj.VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, MyObj.VBO);
+    glBufferData(GL_ARRAY_BUFFER, 80, lineVertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, MyObj.EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+
+    // remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+    glBindVertexArray(0); 
     return MyObj;
 }
