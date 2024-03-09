@@ -275,6 +275,7 @@ void Displayloop(){
     Shader fontShader((CurrentDir + "/bin/fontshader.vs").c_str(), (CurrentDir + "/bin/fontshader.fs").c_str());
     Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     Shader nodeShader((CurrentDir + "/bin/inletshader.vs").c_str(), (CurrentDir + "/bin/inletshader.fs").c_str());
+    Shader lineShader((CurrentDir + "/bin/lineshader.vs").c_str(), (CurrentDir + "/bin/lineshader.fs").c_str());
     
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
@@ -297,6 +298,10 @@ void Displayloop(){
     for (int i = 0; i < objnumber; ++i) {
         MyObj_font[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1);
     }
+
+    NeuralLines *MyObj_lines = new NeuralLines[5];
+    MyObj_lines[0] = createline1(0, 0, 1, 1);
+
     // inlet outlet mapping
     MyObj_rect[1].Inlets[0] = new int[4];
     MyObj_rect[0].Outlets[0] = new int[4];
@@ -334,6 +339,13 @@ void Displayloop(){
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Outletnum); 
         }
         
+        
+        lineShader.use();
+        MyObj_lines[0].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
+        glUniformMatrix4fv(MyObj_lines[0].Matrix, 1, GL_FALSE, &mvp[0][0]);
+        glBindVertexArray(MyObj_lines[0].VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        
         fontShader.use();
         for (int i = 0; i < objnumber; ++i) {
             MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
@@ -343,8 +355,6 @@ void Displayloop(){
             glBindVertexArray(MyObj_font[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
-
-        
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
