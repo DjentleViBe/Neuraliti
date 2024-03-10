@@ -299,16 +299,14 @@ void Displayloop(){
         MyObj_font[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1);
     }
 
-    NeuralLines *MyObj_lines = new NeuralLines[5];
-    MyObj_lines[0] = createline1(0, 0, 0.25, 0.25);
-
+    NeuralLines* MyObj_lines = setupconnections(MyObj_rect, CurrentDir + "/Untitled-1.pd");
     // inlet outlet mapping
     MyObj_rect[1].Inlets[0] = new int[4];
     MyObj_rect[0].Outlets[0] = new int[4];
     MyObj_rect[1].Inlets[0] = MyObj_rect[0].Outlets[0];
     MyObj_rect[0].Outlets[0][0] = 10;
     MyObj_rect[0].Outlets[0][1] = 20;
-    std::cout << MyObj_rect[1].Inlets[0][1] * 20 << "\n";
+    //std::cout << MyObj_rect[1].Inlets[0][1] * 20 << "\n";
 
     while (!glfwWindowShouldClose(window))
     {
@@ -341,10 +339,12 @@ void Displayloop(){
         
         
         lineShader.use();
-        MyObj_lines[0].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
-        glUniformMatrix4fv(MyObj_lines[0].Matrix, 1, GL_FALSE, &mvp[0][0]);
-        glBindVertexArray(MyObj_lines[0].VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        for (int i = 0; i < connectnumber; i++){
+            MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glBindVertexArray(MyObj_lines[i].VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
         
         fontShader.use();
         for (int i = 0; i < objnumber; ++i) {
