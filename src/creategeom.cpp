@@ -230,19 +230,22 @@ NeuralObj createobj(NeuralObj &MyObj){
     return MyObj;
 }
 
-float* drawline(float wid, float* color){
+float* drawline(float wid, float x1, float y1, float x2, float y2, float* color){
+    float slope = 1.5708 - atan((y2 - y1) / (x2 - x1));
+    float y = sin(slope) * wid;
+    float x = cos(slope) * wid;
     float* quadLines = new float[24]{
     // positions     // colors
-    0.1f,  0.1f, color[0],color[1],color[2],
-    0.1f, -0.1f, color[0],color[1],color[2],
-    -0.1f, -0.1f, color[0],color[1],color[2],
-    -0.1f,  0.1f,  color[0],color[1],color[2]		
+    x1, y1, color[0], color[1], color[2], // top right
+    x2, y2, color[0], color[1], color[2],// bottom right
+    x2 + x, y2 - y, color[0], color[1], color[2],// bottom left
+    x1 + x, y1 - y, color[0], color[1], color[2]	// top left	
     }; 
     return quadLines;
 }
 
 NeuralLines createlines(NeuralLines &MyObj){
-    float *lineVertices = drawline(0.2, primary_color_2);
+    float *lineVertices = drawline(0.01, 0.0, 0.0, 0.0, 0.1, primary_color_2);
 
     unsigned int indices[] = {
             0, 1, 3, // first triangle
