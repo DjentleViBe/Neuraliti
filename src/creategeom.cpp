@@ -245,7 +245,7 @@ float* drawline(float wid, float x1, float y1, float x2, float y2, float* color)
 }
 
 NeuralLines createlines(NeuralLines &MyObj){
-    float *lineVertices = drawline(0.01, 0.0, 0.0, 0.0, 0.1, primary_color_2);
+    float *lineVertices = drawline(0.003, MyObj.startx, MyObj.starty, MyObj.endx, MyObj.endy, primary_color_2);
 
     unsigned int indices[] = {
             0, 1, 3, // first triangle

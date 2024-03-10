@@ -300,7 +300,7 @@ void Displayloop(){
     }
 
     NeuralLines *MyObj_lines = new NeuralLines[5];
-    MyObj_lines[0] = createline1(0, 0, 1, 1);
+    MyObj_lines[0] = createline1(0, 0, 0.25, 0.25);
 
     // inlet outlet mapping
     MyObj_rect[1].Inlets[0] = new int[4];
