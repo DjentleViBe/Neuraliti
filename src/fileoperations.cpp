@@ -9,6 +9,7 @@
 #include <string>
 
 int objnumber = 0;
+int connectnumber = 0;
 std::vector<float> Xposition;
 std::vector<float> Yposition;
 std::vector<std::string> objectnames;
@@ -55,6 +56,7 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
         // check if obj
     // check if connect
         if(lines[l].find("connect")!= std::string::npos){
+            connectnumber++;
             int connectpos = 0;
             std::stringstream cs(lines[l]);
             std::string tokenconnect;
