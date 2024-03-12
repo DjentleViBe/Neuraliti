@@ -38,7 +38,7 @@ std::map<std::string, std::string> appsettings;
 std::vector<std::string> fontlist, configlist, fontsizelist;
 const char* homeDir;
 picojson::value v;
-glm::mat4 mvp;
+glm::mat4* mvp;
 std::string CurrentDir;
 int globalfontsize = 0;
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
@@ -229,7 +229,9 @@ GLuint calculate_view(float wid, float hei, glm::vec3 point, double transX, doub
     // Step 3: Translate the point back to its original position
     glm::mat4 translateBack = glm::translate(glm::mat4(1.0f), point);
     // Our ModelViewProjection: multiplication of our 3 matrices
-    mvp =  projection * View * translateBack * scaleMatrix * translateToOrigin;
+    for(int m = 0; m < objnumber; m++){
+        mvp[m] =  projection * View * translateBack * scaleMatrix * translateToOrigin;
+    }
     //GLuint MatrixID = glGetUniformLocation(mainShader.ID, "ProjMat");
     return 0;
 }
@@ -250,8 +252,12 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
     double deltaX = xpos - tempmouseX;
     double deltaY = ypos - tempmouseY;
     if (state == GLFW_PRESS){
+        // if pressed at an empty space
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), deltaX * 0.1, deltaY * 0.1);
+        // if an object is pressed
+        // addlogs(std::to_string(xpos) + "\n");
         }
+    
     tempmouseX = xpos;
     tempmouseY = ypos;
 }
@@ -281,15 +287,14 @@ void Displayloop(){
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
     
-    calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
-    
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
-    //glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
 
     //nodeShader.use();
     // loop through objects here
     NeuralObj *MyObj_rect = new NeuralObj[objnumber];
+    mvp = new glm::mat4[objnumber];
     for (int i = 0; i < objnumber; ++i) {
         MyObj_rect[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0);
         MyObj_rect[i].Inlets = new int*[MyObj_rect[i].Inletnum];
@@ -307,8 +312,11 @@ void Displayloop(){
     MyObj_rect[1].Inlets[0] = MyObj_rect[0].Outlets[0];
     MyObj_rect[0].Outlets[0][0] = 10;
     MyObj_rect[0].Outlets[0][1] = 20;
+    calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
     //std::cout << MyObj_rect[1].Inlets[0][1] * 20 << "\n";
-
+    // dummy translation
+    // mvp_loc[0] = glm::translate(glm::mat4(1.0f), glm::vec3(0.45, 0.1f, 0.0f));
+    
     while (!glfwWindowShouldClose(window))
     {
         glfwGetWindowSize(window, &window_width, &window_height);
@@ -330,7 +338,7 @@ void Displayloop(){
         for (int i = 0; i < objnumber; ++i) {
             objShader.use();
             MyObj_rect[i].Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, MyObj_rect[i].texture);
             glBindVertexArray(MyObj_rect[i].VAO);
