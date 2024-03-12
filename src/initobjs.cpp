@@ -48,7 +48,11 @@ NeuralLines* setupconnections(NeuralObj* MyObj_rect, std::string path){
                 wordpos++;
             }
             // determine x y from objnumber
-            MyObj_line[linenumber] = createline1(MyObj_rect[fromobj].x, MyObj_rect[fromobj].y, MyObj_rect[toobj].x, MyObj_rect[toobj].y);
+
+            MyObj_line[linenumber] = createline1(MyObj_rect[fromobj].x, 
+                                                MyObj_rect[fromobj].y - globalfontsize * 3 / (float)window_height,
+                                                MyObj_rect[toobj].x, 
+                                                MyObj_rect[toobj].y);
             linenumber++;
         }
     }
