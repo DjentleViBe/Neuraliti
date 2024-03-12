@@ -317,6 +317,14 @@ void Displayloop(){
         
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
         
+        lineShader.use();
+        for (int i = 0; i < connectnumber; i++){
+            MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glBindVertexArray(MyObj_lines[i].VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+        
         for (int i = 0; i < objnumber; ++i) {
             objShader.use();
             MyObj_rect[i].Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
@@ -335,15 +343,6 @@ void Displayloop(){
             glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
             glBindVertexArray(MyObj_rect[i].outquadVAO);
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Outletnum); 
-        }
-        
-        
-        lineShader.use();
-        for (int i = 0; i < connectnumber; i++){
-            MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
-            glBindVertexArray(MyObj_lines[i].VAO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
         
         fontShader.use();
