@@ -39,10 +39,11 @@ std::vector<std::string> fontlist, configlist, fontsizelist;
 const char* homeDir;
 picojson::value v;
 glm::mat4* mvp;
+NeuralObj *MyObj_rect;
 std::string CurrentDir;
 int globalfontsize = 0;
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
-double zoomlevel = 3.0;
+float zoomlevel = 1.0f;
 bool show_demo_window = true;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -210,13 +211,14 @@ int INITgraphics(){
 
 GLuint calculate_view(float wid, float hei, glm::vec3 point, double transX, double transY){
     
-    glm::mat4 projection = glm::perspective(glm::radians(35.0f), 1.0f, 0.1f, 100.0f);
-    //glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.5f, 1.5f);
+    //glm::mat4 projection = glm::perspective(glm::radians(35.0f), 1.0f, 0.1f, 100.0f);
+    float aspect = (float)window_width/(float)window_height;
+    glm::mat4 projection = glm::ortho(-aspect/zoomlevel, aspect/zoomlevel, -1.0f/zoomlevel, 1.0f/zoomlevel, 0.1f, 100.0f);
     // Camera matrix
     Xpos -= transX * 0.01;
     Ypos += transY * 0.01;
     glm::mat4 View = glm::lookAt(
-        glm::vec3(0, 0, zoomlevel), // Camera is at (0,0,0), in World Space
+        glm::vec3(Xpos, Ypos, zoomlevel), // Camera is at (0,0,0), in World Space
         glm::vec3(Xpos, Ypos, 0), // and looks at the origin
         glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
         );
@@ -231,7 +233,10 @@ GLuint calculate_view(float wid, float hei, glm::vec3 point, double transX, doub
     // Our ModelViewProjection: multiplication of our 3 matrices
     for(int m = 0; m < objnumber; m++){
         mvp[m] =  projection * View * translateBack * scaleMatrix * translateToOrigin;
+        MyObj_rect[m].result = mvp[m] * glm::vec4(MyObj_rect[m].x, MyObj_rect[m].y, 0.0, 1.0);
     }
+    //std::cout << MyObj_rect[0].result.x << "\n";
+    //std::cout << Xpos << "\n";
     //GLuint MatrixID = glGetUniformLocation(mainShader.ID, "ProjMat");
     return 0;
 }
@@ -255,7 +260,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
         // if pressed at an empty space
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), deltaX * 0.1, deltaY * 0.1);
         // if an object is pressed
-        // addlogs(std::to_string(xpos) + "\n");
+        addlogs(std::to_string((xpos * 2 / window_width) - 1) + "\n");
         }
     
     tempmouseX = xpos;
@@ -271,6 +276,9 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
         std::cout << "pressed" << "\n";
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        addlogs(std::to_string((xpos * 2 / window_width) - 1) + "\n");
     }
 }
 
@@ -293,7 +301,7 @@ void Displayloop(){
 
     //nodeShader.use();
     // loop through objects here
-    NeuralObj *MyObj_rect = new NeuralObj[objnumber];
+    MyObj_rect = new NeuralObj[objnumber];
     mvp = new glm::mat4[objnumber];
     for (int i = 0; i < objnumber; ++i) {
         MyObj_rect[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0);
