@@ -277,7 +277,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 }
 
 void Displayloop(){
-    //int display_w, display_h;
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
     
