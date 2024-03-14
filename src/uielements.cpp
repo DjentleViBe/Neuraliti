@@ -314,7 +314,6 @@ void Displayloop(){
     MyObj_rect[0].Outlets[0][0] = 10;
     MyObj_rect[0].Outlets[0][1] = 20;
     calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
-    //std::cout << MyObj_rect[1].Inlets[0][1] * 20 << "\n";
     
     while (!glfwWindowShouldClose(window))
     {
