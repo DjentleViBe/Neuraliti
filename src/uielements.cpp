@@ -315,8 +315,6 @@ void Displayloop(){
     MyObj_rect[0].Outlets[0][1] = 20;
     calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
     //std::cout << MyObj_rect[1].Inlets[0][1] * 20 << "\n";
-    // dummy translation
-    // mvp_loc[0] = glm::translate(glm::mat4(1.0f), glm::vec3(0.45, 0.1f, 0.0f));
     
     while (!glfwWindowShouldClose(window))
     {
