@@ -247,7 +247,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos){
-    //Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
     double deltaX = xpos - tempmouseX;
     double deltaY = ypos - tempmouseY;
