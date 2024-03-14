@@ -233,7 +233,6 @@ GLuint calculate_view(float wid, float hei, glm::vec3 point, double transX, doub
     }
     //std::cout << MyObj_rect[0].result.x << "\n";
     //std::cout << Xpos << "\n";
-    //GLuint MatrixID = glGetUniformLocation(mainShader.ID, "ProjMat");
     return 0;
 }
 
