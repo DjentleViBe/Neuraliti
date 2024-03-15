@@ -43,7 +43,7 @@ NeuralObj *MyObj_rect;
 std::string CurrentDir;
 int globalfontsize = 0;
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
-float zoomlevel = 1.0f;
+float zoomlevel = 1.15f;
 bool show_demo_window = true;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
