@@ -195,7 +195,6 @@ int INITgraphics(){
     ImGui_ImplOpenGL3_Init(glsl_version);
     
     loadfont(io);
-    //readkeybindings();
     
     //glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
