@@ -81,10 +81,8 @@ int loadconfig(const std::string& path){
         return 1;
     }
     // Access JSON values
-    //std::string name = v.get("Media").get("Preferences").to_str();
     addlogs("Initialisation started\n");
     appsettings["defaultfolder"] = std::string(homeDir) + v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("defaultfolder").to_str();
-    //double age = v.get("id").get<double>();
     addlogs("Default folder : " + appsettings["defaultfolder"] + "\n");
     appsettings["defaultfont"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("font").to_str();
     addlogs("Default font : " + appsettings["defaultfont"] + "\n");
