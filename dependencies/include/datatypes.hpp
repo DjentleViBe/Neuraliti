@@ -6,6 +6,9 @@
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
 #include <vector>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 class NeuralObj {       // The class
   public:               // Access specifier
@@ -24,6 +27,8 @@ class NeuralObj {       // The class
     int Outletnum;
     int **Inlets;        // store inlet types
     int **Outlets;       // store outlet types
+    float x_project;
+    glm::vec4 result;
 };
 
 class NeuralLines {
