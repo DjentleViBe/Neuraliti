@@ -306,7 +306,7 @@ void Displayloop(){
         MyObj_font[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1);
     }
 
-    // NeuralLines* MyObj_lines = setupconnections(MyObj_rect, CurrentDir + "/Untitled-1.pd");
+    NeuralLines* MyObj_lines = setupconnections(MyObj_rect, CurrentDir + "/Untitled-1.pd");
     // inlet outlet mapping
     MyObj_rect[1].Inlets[0] = new int[4];
     MyObj_rect[0].Outlets[0] = new int[4];
@@ -323,15 +323,15 @@ void Displayloop(){
         glClear(GL_COLOR_BUFFER_BIT);
         
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
-        /*
+        
         lineShader.use();
         for (int i = 0; i < connectnumber; i++){
             MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glUniformMatrix4fv(MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glBindVertexArray(MyObj_lines[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
-        */
+        
         
         for (int i = 0; i < objnumber; ++i) {
             objShader.use();
@@ -342,29 +342,28 @@ void Displayloop(){
             glBindVertexArray(MyObj_rect[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-            /*
+            
             nodeShader.use();
             MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glBindVertexArray(MyObj_rect[i].inquadVAO);
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Inletnum); 
 
-            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glBindVertexArray(MyObj_rect[i].outquadVAO);
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Outletnum); 
-            */
+            
         }
-        /*
+        
         fontShader.use();
         for (int i = 0; i < objnumber; ++i) {
             MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_font[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glUniformMatrix4fv(MyObj_font[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, MyObj_font[i].texture);
             glBindVertexArray(MyObj_font[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
-        */
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
