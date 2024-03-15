@@ -174,11 +174,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 break;
             case 93:
                 //std::cout << "+" << std::endl;
-                zoomlevel -= 0.25;
+                zoomlevel += 0.25;
                 break;
             case 47:
                 //std::cout << "-" << std::endl;
-                zoomlevel += 0.25;
+                zoomlevel -= 0.25;
                 break;
             case GLFW_KEY_K:
                 std::cout << "K" << std::endl;
