@@ -51,8 +51,7 @@ NeuralObj createobj1(int ind, float x, float y, std::string objname, int neuralo
     else{
         MyObj3 = createfont(MyObj3, x, y, 0, primary_color_3, objname);
     }
-    // create inlets and outlets
-
+    
     return MyObj3;
 }
 
