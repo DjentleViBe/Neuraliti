@@ -432,6 +432,7 @@ void Displayloop(){
     ImGui::DestroyContext();
     delete[] MyObj_font;
     delete[] MyObj_rect;
+    delete[] MyObj_lines;
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     /*glDeleteVertexArrays(1, &MyObj1.VAO);
