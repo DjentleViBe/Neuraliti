@@ -101,7 +101,6 @@ NeuralObj createinlets(NeuralObj &MyObj){
             translations[index++] = translation;
             offset += fmax(sentence_width, globalfontsize * 3.0) / window_width - 0.02f;
         }
-    //std::cout << translations;
     // store instance data in an array buffer
     // --------------------------------------
     glGenBuffers(1, &MyObj.instanceVBO);
@@ -145,7 +144,7 @@ NeuralObj createoutlets(NeuralObj &MyObj){
             translations[index++] = translation;
             offset += fmax(sentence_width, globalfontsize * 3.0) / window_width - 0.02f;
         }
-    //std::cout << translations;
+        
     // store instance data in an array buffer
     // --------------------------------------
     glGenBuffers(1, &MyObj.outstanceVBO);
