@@ -96,7 +96,6 @@ NeuralObj createinlets(NeuralObj &MyObj){
         {
             glm::vec2 translation;
             translation.x = MyObj.x + offset;
-            //translation.y = (float)y / 10.0f + offset;
             translation.y = MyObj.y;
             translations[index++] = translation;
             offset += fmax(sentence_width, globalfontsize * 3.0) / window_width - 0.02f;
