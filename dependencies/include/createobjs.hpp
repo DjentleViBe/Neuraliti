@@ -7,7 +7,6 @@
 #include "datatypes.hpp"
 #include "creategeom.h"
 
-//NeuralObj createrect(NeuralObj MyObj, float x, float y, float objtype, float color[], std::string objname);
 NeuralObj createobj1(int ind, float x, float y, std::string objname, int neuralobjtype);
 NeuralLines createline1(float startx, float starty, float endx, float endy);
 #endif /* createobjs_hpp */
