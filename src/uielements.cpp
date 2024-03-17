@@ -252,9 +252,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
     double deltaY = ypos - tempmouseY;
     if (state == GLFW_PRESS){
         // if pressed at an empty space
-        calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), deltaX * 0.1, deltaY * 0.1);
+        calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), deltaX * 0.1, deltaY * 0.1);
         // if an object is pressed
-        addlogs(std::to_string((xpos * 2 / window_width) - 1) + "\n");
+        // loop through all objects
+        //addlogs(std::to_string((xpos * 2 / window_width) - 1) + "\n");
         }
     
     tempmouseX = xpos;
@@ -269,10 +270,21 @@ void processInput(GLFWwindow *window) {
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods){
     ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-        std::cout << "pressed" << "\n";
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
-        addlogs(std::to_string((xpos * 2 / window_width) - 1) + "\n");
+        float boundingx = (xpos * 2 / window_width) - 1;
+        float boundingy = -(ypos * 2 / window_height) + 1;
+
+        for(int o = 0; o < objnumber; o++){
+            if(MyObj_rect[o].result.x < boundingx && MyObj_rect[o].result.x + MyObj_rect[o].sentencewidth > boundingx){
+                if(MyObj_rect[o].result.y > boundingy && MyObj_rect[o].result.y - MyObj_rect[o].sentenceheight < boundingy){
+                    //std::cout << MyObj_rect[o].result.x << "\n";
+                    //std::cout << boundingx << "\n";
+                    addlogs("Pressed :" + MyObj_rect[o].objname + "\n");
+                }
+            }
+        }
+        //addlogs(std::to_string((xpos * 2 / window_width) - 1) + "\n");
     }
 }
 
@@ -313,7 +325,7 @@ void Displayloop(){
     MyObj_rect[1].Inlets[0] = MyObj_rect[0].Outlets[0];
     MyObj_rect[0].Outlets[0][0] = 10;
     MyObj_rect[0].Outlets[0][1] = 20;
-    calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
+    calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), Xpos, Ypos);
     
     while (!glfwWindowShouldClose(window))
     {
@@ -322,7 +334,7 @@ void Displayloop(){
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
+        calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), 0.0, 0.0);
         
         lineShader.use();
         for (int i = 0; i < connectnumber; i++){
