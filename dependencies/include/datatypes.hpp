@@ -30,6 +30,7 @@ class NeuralObj {       // The class
     glm::vec4 result;
     float sentencewidth;
     float sentenceheight;
+    int select;
 };
 
 class NeuralLines {
