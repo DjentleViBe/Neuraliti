@@ -278,13 +278,10 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         for(int o = 0; o < objnumber; o++){
             if(MyObj_rect[o].result.x < boundingx && MyObj_rect[o].result.x + MyObj_rect[o].sentencewidth > boundingx){
                 if(MyObj_rect[o].result.y > boundingy && MyObj_rect[o].result.y - MyObj_rect[o].sentenceheight < boundingy){
-                    //std::cout << MyObj_rect[o].result.x << "\n";
-                    //std::cout << boundingx << "\n";
                     addlogs("Pressed :" + MyObj_rect[o].objname + "\n");
                 }
             }
         }
-        //addlogs(std::to_string((xpos * 2 / window_width) - 1) + "\n");
     }
 }
 
