@@ -251,11 +251,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
     double deltaX = xpos - tempmouseX;
     double deltaY = ypos - tempmouseY;
     if (state == GLFW_PRESS){
-        // if pressed at an empty space
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), deltaX * 0.1, deltaY * 0.1);
-        // if an object is pressed
-        // loop through all objects
-        //addlogs(std::to_string((xpos * 2 / window_width) - 1) + "\n");
         }
     
     tempmouseX = xpos;
