@@ -57,6 +57,7 @@ float primary_color_4[]     = {0.9411, 0.4705, 0.2235}; // orange
 float primary_color_5[]     = {0.2313, 0.6862, 0.6862}; // green
 float primary_color_6[]     = {0.9529, 0.6666, 0.2549}; // yellow
 float primary_color_7[]     = {0.2784, 0.4705, 0.4901}; // dark green
+float primary_color_8[]     = {0.1647, 0.2862, 0.4784}; // IMGUI blue
 std::vector<int> globalinlets;
 std::vector<int> globaloutlets;
 
@@ -275,6 +276,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
             if(MyObj_rect[o].result.x < boundingx && MyObj_rect[o].result.x + MyObj_rect[o].sentencewidth > boundingx){
                 if(MyObj_rect[o].result.y > boundingy && MyObj_rect[o].result.y - MyObj_rect[o].sentenceheight < boundingy){
                     addlogs("Pressed :" + MyObj_rect[o].objname + "\n");
+                    MyObj_rect[o].select = 1;
                 }
             }
         }
@@ -319,6 +321,7 @@ void Displayloop(){
     MyObj_rect[0].Outlets[0][0] = 10;
     MyObj_rect[0].Outlets[0][1] = 20;
     calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), Xpos, Ypos);
+    unsigned int objectColorLoc = glGetUniformLocation(objShader.ID, "aColor");
     
     while (!glfwWindowShouldClose(window))
     {
@@ -345,6 +348,12 @@ void Displayloop(){
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, MyObj_rect[i].texture);
             glBindVertexArray(MyObj_rect[i].VAO);
+            if(MyObj_rect[i].select == 1){
+                glUniform3fv(objectColorLoc, 1, primary_color_8);
+            }
+            else{
+                glUniform3fv(objectColorLoc, 1, primary_color_2);
+            }
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
             
