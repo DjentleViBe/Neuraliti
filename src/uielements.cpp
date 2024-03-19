@@ -282,6 +282,18 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                 }
             }
         }
+        float xscale, yscale;
+        GLFWmonitor* primary = glfwGetPrimaryMonitor();
+        glfwGetMonitorContentScale(primary, &xscale, &yscale);
+        unsigned char pick_col[0];
+        glReadPixels(xpos*xscale, (window_height - ypos)*yscale, 1, 1, GL_RED, GL_UNSIGNED_BYTE, pick_col);
+        if(abs(static_cast<int>(pick_col[0]) / 255.0 - primary_color_1[0]) < 0.001){
+            std::cout << "reset\n";
+            for(int o = 0; o < objnumber; o++){
+                MyObj_rect[o].select = 0;
+            }
+        }
+        //std::cout << static_cast<int>(pick_col[0]) / 255.0 << "\n";
         /*
         int width, height;
         glfwGetWindowSize(window, &width, &height);
@@ -290,6 +302,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         int index = (iypos) * window_width + ixpos;
         std::cout << xpos << "\n";
         std::cout << static_cast<int>(pixels[index]) / 255.0 << "\n";*/
+        
     }
 }
 
@@ -447,7 +460,6 @@ void Displayloop(){
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        glReadPixels(0, 0, window_width, window_height, GL_RED, GL_UNSIGNED_BYTE, pixels.data());
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
