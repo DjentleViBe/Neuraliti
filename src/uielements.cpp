@@ -41,6 +41,7 @@ picojson::value v;
 glm::mat4* mvp;
 NeuralObj *MyObj_rect;
 std::string CurrentDir;
+std::vector<unsigned char> pixels(window_width * window_height); // Assuming RGB color format
 int globalfontsize = 0;
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
 float zoomlevel = 1.15f;
@@ -51,7 +52,7 @@ bool show_demo_window = true;
 int window_width 			= 1280;
 int window_height 			= 960;
 float primary_color_1[]     = {0.8196, 0.8352, 0.8313}; // grey
-float primary_color_2[]     = {0.12941, 0.1568, 0.1960}; // blue
+float primary_color_2[]     = {0.1294, 0.1568, 0.1960}; // blue
 float primary_color_3[]     = {0.9490, 0.9490, 0.9372}; // white
 float primary_color_4[]     = {0.9411, 0.4705, 0.2235}; // orange
 float primary_color_5[]     = {0.2313, 0.6862, 0.6862}; // green
@@ -248,6 +249,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos){
+    ImGui_ImplGlfw_CursorPosCallback(window, xpos, ypos);
     int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
     double deltaX = xpos - tempmouseX;
     double deltaY = ypos - tempmouseY;
@@ -280,6 +282,14 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                 }
             }
         }
+        /*
+        int width, height;
+        glfwGetWindowSize(window, &width, &height);
+        int ixpos = (int)xpos;
+        int iypos = height - 1 - (int)ypos;
+        int index = (iypos) * window_width + ixpos;
+        std::cout << xpos << "\n";
+        std::cout << static_cast<int>(pixels[index]) / 255.0 << "\n";*/
     }
 }
 
@@ -294,10 +304,6 @@ void Displayloop(){
     
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-    
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetMouseButtonCallback(window, mouse_button_callback);
 
     //nodeShader.use();
     // loop through objects here
@@ -322,6 +328,12 @@ void Displayloop(){
     MyObj_rect[0].Outlets[0][1] = 20;
     calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), Xpos, Ypos);
     unsigned int objectColorLoc = glGetUniformLocation(objShader.ID, "aColor");
+
+
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    
     
     while (!glfwWindowShouldClose(window))
     {
@@ -340,7 +352,6 @@ void Displayloop(){
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
         
-        
         for (int i = 0; i < objnumber; ++i) {
             objShader.use();
             MyObj_rect[i].Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
@@ -356,7 +367,6 @@ void Displayloop(){
             }
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-            
             nodeShader.use();
             MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
             glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
@@ -436,7 +446,8 @@ void Displayloop(){
         ImGui::Render();
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        
+
+        glReadPixels(0, 0, window_width, window_height, GL_RED, GL_UNSIGNED_BYTE, pixels.data());
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
