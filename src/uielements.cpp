@@ -233,8 +233,6 @@ GLuint calculate_view(float wid, float hei, glm::vec3 point, double transX, doub
         mvp[m] =  projection * View * translateBack * scaleMatrix * translateToOrigin;
         MyObj_rect[m].result = mvp[m] * glm::vec4(MyObj_rect[m].x, MyObj_rect[m].y, 0.0, 1.0);
     }
-    //std::cout << MyObj_rect[0].result.x << "\n";
-    //std::cout << Xpos << "\n";
     return 0;
 }
 
@@ -293,16 +291,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                 MyObj_rect[o].select = 0;
             }
         }
-        //std::cout << static_cast<int>(pick_col[0]) / 255.0 << "\n";
-        /*
-        int width, height;
-        glfwGetWindowSize(window, &width, &height);
-        int ixpos = (int)xpos;
-        int iypos = height - 1 - (int)ypos;
-        int index = (iypos) * window_width + ixpos;
-        std::cout << xpos << "\n";
-        std::cout << static_cast<int>(pixels[index]) / 255.0 << "\n";*/
-        
     }
 }
 
