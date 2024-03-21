@@ -31,6 +31,10 @@ class NeuralObj {       // The class
     float sentencewidth;
     float sentenceheight;
     int select;
+    float offsetx;
+    float offsety;
+    float transX;
+    float transY;
 };
 
 class NeuralLines {
