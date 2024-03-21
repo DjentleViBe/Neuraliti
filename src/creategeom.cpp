@@ -98,7 +98,7 @@ NeuralObj createinlets(NeuralObj &MyObj){
             translation.x = MyObj.x + offset;
             translation.y = MyObj.y;
             translations[index++] = translation;
-            offset += fmax(sentence_width, globalfontsize * 3.0) / window_width - 0.02f;
+            offset += -0.02f/(MyObj.Inletnum - 1) + (fmax(sentence_width, globalfontsize * 3.0) / (window_width * (MyObj.Inletnum - 1)));
         }
     // store instance data in an array buffer
     // --------------------------------------
