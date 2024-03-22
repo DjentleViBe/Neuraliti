@@ -205,8 +205,8 @@ int INITgraphics(){
     addlogs("Initialisation ended\n");
     addlogs("Opening file\n");
     initobjs(CurrentDir + "/Untitled-1.pd");
-    printvector(globalinlets, "Inlets");
-    printvector(globaloutlets, "Outlets");
+    //printvector(globalinlets, "Inlets");
+    //printvector(globaloutlets, "Outlets");
     return 0;
 }
 
@@ -258,7 +258,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
     
     float boundingx = (xpos * 2 / window_width) - 1;
     float boundingy = -(ypos * 2 / window_height) + 1;
-    
+
     if (state == GLFW_PRESS){
         if(selected){
             transmouseX = mouseloc.x;
