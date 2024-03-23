@@ -18,7 +18,6 @@ std::vector<int> objinlets;
 std::vector<int> objoutlets;
 
 std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
-    std::cout << "reading file\n" << std::endl;
     std::vector<std::string> lines;
     char delimiter = ' ';
     lines = readfile(path.c_str());
@@ -96,7 +95,7 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
                 connectpos++;
                 }
             // connectionmatrix[obj1][obj2] += 1;
-            std::cout << "\n";
+            //std::cout << "\n";
         }
     }
     // printMatrix(connectionmatrix, "Connection matrix");
