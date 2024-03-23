@@ -17,7 +17,7 @@ int initobjs(std::string path){
 }
 
 NeuralLines* setupconnections(NeuralObj* MyObj_rect, std::string path){
-    std::cout << connectnumber << "\n";
+    // std::cout << connectnumber << "\n";
     NeuralLines *MyObj_line = new NeuralLines[connectnumber];
     char delimiter = ' ';
     std::vector<std::string> lines;
