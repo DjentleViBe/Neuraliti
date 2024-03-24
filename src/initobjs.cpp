@@ -24,6 +24,7 @@ NeuralLines* setupconnections(NeuralObj* MyObj_rect, std::string path){
     lines = readfile(path.c_str());
     std::string token;
     int linenumber = 0;
+    float foffsetx, toffsetx;
     for (int l = 0; l < lines.size(); l++){
         std::stringstream ss(lines[l]);
         int fromobj, fromoutlet, toobj, toinlet;
@@ -48,10 +49,12 @@ NeuralLines* setupconnections(NeuralObj* MyObj_rect, std::string path){
                 wordpos++;
             }
             // determine x y from objnumber
+            toffsetx = (MyObj_rect[toobj].sentencewidth / (fmax(MyObj_rect[toobj].Inletnum - 1, 1))) * toinlet;
+            foffsetx = (MyObj_rect[fromobj].sentencewidth / (fmax(MyObj_rect[toobj].Outletnum - 1, 1))) * fromoutlet;
 
-            MyObj_line[linenumber] = createline1(MyObj_rect[fromobj].x, 
+            MyObj_line[linenumber] = createline1(MyObj_rect[fromobj].x + foffsetx, 
                                                 MyObj_rect[fromobj].y - globalfontsize * 3 / (float)window_height,
-                                                MyObj_rect[toobj].x, 
+                                                MyObj_rect[toobj].x + toffsetx, 
                                                 MyObj_rect[toobj].y);
             linenumber++;
         }
