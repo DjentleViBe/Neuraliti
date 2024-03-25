@@ -68,8 +68,8 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
             std::stringstream cs(lines[l]);
             std::string tokenconnect;
             std::string tokenconnecttemp = "";
-            int obj1 = 0;
-            int obj2 = 0;
+            // int obj1 = 0;
+            // int obj2 = 0;
             while (std::getline(cs, tokenconnect, delimiter)) {
                 if(connectpos == 2){
                     // object
