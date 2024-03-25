@@ -88,7 +88,7 @@ int loadconfig(const std::string& path){
     // Access JSON values
     addlogs("Initialisation started\n");
     appsettings["defaultfolder"] = std::string(homeDir) + v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("defaultfolder").to_str();
-    addlogs("Default folder : " + appsettings["defaultfolder"] + "\n");
+    //addlogs("Default folder : " + appsettings["defaultfolder"] + "\n");
     appsettings["defaultfont"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("font").to_str();
     addlogs("Default font : " + appsettings["defaultfont"] + "\n");
     appsettings["fontsize"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("fontsize").to_str();
@@ -163,7 +163,7 @@ int INITgraphics(){
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     #endif
 
-    window = glfwCreateWindow(window_width, window_height, "GENT",  NULL, NULL);
+    window = glfwCreateWindow(window_width, window_height, "NEURALITI",  NULL, NULL);
     //glfwSetWindowAspectRatio(window,1189,1000);
     if (window == NULL)
         return 1;
