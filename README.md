@@ -8,7 +8,7 @@ Neuraliti is a Git repository dedicated to the development of audio synthesis to
 
 ## Usage
 Clone the repository or download as .zip file.
-The executable is located in /bin folder.
+Launch /bin/GENT
 
 ## Collaborating
 Please feel free to send an Email if you would like to make contributions to this project.
