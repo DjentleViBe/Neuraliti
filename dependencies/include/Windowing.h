@@ -6,5 +6,4 @@
 #include "imfilebrowser.h"
 
 void editprefwindow(ImGui::FileBrowser fileDialog);
-
 #endif /* Windowing_h */

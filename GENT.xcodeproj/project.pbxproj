@@ -9,14 +9,11 @@
 /* Begin PBXBuildFile section */
 		CE0183A52BD130B200F50BFB /* Extras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0183A32BD130B200F50BFB /* Extras.cpp */; };
 		CE0183A82BD1CBB700F50BFB /* Windowing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0183A62BD1CBB700F50BFB /* Windowing.cpp */; };
-		CE0183AB2BD2923C00F50BFB /* FreeMonoBold.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE0183A92BD2923C00F50BFB /* FreeMonoBold.ttf */; };
-		CE0183AC2BD2923C00F50BFB /* FreeMono.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE0183AA2BD2923C00F50BFB /* FreeMono.ttf */; };
 		CE1917A52BCC0C1400DC8A51 /* MainMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */; };
 		CE1917A82BCC1D0000DC8A51 /* KeyBindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */; };
 		CE2428552B41101700FFD99A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6DBE2B40FA1D00F70C8C /* main.cpp */; };
 		CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE2428562B4110B500FFD99A /* uielements.cpp */; };
 		CE2428592B411C2F00FFD99A /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6DCB2B40FADE00F70C8C /* glad.c */; };
-		CE355C852BD2AE2F00E7627E /* prefs.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE355C842BD2AE2F00E7627E /* prefs.json */; };
 		CE401F5A2BCBDE1500648497 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F592BCBDE1400648497 /* imgui_demo.cpp */; };
 		CE401F5C2BCBDE4C00648497 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F5B2BCBDE4C00648497 /* imgui_draw.cpp */; };
 		CE401F5E2BCBDFAF00648497 /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */; };
@@ -24,7 +21,6 @@
 		CE401F642BCBE00300648497 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F612BCBE00200648497 /* imgui.cpp */; };
 		CE401F652BCBE00300648497 /* imgui_impl_opengl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F622BCBE00200648497 /* imgui_impl_opengl3.cpp */; };
 		CE401F672BCBE12900648497 /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F662BCBE12800648497 /* imgui_impl_glfw.cpp */; };
-		CE401F682BCBECEC00648497 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = CE5A6DC52B40FADD00F70C8C /* assets */; };
 		CE4CE4302B41025700692ED2 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE42F2B41025700692ED2 /* IOKit.framework */; };
 		CE4CE4322B41026500692ED2 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4312B41026500692ED2 /* CoreVideo.framework */; };
 		CE4CE4342B41027400692ED2 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4332B41027400692ED2 /* CoreFoundation.framework */; };
@@ -62,9 +58,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				CE355C852BD2AE2F00E7627E /* prefs.json in CopyFiles */,
-				CE0183AB2BD2923C00F50BFB /* FreeMonoBold.ttf in CopyFiles */,
-				CE0183AC2BD2923C00F50BFB /* FreeMono.ttf in CopyFiles */,
 				CEFD8D9B2BCEDFD1009AB22A /* keybinding_macos.txt in CopyFiles */,
 				CE5B9FF52B45B71500EDD025 /* windowshader.vs in CopyFiles */,
 				CE5B9FF62B45B71500EDD025 /* windowshader.fs in CopyFiles */,
@@ -84,7 +77,6 @@
 		CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenu.cpp; sourceTree = "<group>"; };
 		CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyBindings.cpp; sourceTree = "<group>"; };
 		CE2428562B4110B500FFD99A /* uielements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = uielements.cpp; sourceTree = "<group>"; };
-		CE355C842BD2AE2F00E7627E /* prefs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = prefs.json; path = assets/prefs.json; sourceTree = "<group>"; };
 		CE401F592BCBDE1400648497 /* imgui_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_demo.cpp; sourceTree = "<group>"; };
 		CE401F5B2BCBDE4C00648497 /* imgui_draw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_draw.cpp; sourceTree = "<group>"; };
 		CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_widgets.cpp; path = dependencies/backends/imgui_widgets.cpp; sourceTree = "<group>"; };
@@ -173,7 +165,6 @@
 		CE5A6DB22B40FA1D00F70C8C = {
 			isa = PBXGroup;
 			children = (
-				CE355C842BD2AE2F00E7627E /* prefs.json */,
 				CE0183AA2BD2923C00F50BFB /* FreeMono.ttf */,
 				CE0183A92BD2923C00F50BFB /* FreeMonoBold.ttf */,
 				CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */,
@@ -238,6 +229,7 @@
 				CE5A6DB72B40FA1D00F70C8C /* Sources */,
 				CE5A6DB82B40FA1D00F70C8C /* Frameworks */,
 				CE5A6DB92B40FA1D00F70C8C /* CopyFiles */,
+				CE73FA3E2BD41995009BB21F /* ShellScript */,
 				CEAB8CA92B4127AC005BBA63 /* Resources */,
 			);
 			buildRules = (
@@ -287,11 +279,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE401F682BCBECEC00648497 /* assets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CE73FA3E2BD41995009BB21F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/Users/vishakhbegari/Documents/GitHub/GENT-CrossPlatform/runall.sh\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CE5A6DB72B40FA1D00F70C8C /* Sources */ = {
@@ -358,7 +370,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -420,7 +432,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
