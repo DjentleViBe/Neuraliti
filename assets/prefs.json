@@ -1,0 +1,12 @@
+{"Media": {
+    "Preferences": {
+        "EditPreferences": {
+            "defaults":
+            {   "defaultfolder": "/Documents/Neuraliti",
+                "prefsfile": "prefs_1.json",
+                "font": "FreeMono.ttf",
+                "fontsize": "17"}
+            }
+        }
+    }
+}

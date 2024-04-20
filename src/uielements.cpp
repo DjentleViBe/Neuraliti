@@ -1,24 +1,39 @@
-#include "glad/glad.h"
-
 #include <stdio.h>
+#include <iostream>
+#include <ctime>
+#include <map>
+#include <string>
+#include "glad/glad.h"
 #define GL_SILENCE_DEPRECATION
 #include "GLFW/glfw3.h" // Will drag system OpenGL headers
 #include "uielements.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
 #include "shader_s.h"
-#include "CreateWindow.hpp"
-#include <iostream>
+#include "CreateGeom.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "MainMenu.h"
+#include "KeyBindings.h"
+#include "Extras.h"
+#include "imfilebrowser.h"
+#include "Windowing.h"
+#include "picojson.h"
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
+std::map<std::string, std::string> appsettings;
+std::vector<std::string> fontlist, configlist;
+const char* homeDir = std::getenv("HOME");
 
+bool show_demo_window;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
-
-int 					window_width 			= 	1193;
-int 					window_height 			= 	1003;
+ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+int 					window_width 			= 	1393;
+int 					window_height 			= 	1193;
 float vertices[] = {
         // positions          // colors           // texture coords
          1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
@@ -56,7 +71,37 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
+int loadconfig(std::string path){
+    // read default preferences //
+    std::string defaultprefs;
+    defaultprefs = readfileconcat(path.c_str());
+    // Parse the JSON string
+    picojson::value v;
+    std::string err = picojson::parse(v, defaultprefs);
+    
+    // Check for parsing errors
+    if (!err.empty()) {
+        std::cerr << "Error parsing JSON: " << err << std::endl;
+        return 1;
+    }
+    
+    // Access JSON values
+    std::string name = v.get("Media").get("Preferences").to_str();
+    addlogs("Initialisation started\n");
+    appsettings["defaultfolder"] = std::string(homeDir) + v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("defaultfolder").to_str();
+    //double age = v.get("id").get<double>();
+    addlogs("Default folder : " + appsettings["defaultfolder"] + "\n");
+    appsettings["defaultfont"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("font").to_str();
+    addlogs("Default font : " + appsettings["defaultfont"] + "\n");
+    appsettings["fontsize"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("fontsize").to_str();
+    fontlist = listfiles(appsettings["defaultfolder"] + "/fonts", ".ttf");
+    configlist = listfiles(appsettings["defaultfolder"], ".json");
+    return 0;
+}
+
 int INITgraphics(){
+    
+    loadconfig("prefs.json");
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -106,16 +151,112 @@ int INITgraphics(){
 
     //InitRectangle(sizeof(vertices), vertices, sizeof(indices), indices, texture1, VBO, VAO, EBO, "simpleshader.vs", "simpleshader.fs");
     InitRectangle(sizeof(box1vert), box1vert, sizeof(box1ind), box1ind, texture_box, VBO_box, VAO_box, EBO_box, "windowshader.vs", "windowshader.fs");
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsLight();
+    //ImGui::StyleColorsLight();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    #ifdef __EMSCRIPTEN__
+    ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
+    #endif
+    ImGui_ImplOpenGL3_Init(glsl_version);
+    ImFontConfig config;
     
+    static const ImWchar myGlyphRanges[] = {
+        0x21E7, 0x21E7, // shift
+        0x2318, 0x2318, // cmd
+        0
+    };
+    addlogs("Font loading\n");
+    io.Fonts->AddFontFromFileTTF(appsettings["defaultfont"].c_str() , std::stof(appsettings["fontsize"]));
+    static ImFontConfig cfg;
+    cfg.OversampleH = cfg.OversampleV = 2;
+    cfg.MergeMode = true;
+    #if defined __APPLE__
+    io.Fonts->AddFontFromFileTTF(appsettings["defaultfont"].c_str() , 17, &cfg,
+                                 myGlyphRanges);
+    #endif
+    io.Fonts->Build();
+    addlogs("Font loaded\n");
+    readkeybindings();
+    
+    addlogs("Initialisation ended\n");
     return 0;
 }
 
 void Displayloop(char **argv){
+    bool show_demo_window = true;
+    ImGuiIO io = ImGui::GetIO();
+    ImGui::FileBrowser fileDialog;
     Shader ourShader("simpleshader.vs", "simpleshader.fs");
     Shader ourwinShader("windowshader.vs", "windowshader.fs");
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
     // Main loop
     while (!glfwWindowShouldClose(window))
     {   
+        glfwGetWindowSize(window, &window_width, &window_height);
+        glfwSetKeyCallback(window, key_callback);
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        
+        //
+        ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+
+        ImGui::Begin("Window A");
+        ImGui::Text("NEURALITI");
+        // open file dialog when user clicks this button
+        
+                
+        if(fileDialog.HasSelected()){
+            std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+            fileDialog.ClearSelected();
+        }
+        ImGui::End();
+
+        
+        //
+        ImGui::SetNextWindowSize(ImVec2(window_width - (window_width / 4.0), window_height - window_height * 5.0 / 6.0));
+        ImGui::SetNextWindowPos(ImVec2(window_width / 4.0, (window_height * 5.0 / 6.0)));
+
+        ImGui::Begin("Debug");
+        time_t now = time(0);
+        // convert now to string form
+        const char *date_time = ctime(&now);
+        ImGui::Text("%s", date_time);
+        if(editpref){
+            editprefwindow(fileDialog);
+            ImGui::End();
+            //ImGui::ShowDemoWindow(&editpref);
+        }
+        
+        //ImGui::Text("This is the debug window");
+        ImGui::TextUnformatted(logs.c_str());
+        ImGui::SetScrollY(ImGui::GetScrollMaxY());
+        
+        ImGui::End();
+        
+        //
+        ImGui::SetNextWindowSize(ImVec2((window_width / 4.0), window_height - window_height * 5.0 / 6.0));
+        ImGui::SetNextWindowPos(ImVec2(0, (window_height * 5.0 / 6.0)));
+
+        ImGui::Begin("Properties");
+        ImGui::Combo("Verbose", &verbose,
+                    "0\0"
+                    "1\0");
+        ImGui::End();
+        
+        ShowMenu(&show_demo_window);
         // input
         // -----
         processInput(window);
@@ -135,18 +276,28 @@ void Displayloop(char **argv){
         //ourShader.use();
         //glBindVertexArray(VAO);
         //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        
         // second primitive
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture_box);
         ourwinShader.use();
         glBindVertexArray(VAO_box);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+        
+        ImGui::Render();
+        int display_w, display_h;
+        glfwGetFramebufferSize(window, &display_w, &display_h);
+        glViewport(0, 0, display_w, display_h);
+        //glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+        //glClear(GL_COLOR_BUFFER_BIT);
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
+    // Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &VAO);
