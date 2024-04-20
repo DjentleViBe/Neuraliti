@@ -24,8 +24,9 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 std::map<std::string, std::string> appsettings;
-std::vector<std::string> fontlist, configlist;
+std::vector<std::string> fontlist, configlist, fontsizelist;
 const char* homeDir = std::getenv("HOME");
+picojson::value v;
 
 bool show_demo_window;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
@@ -76,7 +77,7 @@ int loadconfig(std::string path){
     std::string defaultprefs;
     defaultprefs = readfileconcat(path.c_str());
     // Parse the JSON string
-    picojson::value v;
+    
     std::string err = picojson::parse(v, defaultprefs);
     
     // Check for parsing errors
@@ -96,12 +97,40 @@ int loadconfig(std::string path){
     appsettings["fontsize"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("fontsize").to_str();
     fontlist = listfiles(appsettings["defaultfolder"] + "/fonts", ".ttf");
     configlist = listfiles(appsettings["defaultfolder"], ".json");
+    fontsizelist = {"12", "13", "14", "15", "16", "17", "18"};
     return 0;
 }
 
+void loadfont(ImGuiIO& io){
+    ImFontConfig config;
+    static const ImWchar myGlyphRanges[] = {
+        0x21E7, 0x21E7, // shift
+        0x2318, 0x2318, // cmd
+        0
+    };
+    addlogs("Font loading\n");
+    io.Fonts->AddFontFromFileTTF(("../assets/fonts/" + appsettings["defaultfont"]).c_str() , std::stof(appsettings["fontsize"]));
+    static ImFontConfig cfg;
+    cfg.OversampleH = cfg.OversampleV = 2;
+    cfg.MergeMode = true;
+    #if defined __APPLE__
+    io.Fonts->AddFontFromFileTTF(("../assets/fonts/" +appsettings["defaultfont"]).c_str() , 17, &cfg,
+                                 myGlyphRanges);
+    #endif
+    io.Fonts->Build();
+    addlogs("Font loaded\n");
+}
+
 int INITgraphics(){
-    
-    loadconfig("prefs.json");
+    std::string currentDir = GetCurrentWorkingDirectory();
+    if (!currentDir.empty()) {
+        std::cout << "Current working directory: " << currentDir << std::endl;
+    }
+    else {
+        std::cerr << "Error: Unable to retrieve current working directory." << std::endl;
+        }
+    // Initial startup
+    loadconfig("../prefs.json");
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -168,24 +197,8 @@ int INITgraphics(){
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
     #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
-    ImFontConfig config;
     
-    static const ImWchar myGlyphRanges[] = {
-        0x21E7, 0x21E7, // shift
-        0x2318, 0x2318, // cmd
-        0
-    };
-    addlogs("Font loading\n");
-    io.Fonts->AddFontFromFileTTF(appsettings["defaultfont"].c_str() , std::stof(appsettings["fontsize"]));
-    static ImFontConfig cfg;
-    cfg.OversampleH = cfg.OversampleV = 2;
-    cfg.MergeMode = true;
-    #if defined __APPLE__
-    io.Fonts->AddFontFromFileTTF(appsettings["defaultfont"].c_str() , 17, &cfg,
-                                 myGlyphRanges);
-    #endif
-    io.Fonts->Build();
-    addlogs("Font loaded\n");
+    loadfont(io);
     readkeybindings();
     
     addlogs("Initialisation ended\n");
