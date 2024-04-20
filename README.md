@@ -7,8 +7,8 @@ Welcome to Neuraliti, an open-source project aimed at providing a platform for a
 Neuraliti is a Git repository dedicated to the development of audio synthesis tools, libraries, and applications. It offers a range of features and functionalities to facilitate the creation and manipulation of digital audio signals, enabling users to generate a wide variety of sounds, from simple tones to complex textures.
 
 ## Usage
-Clone the repository or download as .zip file.
-The executable is located in /bin folder.
+1. Clone the repository or download as .zip file.
+2. Launch /bin/GENT.
 
 ## Collaborating
 Please feel free to send an Email if you would like to make contributions to this project.

@@ -2,12 +2,12 @@
 #include <cstdlib> // for _getcwd (Windows) or getcwd (Unix-like)
 #include <unistd.h>
 #include <fstream>
-#include "Windowing.h"
+#include "windowing.h"
 #include "imgui.h"
 #include "imfilebrowser.h"
 #include "uielements.h"
-#include "MainMenu.h"
-#include "Extras.h"
+#include "menu.h"
+#include "extras.h"
 #include "picojson.h"
 
 void editprefwindow(ImGui::FileBrowser fileDialog){

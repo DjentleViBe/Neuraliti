@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CE0183A52BD130B200F50BFB /* Extras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0183A32BD130B200F50BFB /* Extras.cpp */; };
-		CE0183A82BD1CBB700F50BFB /* Windowing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0183A62BD1CBB700F50BFB /* Windowing.cpp */; };
-		CE1917A52BCC0C1400DC8A51 /* MainMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */; };
-		CE1917A82BCC1D0000DC8A51 /* KeyBindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */; };
+		CE0183A52BD130B200F50BFB /* extras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0183A32BD130B200F50BFB /* extras.cpp */; };
+		CE0183A82BD1CBB700F50BFB /* windowing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0183A62BD1CBB700F50BFB /* windowing.cpp */; };
+		CE1917A52BCC0C1400DC8A51 /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A32BCC0C1400DC8A51 /* menu.cpp */; };
+		CE1917A82BCC1D0000DC8A51 /* keybindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A62BCC1D0000DC8A51 /* keybindings.cpp */; };
 		CE2428552B41101700FFD99A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6DBE2B40FA1D00F70C8C /* main.cpp */; };
 		CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE2428562B4110B500FFD99A /* uielements.cpp */; };
 		CE401F5E2BCBDFAF00648497 /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */; };
@@ -30,8 +30,8 @@
 		CEAB8C902B411F75005BBA63 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CEAB8C8F2B411F75005BBA63 /* libglfw.3.3.dylib */; };
 		CEAB8CD02B412CB9005BBA63 /* simpleshader.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */; };
 		CEAB8CD12B412CBC005BBA63 /* simpleshader.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */; };
-		CEBB39522B459B56002BFDE8 /* CreateGeom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39512B459B56002BFDE8 /* CreateGeom.cpp */; };
-		CEBB39542B45AA92002BFDE8 /* MathOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39532B45AA92002BFDE8 /* MathOperations.cpp */; };
+		CEBB39522B459B56002BFDE8 /* creategeom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39512B459B56002BFDE8 /* creategeom.cpp */; };
+		CEBB39542B45AA92002BFDE8 /* mathoperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39532B45AA92002BFDE8 /* mathoperations.cpp */; };
 		CEFD8D9B2BCEDFD1009AB22A /* keybinding_macos.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */; };
 /* End PBXBuildFile section */
 
@@ -67,19 +67,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CE0183A32BD130B200F50BFB /* Extras.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Extras.cpp; sourceTree = "<group>"; };
-		CE0183A62BD1CBB700F50BFB /* Windowing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Windowing.cpp; sourceTree = "<group>"; };
+		CE0183A32BD130B200F50BFB /* extras.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = extras.cpp; sourceTree = "<group>"; };
+		CE0183A62BD1CBB700F50BFB /* windowing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = windowing.cpp; sourceTree = "<group>"; };
 		CE0183A92BD2923C00F50BFB /* FreeMonoBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeMonoBold.ttf; path = assets/fonts/FreeMonoBold.ttf; sourceTree = "<group>"; };
 		CE0183AA2BD2923C00F50BFB /* FreeMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeMono.ttf; path = assets/fonts/FreeMono.ttf; sourceTree = "<group>"; };
-		CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenu.cpp; sourceTree = "<group>"; };
-		CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyBindings.cpp; sourceTree = "<group>"; };
+		CE1917A32BCC0C1400DC8A51 /* menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = menu.cpp; sourceTree = "<group>"; };
+		CE1917A62BCC1D0000DC8A51 /* keybindings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = keybindings.cpp; sourceTree = "<group>"; };
 		CE2428562B4110B500FFD99A /* uielements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = uielements.cpp; sourceTree = "<group>"; };
 		CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_widgets.cpp; path = dependencies/backends/imgui_widgets.cpp; sourceTree = "<group>"; };
 		CE401F5F2BCBDFE300648497 /* imgui_tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_tables.cpp; path = dependencies/backends/imgui_tables.cpp; sourceTree = "<group>"; };
 		CE401F612BCBE00200648497 /* imgui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui.cpp; path = dependencies/backends/imgui.cpp; sourceTree = "<group>"; };
 		CE401F622BCBE00200648497 /* imgui_impl_opengl3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_opengl3.cpp; path = dependencies/backends/imgui_impl_opengl3.cpp; sourceTree = "<group>"; };
 		CE401F632BCBE00200648497 /* imgui_tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_tables.cpp; path = dependencies/backends/imgui_tables.cpp; sourceTree = "<group>"; };
-		CE4CE42D2B41005400692ED2 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = CabinV5.jpg; sourceTree = "<group>"; };
 		CE4CE42F2B41025700692ED2 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		CE4CE4312B41026500692ED2 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		CE4CE4332B41027400692ED2 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -103,8 +102,8 @@
 		CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = simpleshader.fs; path = assets/simpleshader.fs; sourceTree = "<group>"; };
 		CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = simpleshader.vs; path = assets/simpleshader.vs; sourceTree = "<group>"; };
 		CEAB8CD22B413A68005BBA63 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		CEBB39512B459B56002BFDE8 /* CreateGeom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CreateGeom.cpp; sourceTree = "<group>"; };
-		CEBB39532B45AA92002BFDE8 /* MathOperations.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MathOperations.cpp; sourceTree = "<group>"; };
+		CEBB39512B459B56002BFDE8 /* creategeom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = creategeom.cpp; sourceTree = "<group>"; };
+		CEBB39532B45AA92002BFDE8 /* mathoperations.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mathoperations.cpp; sourceTree = "<group>"; };
 		CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = keybinding_macos.txt; path = assets/keybinding_macos.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,14 +129,6 @@
 			children = (
 			);
 			path = _exec;
-			sourceTree = "<group>";
-		};
-		CE4CE42C2B41005400692ED2 /* UI_Elements */ = {
-			isa = PBXGroup;
-			children = (
-				CE4CE42D2B41005400692ED2 /* CabinV5.jpg */,
-			);
-			path = UI_Elements;
 			sourceTree = "<group>";
 		};
 		CE4CE42E2B41025700692ED2 /* Frameworks */ = {
@@ -177,7 +168,6 @@
 				CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */,
 				CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */,
 				CE2428572B411BA800FFD99A /* _exec */,
-				CE4CE42C2B41005400692ED2 /* UI_Elements */,
 				CE5A6DC72B40FADD00F70C8C /* imgui.ini */,
 				CE5A6DC62B40FADD00F70C8C /* README.md */,
 				CE5A6DC52B40FADD00F70C8C /* assets */,
@@ -200,12 +190,12 @@
 			children = (
 				CE5A6DBE2B40FA1D00F70C8C /* main.cpp */,
 				CE2428562B4110B500FFD99A /* uielements.cpp */,
-				CEBB39532B45AA92002BFDE8 /* MathOperations.cpp */,
-				CEBB39512B459B56002BFDE8 /* CreateGeom.cpp */,
-				CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */,
-				CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */,
-				CE0183A32BD130B200F50BFB /* Extras.cpp */,
-				CE0183A62BD1CBB700F50BFB /* Windowing.cpp */,
+				CEBB39532B45AA92002BFDE8 /* mathoperations.cpp */,
+				CEBB39512B459B56002BFDE8 /* creategeom.cpp */,
+				CE1917A32BCC0C1400DC8A51 /* menu.cpp */,
+				CE1917A62BCC1D0000DC8A51 /* keybindings.cpp */,
+				CE0183A32BD130B200F50BFB /* extras.cpp */,
+				CE0183A62BD1CBB700F50BFB /* windowing.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -305,17 +295,17 @@
 				CE83350A2BD423B300650CBA /* imgui_draw.cpp in Sources */,
 				CE83350B2BD423B300650CBA /* imgui_impl_glfw.cpp in Sources */,
 				CE401F642BCBE00300648497 /* imgui.cpp in Sources */,
-				CE0183A82BD1CBB700F50BFB /* Windowing.cpp in Sources */,
-				CE0183A52BD130B200F50BFB /* Extras.cpp in Sources */,
+				CE0183A82BD1CBB700F50BFB /* windowing.cpp in Sources */,
+				CE0183A52BD130B200F50BFB /* extras.cpp in Sources */,
 				CE401F652BCBE00300648497 /* imgui_impl_opengl3.cpp in Sources */,
 				CE401F602BCBDFE300648497 /* imgui_tables.cpp in Sources */,
-				CEBB39542B45AA92002BFDE8 /* MathOperations.cpp in Sources */,
+				CEBB39542B45AA92002BFDE8 /* mathoperations.cpp in Sources */,
 				CE401F5E2BCBDFAF00648497 /* imgui_widgets.cpp in Sources */,
-				CEBB39522B459B56002BFDE8 /* CreateGeom.cpp in Sources */,
-				CE1917A52BCC0C1400DC8A51 /* MainMenu.cpp in Sources */,
+				CEBB39522B459B56002BFDE8 /* creategeom.cpp in Sources */,
+				CE1917A52BCC0C1400DC8A51 /* menu.cpp in Sources */,
 				CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */,
 				CE2428552B41101700FFD99A /* main.cpp in Sources */,
-				CE1917A82BCC1D0000DC8A51 /* KeyBindings.cpp in Sources */,
+				CE1917A82BCC1D0000DC8A51 /* keybindings.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
