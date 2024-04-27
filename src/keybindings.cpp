@@ -1,9 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include "KeyBindings.h"
+#include "keybindings.h"
 #include "GLFW/glfw3.h"
-#include "Extras.h"
+#include "extras.h"
 
 #define     GLFW_KEY_SPACE          32
 #define     GLFW_KEY_APOSTROPHE     39 /* ' */

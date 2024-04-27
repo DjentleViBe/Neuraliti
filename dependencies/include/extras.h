@@ -1,5 +1,5 @@
-#ifndef Extras_h
-#define Extras_h
+#ifndef extras_h
+#define extras_h
 
 #include <iostream>
 #include <stdio.h>
@@ -18,4 +18,4 @@ std::string readfileconcat(char const *filename);
 std::string GetCurrentWorkingDirectory();
 void overwriteLine(const std::string& filename, int lineNumber, const std::string& newContent);
 
-#endif /* Extras_h */
+#endif /* extras_h */

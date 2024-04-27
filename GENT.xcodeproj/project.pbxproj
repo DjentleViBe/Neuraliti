@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CE0183A52BD130B200F50BFB /* Extras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0183A32BD130B200F50BFB /* Extras.cpp */; };
-		CE0183A82BD1CBB700F50BFB /* Windowing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0183A62BD1CBB700F50BFB /* Windowing.cpp */; };
-		CE1917A52BCC0C1400DC8A51 /* MainMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */; };
-		CE1917A82BCC1D0000DC8A51 /* KeyBindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */; };
+		CE0183A52BD130B200F50BFB /* extras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0183A32BD130B200F50BFB /* extras.cpp */; };
+		CE0183A82BD1CBB700F50BFB /* windowing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0183A62BD1CBB700F50BFB /* windowing.cpp */; };
+		CE1917A52BCC0C1400DC8A51 /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A32BCC0C1400DC8A51 /* menu.cpp */; };
+		CE1917A82BCC1D0000DC8A51 /* keybindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1917A62BCC1D0000DC8A51 /* keybindings.cpp */; };
 		CE2428552B41101700FFD99A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6DBE2B40FA1D00F70C8C /* main.cpp */; };
 		CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE2428562B4110B500FFD99A /* uielements.cpp */; };
+		CE27CAF32BDBF18900ECD287 /* objshader.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE27CAF12BDBF18900ECD287 /* objshader.fs */; };
+		CE27CAF42BDBF18900ECD287 /* objshader.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE27CAF22BDBF18900ECD287 /* objshader.vs */; };
+		CE3D09072BDC58BD006D1FC4 /* fontshader.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE3D09052BDC58BD006D1FC4 /* fontshader.fs */; };
+		CE3D09082BDC58BD006D1FC4 /* fontshader.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE3D09062BDC58BD006D1FC4 /* fontshader.vs */; };
 		CE401F5E2BCBDFAF00648497 /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */; };
 		CE401F602BCBDFE300648497 /* imgui_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F5F2BCBDFE300648497 /* imgui_tables.cpp */; };
 		CE401F642BCBE00300648497 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE401F612BCBE00200648497 /* imgui.cpp */; };
@@ -22,16 +26,14 @@
 		CE4CE4342B41027400692ED2 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4332B41027400692ED2 /* CoreFoundation.framework */; };
 		CE4CE4362B41027E00692ED2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4352B41027E00692ED2 /* Cocoa.framework */; };
 		CE4CE4382B41028300692ED2 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4CE4372B41028300692ED2 /* OpenGL.framework */; };
-		CE5B9FF52B45B71500EDD025 /* windowshader.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE5B9FF32B45B71500EDD025 /* windowshader.vs */; };
-		CE5B9FF62B45B71500EDD025 /* windowshader.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE5B9FF42B45B71500EDD025 /* windowshader.fs */; };
+		CE4E3E002BD92A23007BD84F /* loadfont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE4E3DFE2BD92A23007BD84F /* loadfont.cpp */; };
+		CE5F6DFC2BD5696600317B2A /* glm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE5F6DFB2BD5696600317B2A /* glm.cpp */; };
 		CE8335092BD423B300650CBA /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8335062BD423B300650CBA /* glad.c */; };
 		CE83350A2BD423B300650CBA /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8335072BD423B300650CBA /* imgui_draw.cpp */; };
 		CE83350B2BD423B300650CBA /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8335082BD423B300650CBA /* imgui_impl_glfw.cpp */; };
 		CEAB8C902B411F75005BBA63 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CEAB8C8F2B411F75005BBA63 /* libglfw.3.3.dylib */; };
-		CEAB8CD02B412CB9005BBA63 /* simpleshader.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */; };
-		CEAB8CD12B412CBC005BBA63 /* simpleshader.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */; };
-		CEBB39522B459B56002BFDE8 /* CreateGeom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39512B459B56002BFDE8 /* CreateGeom.cpp */; };
-		CEBB39542B45AA92002BFDE8 /* MathOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39532B45AA92002BFDE8 /* MathOperations.cpp */; };
+		CEBB39522B459B56002BFDE8 /* creategeom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39512B459B56002BFDE8 /* creategeom.cpp */; };
+		CEBB39542B45AA92002BFDE8 /* mathoperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEBB39532B45AA92002BFDE8 /* mathoperations.cpp */; };
 		CEFD8D9B2BCEDFD1009AB22A /* keybinding_macos.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */; };
 /* End PBXBuildFile section */
 
@@ -56,43 +58,47 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				CE3D09072BDC58BD006D1FC4 /* fontshader.fs in CopyFiles */,
+				CE3D09082BDC58BD006D1FC4 /* fontshader.vs in CopyFiles */,
+				CE27CAF32BDBF18900ECD287 /* objshader.fs in CopyFiles */,
+				CE27CAF42BDBF18900ECD287 /* objshader.vs in CopyFiles */,
 				CEFD8D9B2BCEDFD1009AB22A /* keybinding_macos.txt in CopyFiles */,
-				CE5B9FF52B45B71500EDD025 /* windowshader.vs in CopyFiles */,
-				CE5B9FF62B45B71500EDD025 /* windowshader.fs in CopyFiles */,
-				CEAB8CD12B412CBC005BBA63 /* simpleshader.fs in CopyFiles */,
-				CEAB8CD02B412CB9005BBA63 /* simpleshader.vs in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CE0183A32BD130B200F50BFB /* Extras.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Extras.cpp; sourceTree = "<group>"; };
-		CE0183A62BD1CBB700F50BFB /* Windowing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Windowing.cpp; sourceTree = "<group>"; };
+		CE0183A32BD130B200F50BFB /* extras.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = extras.cpp; sourceTree = "<group>"; };
+		CE0183A62BD1CBB700F50BFB /* windowing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = windowing.cpp; sourceTree = "<group>"; };
 		CE0183A92BD2923C00F50BFB /* FreeMonoBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeMonoBold.ttf; path = assets/fonts/FreeMonoBold.ttf; sourceTree = "<group>"; };
 		CE0183AA2BD2923C00F50BFB /* FreeMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeMono.ttf; path = assets/fonts/FreeMono.ttf; sourceTree = "<group>"; };
-		CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenu.cpp; sourceTree = "<group>"; };
-		CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyBindings.cpp; sourceTree = "<group>"; };
+		CE1917A32BCC0C1400DC8A51 /* menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = menu.cpp; sourceTree = "<group>"; };
+		CE1917A62BCC1D0000DC8A51 /* keybindings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = keybindings.cpp; sourceTree = "<group>"; };
 		CE2428562B4110B500FFD99A /* uielements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = uielements.cpp; sourceTree = "<group>"; };
+		CE27CAF12BDBF18900ECD287 /* objshader.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = objshader.fs; path = assets/objshader.fs; sourceTree = "<group>"; };
+		CE27CAF22BDBF18900ECD287 /* objshader.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = objshader.vs; path = assets/objshader.vs; sourceTree = "<group>"; };
+		CE3D09052BDC58BD006D1FC4 /* fontshader.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = fontshader.fs; path = assets/fontshader.fs; sourceTree = "<group>"; };
+		CE3D09062BDC58BD006D1FC4 /* fontshader.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = fontshader.vs; path = assets/fontshader.vs; sourceTree = "<group>"; };
 		CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_widgets.cpp; path = dependencies/backends/imgui_widgets.cpp; sourceTree = "<group>"; };
 		CE401F5F2BCBDFE300648497 /* imgui_tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_tables.cpp; path = dependencies/backends/imgui_tables.cpp; sourceTree = "<group>"; };
 		CE401F612BCBE00200648497 /* imgui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui.cpp; path = dependencies/backends/imgui.cpp; sourceTree = "<group>"; };
 		CE401F622BCBE00200648497 /* imgui_impl_opengl3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_opengl3.cpp; path = dependencies/backends/imgui_impl_opengl3.cpp; sourceTree = "<group>"; };
 		CE401F632BCBE00200648497 /* imgui_tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_tables.cpp; path = dependencies/backends/imgui_tables.cpp; sourceTree = "<group>"; };
-		CE4CE42D2B41005400692ED2 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = CabinV5.jpg; sourceTree = "<group>"; };
 		CE4CE42F2B41025700692ED2 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		CE4CE4312B41026500692ED2 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		CE4CE4332B41027400692ED2 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		CE4CE4352B41027E00692ED2 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CE4CE4372B41028300692ED2 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		CE4E3DFE2BD92A23007BD84F /* loadfont.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = loadfont.cpp; sourceTree = "<group>"; };
 		CE5A6DBB2B40FA1D00F70C8C /* GENT */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GENT; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE5A6DBE2B40FA1D00F70C8C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		CE5A6DC52B40FADD00F70C8C /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		CE5A6DC62B40FADD00F70C8C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CE5A6DC72B40FADD00F70C8C /* imgui.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = imgui.ini; sourceTree = "<group>"; };
 		CE5A6DCD2B40FADE00F70C8C /* dependencies */ = {isa = PBXFileReference; lastKnownFileType = folder; path = dependencies; sourceTree = "<group>"; };
-		CE5B9FF32B45B71500EDD025 /* windowshader.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = windowshader.vs; path = assets/windowshader.vs; sourceTree = "<group>"; };
-		CE5B9FF42B45B71500EDD025 /* windowshader.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = windowshader.fs; path = assets/windowshader.fs; sourceTree = "<group>"; };
+		CE5F69E42BD4863D00317B2A /* libfreetype.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreetype.6.dylib; path = dependencies/library/libfreetype.6.dylib; sourceTree = "<group>"; };
+		CE5F6DFB2BD5696600317B2A /* glm.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = glm.cpp; path = dependencies/backends/glm.cpp; sourceTree = "<group>"; };
 		CE8335062BD423B300650CBA /* glad.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = glad.c; path = dependencies/backends/glad.c; sourceTree = "<group>"; };
 		CE8335072BD423B300650CBA /* imgui_draw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_draw.cpp; path = dependencies/backends/imgui_draw.cpp; sourceTree = "<group>"; };
 		CE8335082BD423B300650CBA /* imgui_impl_glfw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_glfw.cpp; path = dependencies/backends/imgui_impl_glfw.cpp; sourceTree = "<group>"; };
@@ -100,11 +106,9 @@
 		CEAB8CAB2B4127E9005BBA63 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = CabinV5.jpg; sourceTree = "<group>"; };
 		CEAB8CAD2B41281A005BBA63 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = CabinV5.jpg; path = UI_Elements/CabinV5.jpg; sourceTree = "<group>"; };
 		CEAB8CAF2B41282F005BBA63 /* CabinV5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = CabinV5.jpg; path = UI_Elements/CabinV5.jpg; sourceTree = "<group>"; };
-		CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = simpleshader.fs; path = assets/simpleshader.fs; sourceTree = "<group>"; };
-		CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = simpleshader.vs; path = assets/simpleshader.vs; sourceTree = "<group>"; };
 		CEAB8CD22B413A68005BBA63 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		CEBB39512B459B56002BFDE8 /* CreateGeom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CreateGeom.cpp; sourceTree = "<group>"; };
-		CEBB39532B45AA92002BFDE8 /* MathOperations.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MathOperations.cpp; sourceTree = "<group>"; };
+		CEBB39512B459B56002BFDE8 /* creategeom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = creategeom.cpp; sourceTree = "<group>"; };
+		CEBB39532B45AA92002BFDE8 /* mathoperations.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mathoperations.cpp; sourceTree = "<group>"; };
 		CEFD8D9A2BCEDFD1009AB22A /* keybinding_macos.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = keybinding_macos.txt; path = assets/keybinding_macos.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -132,17 +136,10 @@
 			path = _exec;
 			sourceTree = "<group>";
 		};
-		CE4CE42C2B41005400692ED2 /* UI_Elements */ = {
-			isa = PBXGroup;
-			children = (
-				CE4CE42D2B41005400692ED2 /* CabinV5.jpg */,
-			);
-			path = UI_Elements;
-			sourceTree = "<group>";
-		};
 		CE4CE42E2B41025700692ED2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE5F69E42BD4863D00317B2A /* libfreetype.6.dylib */,
 				CEAB8CAB2B4127E9005BBA63 /* CabinV5.jpg */,
 				CEAB8CAD2B41281A005BBA63 /* CabinV5.jpg */,
 				CEAB8CAF2B41282F005BBA63 /* CabinV5.jpg */,
@@ -159,6 +156,11 @@
 		CE5A6DB22B40FA1D00F70C8C = {
 			isa = PBXGroup;
 			children = (
+				CE3D09052BDC58BD006D1FC4 /* fontshader.fs */,
+				CE3D09062BDC58BD006D1FC4 /* fontshader.vs */,
+				CE27CAF12BDBF18900ECD287 /* objshader.fs */,
+				CE27CAF22BDBF18900ECD287 /* objshader.vs */,
+				CE5F6DFB2BD5696600317B2A /* glm.cpp */,
 				CE8335062BD423B300650CBA /* glad.c */,
 				CE8335072BD423B300650CBA /* imgui_draw.cpp */,
 				CE8335082BD423B300650CBA /* imgui_impl_glfw.cpp */,
@@ -171,13 +173,8 @@
 				CE401F612BCBE00200648497 /* imgui.cpp */,
 				CE401F5D2BCBDFAF00648497 /* imgui_widgets.cpp */,
 				CE91EC702BCAA0D2000435D8 /* src */,
-				CE5B9FF42B45B71500EDD025 /* windowshader.fs */,
-				CE5B9FF32B45B71500EDD025 /* windowshader.vs */,
 				CEAB8CD22B413A68005BBA63 /* .gitignore */,
-				CEAB8CB32B4128AA005BBA63 /* simpleshader.vs */,
-				CEAB8CB12B4128A0005BBA63 /* simpleshader.fs */,
 				CE2428572B411BA800FFD99A /* _exec */,
-				CE4CE42C2B41005400692ED2 /* UI_Elements */,
 				CE5A6DC72B40FADD00F70C8C /* imgui.ini */,
 				CE5A6DC62B40FADD00F70C8C /* README.md */,
 				CE5A6DC52B40FADD00F70C8C /* assets */,
@@ -200,12 +197,13 @@
 			children = (
 				CE5A6DBE2B40FA1D00F70C8C /* main.cpp */,
 				CE2428562B4110B500FFD99A /* uielements.cpp */,
-				CEBB39532B45AA92002BFDE8 /* MathOperations.cpp */,
-				CEBB39512B459B56002BFDE8 /* CreateGeom.cpp */,
-				CE1917A32BCC0C1400DC8A51 /* MainMenu.cpp */,
-				CE1917A62BCC1D0000DC8A51 /* KeyBindings.cpp */,
-				CE0183A32BD130B200F50BFB /* Extras.cpp */,
-				CE0183A62BD1CBB700F50BFB /* Windowing.cpp */,
+				CEBB39532B45AA92002BFDE8 /* mathoperations.cpp */,
+				CEBB39512B459B56002BFDE8 /* creategeom.cpp */,
+				CE1917A32BCC0C1400DC8A51 /* menu.cpp */,
+				CE1917A62BCC1D0000DC8A51 /* keybindings.cpp */,
+				CE0183A32BD130B200F50BFB /* extras.cpp */,
+				CE0183A62BD1CBB700F50BFB /* windowing.cpp */,
+				CE4E3DFE2BD92A23007BD84F /* loadfont.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -301,21 +299,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE5F6DFC2BD5696600317B2A /* glm.cpp in Sources */,
 				CE8335092BD423B300650CBA /* glad.c in Sources */,
 				CE83350A2BD423B300650CBA /* imgui_draw.cpp in Sources */,
 				CE83350B2BD423B300650CBA /* imgui_impl_glfw.cpp in Sources */,
 				CE401F642BCBE00300648497 /* imgui.cpp in Sources */,
-				CE0183A82BD1CBB700F50BFB /* Windowing.cpp in Sources */,
-				CE0183A52BD130B200F50BFB /* Extras.cpp in Sources */,
+				CE4E3E002BD92A23007BD84F /* loadfont.cpp in Sources */,
+				CE0183A82BD1CBB700F50BFB /* windowing.cpp in Sources */,
+				CE0183A52BD130B200F50BFB /* extras.cpp in Sources */,
 				CE401F652BCBE00300648497 /* imgui_impl_opengl3.cpp in Sources */,
 				CE401F602BCBDFE300648497 /* imgui_tables.cpp in Sources */,
-				CEBB39542B45AA92002BFDE8 /* MathOperations.cpp in Sources */,
+				CEBB39542B45AA92002BFDE8 /* mathoperations.cpp in Sources */,
 				CE401F5E2BCBDFAF00648497 /* imgui_widgets.cpp in Sources */,
-				CEBB39522B459B56002BFDE8 /* CreateGeom.cpp in Sources */,
-				CE1917A52BCC0C1400DC8A51 /* MainMenu.cpp in Sources */,
+				CEBB39522B459B56002BFDE8 /* creategeom.cpp in Sources */,
+				CE1917A52BCC0C1400DC8A51 /* menu.cpp in Sources */,
 				CE2428582B411C0E00FFD99A /* uielements.cpp in Sources */,
+				CE1917A82BCC1D0000DC8A51 /* keybindings.cpp in Sources */,
 				CE2428552B41101700FFD99A /* main.cpp in Sources */,
-				CE1917A82BCC1D0000DC8A51 /* KeyBindings.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,16 +448,14 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = ALMS4MXZY6;
 				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/include/**";
 				INCLUDED_SOURCE_FILE_NAMES = "";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/dependencies/library";
 				OTHER_CPLUSPLUSFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
-				USER_HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/dependencies/include/**",
-					"$(SRCROOT)/dependencies/backends/",
-				);
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/dependencies/include/**";
 			};
 			name = Debug;
 		};
@@ -470,16 +468,14 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = ALMS4MXZY6;
 				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/include/**";
 				INCLUDED_SOURCE_FILE_NAMES = "";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/dependencies/library";
 				OTHER_CPLUSPLUSFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
-				USER_HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/dependencies/include/**",
-					"$(SRCROOT)/dependencies/backends/",
-				);
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/dependencies/include/**";
 			};
 			name = Release;
 		};
