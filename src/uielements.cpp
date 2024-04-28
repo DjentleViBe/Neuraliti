@@ -36,7 +36,8 @@ const char* homeDir = std::getenv("HOME");
 picojson::value v;
 glm::mat4 mvp;
 NeuralObj MyObj1, MyObj2;
-
+double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
+double zoomlevel = 3.0;
 bool show_demo_window;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -184,18 +185,20 @@ int INITgraphics(){
     return 0;
 }
 
-GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point){
+GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point, double transX, double transY){
     
-    //glm::mat4 projection = glm::perspective(glm::radians(45.0f),(float) wid / (float)hei, 0.1f, 10.0f);
-    //glm::mat4 projection = glm::ortho(-1.0, 1.0, -1.0, 1.0);
+    glm::mat4 projection = glm::perspective(glm::radians(35.0f), 1.0f, 0.1f, 100.0f);
+    //glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.5f, 1.5f);
     //projection = glm::scale(projection, glm::vec3(0.5, 0.5, 1.0));
     // Camera matrix
+    Xpos -= transX * 0.01;
+    Ypos += transY * 0.01;
     glm::mat4 View = glm::lookAt(
-        glm::vec3(0,0,3), // Camera is at (0,0,0), in World Space
-        glm::vec3(0,0,0), // and looks at the origin
-        glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+        glm::vec3(0, 0, zoomlevel), // Camera is at (0,0,0), in World Space
+        glm::vec3(Xpos, Ypos, 0), // and looks at the origin
+        glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
         );
-    
+    //std::cout << transX << "\n";
     // Model matrix: an identity matrix (model will be at the origin)
     //glm::mat4 Model = glm::mat4(1.0f);
     // Step 1: Translate the point to the origin
@@ -208,7 +211,7 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point){
     glm::mat4 translateBack = glm::translate(glm::mat4(1.0f), point);
     //glm::mat4 scaling = glm::scale(glm::mat4(1), glm::vec3(SCR_WIDTH / wid,1,1));
     // Our ModelViewProjection: multiplication of our 3 matrices
-    mvp =  translateBack * scaleMatrix * translateToOrigin;
+    mvp =  projection * View * translateBack * scaleMatrix * translateToOrigin;
     //GLuint MatrixID = glGetUniformLocation(mainShader.ID, "ProjMat");
     return 0;
 }
@@ -223,9 +226,29 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     //addlogs("scaled");
 }
 
+void mouse_callback(GLFWwindow* window, double xpos, double ypos){
+    Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
+    int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+    double deltaX = xpos - tempmouseX;
+    double deltaY = ypos - tempmouseY;
+    if (state == GLFW_PRESS){
+        calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), deltaX * 0.1, deltaY * 0.1);
+        }
+    tempmouseX = xpos;
+    tempmouseY = ypos;
+}
+
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+        
+        std::cout << "pressed" << "\n";
+    }
 }
 
 void Displayloop(char **argv){
@@ -233,17 +256,18 @@ void Displayloop(char **argv){
     bool show_demo_window = true;
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
-    Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
+    
     Shader fontShader("../assets/fontshader.vs", "../assets/fontshader.fs");
-
+    Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
-    calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
+    calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
     //calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
     
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     MyObj1.x = -0.45f;
     MyObj1.y = 0.1f;
     MyObj1.objtype = 1;
@@ -265,12 +289,12 @@ void Displayloop(char **argv){
         glfwSetKeyCallback(window, key_callback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        
+       
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         
-        calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
+        calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
         objShader.use();
         MyObj1.Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
         glUniformMatrix4fv(MyObj1.Matrix, 1, GL_FALSE, &mvp[0][0]);
