@@ -6,6 +6,7 @@
 #include "uielements.h"
 #include "datatypes.hpp"
 #include "loadfont.hpp"
+#include <string>
 
 void InitShader(const char* shadevs, const char* shadefs);
 
@@ -115,7 +116,7 @@ NeuralObj createobj(NeuralObj &MyObj){
         //int channels;
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        unsigned char *map = loadfont("../assets/fonts/FreeMonoBold.ttf", "Hello World!");
+        unsigned char *map = loadfont(("../assets/fonts/" + appsettings["defaultfont"]).c_str(), "Hello World!");
         //std::cout << &map;
         //GLenum format = channels == 4 ? GL_RGBA : GL_RGB;
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, BMP_W, BMP_H, 0, GL_RED, GL_UNSIGNED_BYTE, map);
