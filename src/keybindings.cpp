@@ -279,8 +279,8 @@ void readkeybindings(){
     #if defined _WIN32
     printf("windows");
     #elif defined __APPLE__
-    char const *p = "keybinding_macos.txt";
-    bind = readfile(p);
+    //char const *p = "keybinding_macos.txt";
+    //bind = readfile(p);
     //assignbinding(bind);
     #elif defined __linux__
     printf("linux");

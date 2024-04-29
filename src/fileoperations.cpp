@@ -22,6 +22,7 @@ int readpdfile(std::string path){
     for (int l = 0; l < lines.size(); l++){
         // check if obj
         if(lines[l].find("obj")!= std::string::npos){
+            objnumber++;
             int wordpos = 0;
             std::stringstream ss(lines[l]);
             std::string token;
@@ -41,7 +42,6 @@ int readpdfile(std::string path){
                     tokentemp += " " + token;
                 }
                 wordpos++;
-                
                 }
             objectnames.push_back(tokentemp.erase(tokentemp.size() - 1));
             }

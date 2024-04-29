@@ -27,6 +27,7 @@
 #include "createobjs.hpp"
 #include "fileoperations.hpp"
 #include "initobjs.hpp"
+#include "mach-o/dyld.h"
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
@@ -38,6 +39,7 @@ std::vector<std::string> fontlist, configlist, fontsizelist;
 const char* homeDir = std::getenv("HOME");
 picojson::value v;
 glm::mat4 mvp;
+std::string CurrentDir;
 
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
 double zoomlevel = 3.0;
@@ -96,12 +98,12 @@ void loadfont(ImGuiIO& io){
         0
     };
     addlogs("Font loading\n");
-    io.Fonts->AddFontFromFileTTF(("../assets/fonts/" + appsettings["defaultfont"]).c_str() , std::stof(appsettings["fontsize"]));
+    io.Fonts->AddFontFromFileTTF((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str() , std::stof(appsettings["fontsize"]));
     static ImFontConfig cfg;
     cfg.OversampleH = cfg.OversampleV = 2;
     cfg.MergeMode = true;
     #if defined __APPLE__
-    io.Fonts->AddFontFromFileTTF(("../assets/fonts/" +appsettings["defaultfont"]).c_str() , 17, &cfg,
+    io.Fonts->AddFontFromFileTTF((CurrentDir + "/assets/fonts/" +appsettings["defaultfont"]).c_str() , 17, &cfg,
                                  myGlyphRanges);
     #endif
     io.Fonts->Build();
@@ -109,15 +111,22 @@ void loadfont(ImGuiIO& io){
 }
 
 int INITgraphics(){
-    std::string currentDir = GetCurrentWorkingDirectory();
-    if (!currentDir.empty()) {
-        std::cout << "Current working directory: " << currentDir << std::endl;
+    
+    char path[1024];
+    uint32_t size = sizeof(path);
+    if (_NSGetExecutablePath(path, &size) == 0){
+        printf("executable path is %s\n", path);
     }
-    else {
-        std::cerr << "Error: Unable to retrieve current working directory." << std::endl;
-        }
+    else{
+        printf("buffer too small; need size %u\n", size);
+        return 1;
+    }
+    std::cout << "read";
     // Initial startup
-    loadconfig("../prefs.json");
+    addlogs("Opening preferences\n");
+    CurrentDir = std::string(path).erase(std::string(path).size() - 9);
+    
+    loadconfig(CurrentDir + "/prefs.json");
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -178,15 +187,15 @@ int INITgraphics(){
     ImGui_ImplOpenGL3_Init(glsl_version);
     
     loadfont(io);
-    readkeybindings();
+    //readkeybindings();
     
     //glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     addlogs("Initialisation ended\n");
-    addlogs("Opening file");
-    initobjs("../Untitled-1.pd");
+    addlogs("Opening file\n");
+    initobjs(CurrentDir + "/Untitled-1.pd");
     return 0;
 }
 
@@ -194,7 +203,6 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point, 
     
     glm::mat4 projection = glm::perspective(glm::radians(35.0f), 1.0f, 0.1f, 100.0f);
     //glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.5f, 1.5f);
-    //projection = glm::scale(projection, glm::vec3(0.5, 0.5, 1.0));
     // Camera matrix
     Xpos -= transX * 0.01;
     Ypos += transY * 0.01;
@@ -203,9 +211,6 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point, 
         glm::vec3(Xpos, Ypos, 0), // and looks at the origin
         glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
         );
-    //std::cout << transX << "\n";
-    // Model matrix: an identity matrix (model will be at the origin)
-    //glm::mat4 Model = glm::mat4(1.0f);
     // Step 1: Translate the point to the origin
     glm::mat4 translateToOrigin = glm::translate(glm::mat4(1.0f), -point);
 
@@ -214,7 +219,6 @@ GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point, 
 
     // Step 3: Translate the point back to its original position
     glm::mat4 translateBack = glm::translate(glm::mat4(1.0f), point);
-    //glm::mat4 scaling = glm::scale(glm::mat4(1), glm::vec3(SCR_WIDTH / wid,1,1));
     // Our ModelViewProjection: multiplication of our 3 matrices
     mvp =  projection * View * translateBack * scaleMatrix * translateToOrigin;
     //GLuint MatrixID = glGetUniformLocation(mainShader.ID, "ProjMat");
@@ -232,7 +236,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos){
-    Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
+    Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
     double deltaX = xpos - tempmouseX;
     double deltaY = ypos - tempmouseY;
@@ -261,28 +265,28 @@ void Displayloop(char **argv){
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
     
-    Shader fontShader("../assets/fontshader.vs", "../assets/fontshader.fs");
-    Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
+    Shader fontShader((CurrentDir + "/bin/fontshader.vs").c_str(), (CurrentDir + "/bin/fontshader.fs").c_str());
+    Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-
+    
     calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
-    //calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
     
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetMouseButtonCallback(window, mouse_button_callback);
+    //glfwSetMouseButtonCallback(window, mouse_button_callback);
     
     // loop through objects here
-    NeuralObj MyObj1, MyObj2;
-    auto result = createobj1(-0.45f, 0.1f, "Hello World!");
-    MyObj1 = std::get<0>(result);
-    MyObj2 = std::get<1>(result);
-    
-    NeuralObj MyObj3, MyObj4;
-    result = createobj1(0.45f, 0.2f, "Hello World!");
-    MyObj3 = std::get<0>(result);
-    MyObj4 = std::get<1>(result);
+    NeuralObj **MyObj_rect = new NeuralObj*[objnumber];
+    for (int i = 0; i < objnumber; ++i) {
+        auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
+        MyObj_rect[i] = new NeuralObj(std::get<0>(result));
+    }
+    NeuralObj **MyObj_font = new NeuralObj*[objnumber];
+    for (int i = 0; i < objnumber; ++i) {
+        auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
+        MyObj_font[i] = new NeuralObj(std::get<1>(result));
+    }
 
     while (!glfwWindowShouldClose(window))
     {
@@ -290,47 +294,33 @@ void Displayloop(char **argv){
         glfwSetKeyCallback(window, key_callback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-       
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
         
         calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
         objShader.use();
-        MyObj1.Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
-        glUniformMatrix4fv(MyObj1.Matrix, 1, GL_FALSE, &mvp[0][0]);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, MyObj1.texture);
-        glBindVertexArray(MyObj1.VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        for (int i = 0; i < objnumber; ++i) {
+            MyObj_rect[i]->Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_rect[i]->Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, MyObj_rect[i]->texture);
+            glBindVertexArray(MyObj_rect[i]->VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
         
         fontShader.use();
-        MyObj2.Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
-        glUniformMatrix4fv(MyObj2.Matrix, 1, GL_FALSE, &mvp[0][0]);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, MyObj2.texture);
-        glBindVertexArray(MyObj2.VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        
-        
-        objShader.use();
-        MyObj3.Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
-        glUniformMatrix4fv(MyObj3.Matrix, 1, GL_FALSE, &mvp[0][0]);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, MyObj3.texture);
-        glBindVertexArray(MyObj3.VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        
-        fontShader.use();
-        MyObj4.Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
-        glUniformMatrix4fv(MyObj4.Matrix, 1, GL_FALSE, &mvp[0][0]);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, MyObj4.texture);
-        glBindVertexArray(MyObj4.VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        
+        for (int i = 0; i < objnumber; ++i) {
+            MyObj_font[i]->Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_font[i]->Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, MyObj_font[i]->texture);
+            glBindVertexArray(MyObj_font[i]->VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        ShowMenu(&show_demo_window);
         ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::SetNextWindowPos(ImVec2(0, 20));
 
         ImGui::Begin("Window A");
         ImGui::Text("NEURALITI");
@@ -372,7 +362,7 @@ void Displayloop(char **argv){
                     "1\0");
         ImGui::End();
         
-        ShowMenu(&show_demo_window);
+        
         // input
         // -----
         processInput(window);
@@ -392,13 +382,13 @@ void Displayloop(char **argv){
     ImGui::DestroyContext();
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &MyObj1.VAO);
+    /*glDeleteVertexArrays(1, &MyObj1.VAO);
     glDeleteBuffers(1, &MyObj1.VBO);
     glDeleteBuffers(1, &MyObj1.EBO);
 
     glDeleteVertexArrays(1, &MyObj2.VAO);
     glDeleteBuffers(1, &MyObj2.VBO);
-    glDeleteBuffers(1, &MyObj2.EBO);
+    glDeleteBuffers(1, &MyObj2.EBO);*/
     
     glfwDestroyWindow(window);
     glfwTerminate();
