@@ -37,7 +37,7 @@ void addlogs(std::string logtoadd){
 std::vector<std::string> listfiles(std::string path, std::string type){
     std::vector<std::string> fileList; // Vector to store file paths
     std::vector<std::string> fileLoc; // filepath
-    std::cout << path;
+    //std::cout << path;
     fileList.push_back(appsettings["defaultfont"]);
     // Check if the path exists and is a directory
     if (std::filesystem::exists(path) && std::filesystem::is_directory(path)) {
