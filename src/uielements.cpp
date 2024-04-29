@@ -24,6 +24,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "loadfont.hpp"
 #include "datatypes.hpp"
+#include "createobjs.hpp"
+#include "fileoperations.hpp"
+#include "initobjs.hpp"
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
@@ -35,7 +38,7 @@ std::vector<std::string> fontlist, configlist, fontsizelist;
 const char* homeDir = std::getenv("HOME");
 picojson::value v;
 glm::mat4 mvp;
-NeuralObj MyObj1, MyObj2;
+
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
 double zoomlevel = 3.0;
 bool show_demo_window;
@@ -182,6 +185,8 @@ int INITgraphics(){
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     addlogs("Initialisation ended\n");
+    addlogs("Opening file");
+    initobjs("../Untitled-1.pd");
     return 0;
 }
 
@@ -246,7 +251,6 @@ void processInput(GLFWwindow *window) {
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-        
         std::cout << "pressed" << "\n";
     }
 }
@@ -268,23 +272,20 @@ void Displayloop(char **argv){
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
-    MyObj1.x = -0.45f;
-    MyObj1.y = 0.1f;
-    MyObj1.objtype = 1;
-    MyObj1.color = primary_color_2;
-    MyObj1 = createobj(MyObj1);
     
-    MyObj2.x = -0.45f;
-    MyObj2.y = 0.1f;
-    MyObj2.objtype = 0;
-    MyObj2.color = primary_color_3;
-    MyObj2 = createobj(MyObj2);
+    // loop through objects here
+    NeuralObj MyObj1, MyObj2;
+    auto result = createobj1(-0.45f, 0.1f, "Hello World!");
+    MyObj1 = std::get<0>(result);
+    MyObj2 = std::get<1>(result);
+    
+    NeuralObj MyObj3, MyObj4;
+    result = createobj1(0.45f, 0.2f, "Hello World!");
+    MyObj3 = std::get<0>(result);
+    MyObj4 = std::get<1>(result);
 
     while (!glfwWindowShouldClose(window))
     {
-        
-        //calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.1f,0.0f));
-        
         glfwGetWindowSize(window, &window_width, &window_height);
         glfwSetKeyCallback(window, key_callback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
@@ -304,13 +305,28 @@ void Displayloop(char **argv){
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
         fontShader.use();
-        //calculate_view(fontShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f));
         MyObj2.Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
         glUniformMatrix4fv(MyObj2.Matrix, 1, GL_FALSE, &mvp[0][0]);
-        
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, MyObj2.texture);
         glBindVertexArray(MyObj2.VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        
+        
+        objShader.use();
+        MyObj3.Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
+        glUniformMatrix4fv(MyObj3.Matrix, 1, GL_FALSE, &mvp[0][0]);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, MyObj3.texture);
+        glBindVertexArray(MyObj3.VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        
+        fontShader.use();
+        MyObj4.Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
+        glUniformMatrix4fv(MyObj4.Matrix, 1, GL_FALSE, &mvp[0][0]);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, MyObj4.texture);
+        glBindVertexArray(MyObj4.VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
         ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
