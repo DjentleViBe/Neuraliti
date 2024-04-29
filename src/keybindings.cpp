@@ -1,9 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include "KeyBindings.h"
+#include "keybindings.h"
 #include "GLFW/glfw3.h"
-#include "Extras.h"
+#include "extras.h"
+#include "uielements.h"
 
 #define     GLFW_KEY_SPACE          32
 #define     GLFW_KEY_APOSTROPHE     39 /* ' */
@@ -129,7 +130,7 @@
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if(glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS &&
+    if((glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SUPER) == GLFW_PRESS) &&
        glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) != GLFW_PRESS){
         switch(key){
             // File
@@ -172,10 +173,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 std::cout << "A" << std::endl;
                 break;
             case 93:
-                std::cout << "+" << std::endl;
+                //std::cout << "+" << std::endl;
+                zoomlevel -= 0.25;
                 break;
             case 47:
-                std::cout << "-" << std::endl;
+                //std::cout << "-" << std::endl;
+                zoomlevel += 0.25;
                 break;
             case GLFW_KEY_K:
                 std::cout << "K" << std::endl;
@@ -276,8 +279,8 @@ void readkeybindings(){
     #if defined _WIN32
     printf("windows");
     #elif defined __APPLE__
-    char const *p = "keybinding_macos.txt";
-    bind = readfile(p);
+    //char const *p = "keybinding_macos.txt";
+    //bind = readfile(p);
     //assignbinding(bind);
     #elif defined __linux__
     printf("linux");

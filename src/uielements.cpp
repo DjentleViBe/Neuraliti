@@ -7,7 +7,6 @@
 #define GL_SILENCE_DEPRECATION
 #include "GLFW/glfw3.h" // Will drag system OpenGL headers
 #include "uielements.h"
-#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "shader_s.h"
 #include "creategeom.h"
@@ -16,10 +15,22 @@
 #include "imgui_impl_opengl3.h"
 #include "menu.h"
 #include "keybindings.h"
-#include "Extras.h"
+#include "extras.h"
 #include "imfilebrowser.h"
 #include "windowing.h"
 #include "picojson.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include "loadfont.hpp"
+#include "datatypes.hpp"
+#include "createobjs.hpp"
+#include "fileoperations.hpp"
+#include "initobjs.hpp"
+#include "mach-o/dyld.h"
+
+#define SCR_WIDTH 1280.0f
+#define SCR_HEIGHT 960.0f
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -27,45 +38,23 @@ std::map<std::string, std::string> appsettings;
 std::vector<std::string> fontlist, configlist, fontsizelist;
 const char* homeDir = std::getenv("HOME");
 picojson::value v;
+glm::mat4 mvp;
+std::string CurrentDir;
 
+double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
+double zoomlevel = 3.0;
 bool show_demo_window;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
-ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-int 					window_width 			= 	1393;
-int 					window_height 			= 	1193;
-float vertices[] = {
-        // positions          // colors           // texture coords
-         1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-         1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-        -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-        -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
-    };
-unsigned int indices[] = {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
+ImVec4 clear_color          = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+int window_width 			= 1280;
+int window_height 			= 960;
+float primary_color_1[]     = {0.93725, 0.89019, 0.79215};
+float primary_color_2[]     = {0.12941, 0.12941, 0.15294};
+float primary_color_3[]     = {1.0, 1.0, 1.0};
 
-float primary_color_1[] = {0.93725, 0.89019, 0.79215};
-float primary_color_2[] = {0.12941, 0.12941, 0.15294};
-float box1vert[] = {
-        // positions          // colors           // texture coords
-         0.5f,  0.5f, 0.0f,  primary_color_2[0], primary_color_2[1], primary_color_2[2],  // top right
-         0.5f, -0.5f, 0.0f,  primary_color_2[0], primary_color_2[1], primary_color_2[2],  // bottom right
-        -0.5f, -0.5f, 0.0f,  primary_color_2[0], primary_color_2[1], primary_color_2[2], // bottom left
-        -0.5f,  0.5f, 0.0f,  primary_color_2[0], primary_color_2[1], primary_color_2[2] // top left
-    };
-unsigned int box1ind[] = {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
-
-
-unsigned int VBO, VAO, EBO;
-unsigned int VBO_box, VAO_box, EBO_box;
 GLFWwindow* window;
-unsigned int texture1, texture_box;
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -109,12 +98,12 @@ void loadfont(ImGuiIO& io){
         0
     };
     addlogs("Font loading\n");
-    io.Fonts->AddFontFromFileTTF(("../assets/fonts/" + appsettings["defaultfont"]).c_str() , std::stof(appsettings["fontsize"]));
+    io.Fonts->AddFontFromFileTTF((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str() , std::stof(appsettings["fontsize"]));
     static ImFontConfig cfg;
     cfg.OversampleH = cfg.OversampleV = 2;
     cfg.MergeMode = true;
     #if defined __APPLE__
-    io.Fonts->AddFontFromFileTTF(("../assets/fonts/" +appsettings["defaultfont"]).c_str() , 17, &cfg,
+    io.Fonts->AddFontFromFileTTF((CurrentDir + "/assets/fonts/" +appsettings["defaultfont"]).c_str() , 17, &cfg,
                                  myGlyphRanges);
     #endif
     io.Fonts->Build();
@@ -122,15 +111,22 @@ void loadfont(ImGuiIO& io){
 }
 
 int INITgraphics(){
-    std::string currentDir = GetCurrentWorkingDirectory();
-    if (!currentDir.empty()) {
-        std::cout << "Current working directory: " << currentDir << std::endl;
+    
+    char path[1024];
+    uint32_t size = sizeof(path);
+    if (_NSGetExecutablePath(path, &size) == 0){
+        printf("executable path is %s\n", path);
     }
-    else {
-        std::cerr << "Error: Unable to retrieve current working directory." << std::endl;
-        }
+    else{
+        printf("buffer too small; need size %u\n", size);
+        return 1;
+    }
+    std::cout << "read";
     // Initial startup
-    loadconfig("../prefs.json");
+    addlogs("Opening preferences\n");
+    CurrentDir = std::string(path).erase(std::string(path).size() - 9);
+    
+    loadconfig(CurrentDir + "/prefs.json");
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -155,19 +151,13 @@ int INITgraphics(){
         const char* glsl_version = "#version 130";
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-        //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-        //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
     #endif
 
-    // Create window with graphics context
-    //const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    //window = glfwCreateWindow(mode->width, mode->height, "GENT",  NULL, NULL);
     window = glfwCreateWindow(window_width, window_height, "GENT",  NULL, NULL);
-    glfwSetWindowAspectRatio(window,1189,1000);
+    //glfwSetWindowAspectRatio(window,1189,1000);
     if (window == NULL)
         return 1;
     glfwMakeContextCurrent(window);
-    
 
     glfwSwapInterval(1); // Enable vsync
     // Setup Platform/Renderer backends
@@ -177,9 +167,7 @@ int INITgraphics(){
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
-    //InitRectangle(sizeof(vertices), vertices, sizeof(indices), indices, texture1, VBO, VAO, EBO, "simpleshader.vs", "simpleshader.fs");
-    InitRectangle(sizeof(box1vert), box1vert, sizeof(box1ind), box1ind, texture_box, VBO_box, VAO_box, EBO_box, "windowshader.vs", "windowshader.fs");
+    
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -199,46 +187,151 @@ int INITgraphics(){
     ImGui_ImplOpenGL3_Init(glsl_version);
     
     loadfont(io);
-    readkeybindings();
+    //readkeybindings();
+    
+    //glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     addlogs("Initialisation ended\n");
+    addlogs("Opening file\n");
+    initobjs(CurrentDir + "/Untitled-1.pd");
     return 0;
 }
 
+GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point, double transX, double transY){
+    
+    glm::mat4 projection = glm::perspective(glm::radians(35.0f), 1.0f, 0.1f, 100.0f);
+    //glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.5f, 1.5f);
+    // Camera matrix
+    Xpos -= transX * 0.01;
+    Ypos += transY * 0.01;
+    glm::mat4 View = glm::lookAt(
+        glm::vec3(0, 0, zoomlevel), // Camera is at (0,0,0), in World Space
+        glm::vec3(Xpos, Ypos, 0), // and looks at the origin
+        glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+        );
+    // Step 1: Translate the point to the origin
+    glm::mat4 translateToOrigin = glm::translate(glm::mat4(1.0f), -point);
+
+    // Step 2: Perform scaling operation
+    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(SCR_WIDTH / wid, SCR_HEIGHT / hei, 1));
+
+    // Step 3: Translate the point back to its original position
+    glm::mat4 translateBack = glm::translate(glm::mat4(1.0f), point);
+    // Our ModelViewProjection: multiplication of our 3 matrices
+    mvp =  projection * View * translateBack * scaleMatrix * translateToOrigin;
+    //GLuint MatrixID = glGetUniformLocation(mainShader.ID, "ProjMat");
+    return 0;
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    //std::cout << window_width << "\n";
+    //glViewport(0, 0, height, height);
+    //Shader objShader("../assets/objshader.vs", "../assets/objshader.fs");
+    //Shader fontShader("../assets/objshader.vs", "../assets/objshader.fs");
+    //scale window
+    
+    //addlogs("scaled");
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos){
+    Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
+    int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+    double deltaX = xpos - tempmouseX;
+    double deltaY = ypos - tempmouseY;
+    if (state == GLFW_PRESS){
+        calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), deltaX * 0.1, deltaY * 0.1);
+        }
+    tempmouseX = xpos;
+    tempmouseY = ypos;
+}
+
+void processInput(GLFWwindow *window) {
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+        std::cout << "pressed" << "\n";
+    }
+}
+
 void Displayloop(char **argv){
+    //int display_w, display_h;
     bool show_demo_window = true;
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
-    Shader ourShader("simpleshader.vs", "simpleshader.fs");
-    Shader ourwinShader("windowshader.vs", "windowshader.fs");
+    
+    Shader fontShader((CurrentDir + "/bin/fontshader.vs").c_str(), (CurrentDir + "/bin/fontshader.fs").c_str());
+    Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-    // Main loop
+    
+    calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
+    
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    //glfwSetMouseButtonCallback(window, mouse_button_callback);
+    
+    // loop through objects here
+    NeuralObj **MyObj_rect = new NeuralObj*[objnumber];
+    for (int i = 0; i < objnumber; ++i) {
+        auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
+        MyObj_rect[i] = new NeuralObj(std::get<0>(result));
+    }
+    NeuralObj **MyObj_font = new NeuralObj*[objnumber];
+    for (int i = 0; i < objnumber; ++i) {
+        auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
+        MyObj_font[i] = new NeuralObj(std::get<1>(result));
+    }
+
     while (!glfwWindowShouldClose(window))
-    {   
+    {
         glfwGetWindowSize(window, &window_width, &window_height);
         glfwSetKeyCallback(window, key_callback);
+        glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
+        objShader.use();
+        for (int i = 0; i < objnumber; ++i) {
+            MyObj_rect[i]->Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_rect[i]->Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, MyObj_rect[i]->texture);
+            glBindVertexArray(MyObj_rect[i]->VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+        
+        fontShader.use();
+        for (int i = 0; i < objnumber; ++i) {
+            MyObj_font[i]->Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_font[i]->Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, MyObj_font[i]->texture);
+            glBindVertexArray(MyObj_font[i]->VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        
-        //
+        ShowMenu(&show_demo_window);
         ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::SetNextWindowPos(ImVec2(0, 20));
 
         ImGui::Begin("Window A");
         ImGui::Text("NEURALITI");
         // open file dialog when user clicks this button
         
-                
         if(fileDialog.HasSelected()){
             std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
             fileDialog.ClearSelected();
         }
         ImGui::End();
 
-        
-        //
         ImGui::SetNextWindowSize(ImVec2(window_width - (window_width / 4.0), window_height - window_height * 5.0 / 6.0));
         ImGui::SetNextWindowPos(ImVec2(window_width / 4.0, (window_height * 5.0 / 6.0)));
 
@@ -269,39 +362,15 @@ void Displayloop(char **argv){
                     "1\0");
         ImGui::End();
         
-        ShowMenu(&show_demo_window);
+        
         // input
         // -----
         processInput(window);
-        glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        //glfwGetWindowSize(window, &window_width, &window_height);
-        // Poll and handle events (inputs, window resize, etc.)
-        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
-        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
-        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         
-        // bind textures on corresponding texture units
-        //first primitive
-        //glActiveTexture(GL_TEXTURE0);
-        //glBindTexture(GL_TEXTURE_2D, texture1);
-        //ourShader.use();
-        //glBindVertexArray(VAO);
-        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         // second primitive
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture_box);
-        ourwinShader.use();
-        glBindVertexArray(VAO_box);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
         ImGui::Render();
-        int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
-        //glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-        //glClear(GL_COLOR_BUFFER_BIT);
+
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         
         glfwSwapBuffers(window);
@@ -313,28 +382,15 @@ void Displayloop(char **argv){
     ImGui::DestroyContext();
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    /*glDeleteVertexArrays(1, &MyObj1.VAO);
+    glDeleteBuffers(1, &MyObj1.VBO);
+    glDeleteBuffers(1, &MyObj1.EBO);
 
+    glDeleteVertexArrays(1, &MyObj2.VAO);
+    glDeleteBuffers(1, &MyObj2.VBO);
+    glDeleteBuffers(1, &MyObj2.EBO);*/
+    
     glfwDestroyWindow(window);
     glfwTerminate();
 
-}
-
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-}
-
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
 }
