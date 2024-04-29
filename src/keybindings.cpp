@@ -130,7 +130,7 @@
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if(glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS &&
+    if((glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SUPER) == GLFW_PRESS) &&
        glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) != GLFW_PRESS){
         switch(key){
             // File
