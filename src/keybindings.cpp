@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include "keybindings.h"
-#include "GLFW/glfw3.h"
-#include "extras.h"
-#include "uielements.h"
+#include "../dependencies/include/keybindings.h"
+#include "../dependencies/include/GLFW/glfw3.h"
+#include "../dependencies/include/extras.h"
+#include "../dependencies/include/uielements.h"
 
 #define     GLFW_KEY_SPACE          32
 #define     GLFW_KEY_APOSTROPHE     39 /* ' */

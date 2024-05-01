@@ -3,31 +3,31 @@
 #include <ctime>
 #include <map>
 #include <string>
-#include "glad/glad.h"
+#include "../dependencies/include/glad/glad.h"
 #define GL_SILENCE_DEPRECATION
-#include "GLFW/glfw3.h" // Will drag system OpenGL headers
-#include "uielements.h"
-#include "stb_image.h"
-#include "shader_s.h"
-#include "creategeom.h"
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include "menu.h"
-#include "keybindings.h"
-#include "extras.h"
-#include "imfilebrowser.h"
-#include "windowing.h"
-#include "picojson.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include "loadfont.hpp"
-#include "datatypes.hpp"
-#include "createobjs.hpp"
-#include "fileoperations.hpp"
-#include "initobjs.hpp"
-#include "mach-o/dyld.h"
+#include "../dependencies/include/GLFW/glfw3.h" // Will drag system OpenGL headers
+#include "../dependencies/include/uielements.h"
+#include "../dependencies/include/stb_image.h"
+#include "../dependencies/include/shader_s.h"
+#include "../dependencies/include/creategeom.h"
+#include "../dependencies/include/imgui.h"
+#include "../dependencies/include/imgui_impl_glfw.h"
+#include "../dependencies/include/imgui_impl_opengl3.h"
+#include "../dependencies/include/menu.h"
+#include "../dependencies/include/keybindings.h"
+#include "../dependencies/include/extras.h"
+//#include "../dependencies/include/imfilebrowser.h"
+#include "../dependencies/include/windowing.h"
+#include "../dependencies/include/picojson.h"
+#include "../dependencies/include/glm/glm.hpp"
+#include "../dependencies/include/glm/gtc/matrix_transform.hpp"
+#include "../dependencies/include/glm/gtc/type_ptr.hpp"
+#include "../dependencies/include/loadfont.hpp"
+#include "../dependencies/include/datatypes.hpp"
+#include "../dependencies/include/createobjs.hpp"
+#include "../dependencies/include/fileoperations.hpp"
+#include "../dependencies/include/initobjs.hpp"
+#include <mach-o/dyld.h>
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
@@ -36,14 +36,14 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 std::map<std::string, std::string> appsettings;
 std::vector<std::string> fontlist, configlist, fontsizelist;
-const char* homeDir = std::getenv("HOME");
+const char* homeDir;
 picojson::value v;
 glm::mat4 mvp;
 std::string CurrentDir;
 
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
 double zoomlevel = 3.0;
-bool show_demo_window;
+bool show_demo_window = true;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
@@ -61,7 +61,7 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
-int loadconfig(std::string path){
+int loadconfig(const std::string& path){
     // read default preferences //
     std::string defaultprefs;
     defaultprefs = readfileconcat(path.c_str());
@@ -74,9 +74,8 @@ int loadconfig(std::string path){
         std::cerr << "Error parsing JSON: " << err << std::endl;
         return 1;
     }
-    
     // Access JSON values
-    std::string name = v.get("Media").get("Preferences").to_str();
+    //std::string name = v.get("Media").get("Preferences").to_str();
     addlogs("Initialisation started\n");
     appsettings["defaultfolder"] = std::string(homeDir) + v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("defaultfolder").to_str();
     //double age = v.get("id").get<double>();
@@ -112,6 +111,8 @@ void loadfont(ImGuiIO& io){
 
 int INITgraphics(){
     
+    homeDir = std::getenv("HOME");
+    std::cout << std::string(homeDir);
     char path[1024];
     uint32_t size = sizeof(path);
     if (_NSGetExecutablePath(path, &size) == 0){
@@ -121,11 +122,10 @@ int INITgraphics(){
         printf("buffer too small; need size %u\n", size);
         return 1;
     }
-    std::cout << "read";
     // Initial startup
     addlogs("Opening preferences\n");
     CurrentDir = std::string(path).erase(std::string(path).size() - 9);
-    
+    std::cout << CurrentDir;
     loadconfig(CurrentDir + "/prefs.json");
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
@@ -199,7 +199,7 @@ int INITgraphics(){
     return 0;
 }
 
-GLuint calculate_view(Shader mainShader, float wid, float hei, glm::vec3 point, double transX, double transY){
+GLuint calculate_view(float wid, float hei, glm::vec3 point, double transX, double transY){
     
     glm::mat4 projection = glm::perspective(glm::radians(35.0f), 1.0f, 0.1f, 100.0f);
     //glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 0.5f, 1.5f);
@@ -236,12 +236,12 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos){
-    Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
+    //Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
     double deltaX = xpos - tempmouseX;
     double deltaY = ypos - tempmouseY;
     if (state == GLFW_PRESS){
-        calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), deltaX * 0.1, deltaY * 0.1);
+        calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), deltaX * 0.1, deltaY * 0.1);
         }
     tempmouseX = xpos;
     tempmouseY = ypos;
@@ -252,16 +252,14 @@ void processInput(GLFWwindow *window) {
         glfwSetWindowShouldClose(window, true);
 }
 
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-{
+void mouse_button_callback(GLFWwindow* window, int button, int action){
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
         std::cout << "pressed" << "\n";
     }
 }
 
-void Displayloop(char **argv){
+void Displayloop(){
     //int display_w, display_h;
-    bool show_demo_window = true;
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
     
@@ -270,7 +268,7 @@ void Displayloop(char **argv){
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
     
-    calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
+    calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
     
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -287,7 +285,7 @@ void Displayloop(char **argv){
         auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
         MyObj_font[i] = new NeuralObj(std::get<1>(result));
     }
-
+    
     while (!glfwWindowShouldClose(window))
     {
         glfwGetWindowSize(window, &window_width, &window_height);
@@ -295,7 +293,7 @@ void Displayloop(char **argv){
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        calculate_view(objShader, window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
+        calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
         objShader.use();
         for (int i = 0; i < objnumber; ++i) {
             MyObj_rect[i]->Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
@@ -380,6 +378,8 @@ void Displayloop(char **argv){
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    delete[] MyObj_font;
+    delete[] MyObj_rect;
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     /*glDeleteVertexArrays(1, &MyObj1.VAO);

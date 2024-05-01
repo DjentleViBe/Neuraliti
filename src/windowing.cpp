@@ -2,13 +2,13 @@
 #include <cstdlib> // for _getcwd (Windows) or getcwd (Unix-like)
 #include <unistd.h>
 #include <fstream>
-#include "windowing.h"
-#include "imgui.h"
-#include "imfilebrowser.h"
-#include "uielements.h"
-#include "menu.h"
-#include "extras.h"
-#include "picojson.h"
+#include "../dependencies/include/windowing.h"
+#include "../dependencies/include/imgui.h"
+#include "../dependencies/include/imfilebrowser.h"
+#include "../dependencies/include/uielements.h"
+#include "../dependencies/include/menu.h"
+#include "../dependencies/include/extras.h"
+#include "../dependencies/include/picojson.h"
 
 void editprefwindow(ImGui::FileBrowser fileDialog){
     // Buffer to hold the current working directory
