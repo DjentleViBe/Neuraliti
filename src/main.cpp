@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <iostream>
-#include "uielements.h"
+#include "../dependencies/include/uielements.h"
 
-int main(int, char ** argv)
+int main()
 {
 	
 	INITgraphics();
-    Displayloop(argv);
+    Displayloop();
 	
 	return 0;
 }

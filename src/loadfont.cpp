@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "loadfont.hpp"
+#include "../dependencies/include/loadfont.hpp"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h" // http://nothings.org/stb/stb_image_write.h //
+#include "../dependencies/include/stb_image_write.h" // http://nothings.org/stb/stb_image_write.h //
 #include <iostream>
 #define STB_TRUETYPE_IMPLEMENTATION
-#include "stb_truetype.h" // http://nothings.org/stb/stb_truetype.h //
+#include "../dependencies/include/stb_truetype.h" // http://nothings.org/stb/stb_truetype.h //
 #define GL_SILENCE_DEPRECATION
-#include "glfw3.h"
-#include "shader_s.h"
-#include "uielements.h"
+#include "../dependencies/include/GLFW/glfw3.h"
+#include "../dependencies/include/shader_s.h"
+#include "../dependencies/include/uielements.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "../dependencies/include/stb_image.h"
 
 unsigned char* loadfont(std::string fontname,std::string sentence)
 {

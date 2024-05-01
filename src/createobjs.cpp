@@ -1,8 +1,8 @@
-#include "createobjs.hpp"
+#include "../dependencies/include/createobjs.hpp"
 #include "stdio.h"
 #include <string>
-#include "datatypes.hpp"
-#include "creategeom.h"
+#include "../dependencies/include/datatypes.hpp"
+#include "../dependencies/include/creategeom.h"
 float primary_color_4[]     = {0.12941, 0.12941, 0.15294};
 float primary_color_5[]     = {1.0, 1.0, 1.0};
 int createobjs(){
