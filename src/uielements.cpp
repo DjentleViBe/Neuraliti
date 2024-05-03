@@ -40,19 +40,25 @@ const char* homeDir;
 picojson::value v;
 glm::mat4 mvp;
 std::string CurrentDir;
-
+int globalfontsize = 0;
 double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
 double zoomlevel = 3.0;
 bool show_demo_window = true;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
-ImVec4 clear_color          = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+//ImVec4 clear_color          = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 int window_width 			= 1280;
 int window_height 			= 960;
-float primary_color_1[]     = {0.93725, 0.89019, 0.79215};
-float primary_color_2[]     = {0.12941, 0.12941, 0.15294};
-float primary_color_3[]     = {1.0, 1.0, 1.0};
+float primary_color_1[]     = {0.8196, 0.8352, 0.8313}; // grey
+float primary_color_2[]     = {0.12941, 0.1568, 0.1960}; // blue
+float primary_color_3[]     = {0.9490, 0.9490, 0.9372}; // white
+float primary_color_4[]     = {0.9411, 0.4705, 0.2235}; // orange
+float primary_color_5[]     = {0.2313, 0.6862, 0.6862}; // green
+float primary_color_6[]     = {0.9529, 0.6666, 0.2549}; // yellow
+float primary_color_7[]     = {0.2784, 0.4705, 0.4901}; // dark green
+std::vector<int> globalinlets;
+std::vector<int> globaloutlets;
 
 GLFWwindow* window;
 
@@ -83,6 +89,7 @@ int loadconfig(const std::string& path){
     appsettings["defaultfont"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("font").to_str();
     addlogs("Default font : " + appsettings["defaultfont"] + "\n");
     appsettings["fontsize"] =  v.get("Media").get("Preferences").get("EditPreferences").get("defaults").get("fontsize").to_str();
+    globalfontsize = stoi(appsettings["fontsize"]);
     fontlist = listfiles(appsettings["defaultfolder"] + "/fonts", ".ttf");
     configlist = listfiles(appsettings["defaultfolder"], ".json");
     fontsizelist = {"12", "13", "14", "15", "16", "17", "18"};
@@ -196,6 +203,8 @@ int INITgraphics(){
     addlogs("Initialisation ended\n");
     addlogs("Opening file\n");
     initobjs(CurrentDir + "/Untitled-1.pd");
+    printvector(globalinlets, "Inlets");
+    printvector(globaloutlets, "Outlets");
     return 0;
 }
 
@@ -265,6 +274,8 @@ void Displayloop(){
     
     Shader fontShader((CurrentDir + "/bin/fontshader.vs").c_str(), (CurrentDir + "/bin/fontshader.fs").c_str());
     Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
+    Shader nodeShader((CurrentDir + "/bin/inletshader.vs").c_str(), (CurrentDir + "/bin/inletshader.fs").c_str());
+    
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
     
@@ -273,19 +284,19 @@ void Displayloop(){
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     //glfwSetMouseButtonCallback(window, mouse_button_callback);
-    
+
+    //nodeShader.use();
     // loop through objects here
-    NeuralObj **MyObj_rect = new NeuralObj*[objnumber];
+    NeuralObj *MyObj_rect = new NeuralObj[objnumber];
     for (int i = 0; i < objnumber; ++i) {
-        auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
-        MyObj_rect[i] = new NeuralObj(std::get<0>(result));
+        MyObj_rect[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0);
+
     }
-    NeuralObj **MyObj_font = new NeuralObj*[objnumber];
+    NeuralObj *MyObj_font = new NeuralObj[objnumber];
     for (int i = 0; i < objnumber; ++i) {
-        auto result = createobj1(Xposition[i], Yposition[i], objectnames[i]);
-        MyObj_font[i] = new NeuralObj(std::get<1>(result));
+        MyObj_font[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1);
     }
-    
+
     while (!glfwWindowShouldClose(window))
     {
         glfwGetWindowSize(window, &window_width, &window_height);
@@ -294,25 +305,37 @@ void Displayloop(){
         glClear(GL_COLOR_BUFFER_BIT);
         
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
-        objShader.use();
+        
         for (int i = 0; i < objnumber; ++i) {
-            MyObj_rect[i]->Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_rect[i]->Matrix, 1, GL_FALSE, &mvp[0][0]);
+            objShader.use();
+            MyObj_rect[i].Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, MyObj_rect[i]->texture);
-            glBindVertexArray(MyObj_rect[i]->VAO);
+            glBindTexture(GL_TEXTURE_2D, MyObj_rect[i].texture);
+            glBindVertexArray(MyObj_rect[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+            nodeShader.use();
+            MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glBindVertexArray(MyObj_rect[i].inquadVAO);
+            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Inletnum); 
+
+            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
+            glBindVertexArray(MyObj_rect[i].outquadVAO);
+            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Outletnum); 
         }
         
         fontShader.use();
         for (int i = 0; i < objnumber; ++i) {
-            MyObj_font[i]->Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_font[i]->Matrix, 1, GL_FALSE, &mvp[0][0]);
+            MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
+            glUniformMatrix4fv(MyObj_font[i].Matrix, 1, GL_FALSE, &mvp[0][0]);
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, MyObj_font[i]->texture);
-            glBindVertexArray(MyObj_font[i]->VAO);
+            glBindTexture(GL_TEXTURE_2D, MyObj_font[i].texture);
+            glBindVertexArray(MyObj_font[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
