@@ -16,7 +16,7 @@ extern float primary_color_6[3]; // yellow
 extern float primary_color_7[3]; // dark green
 
 extern int window_width, window_height;
-extern double zoomlevel;
+extern float zoomlevel;
 extern std::map<std::string, std::string> appsettings;
 extern std::string CurrentDir;
 extern int globalfontsize;
