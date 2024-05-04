@@ -141,7 +141,7 @@ NeuralObj createoutlets(NeuralObj &MyObj){
             glm::vec2 translation;
             translation.x = MyObj.x + offset;
             //translation.y = (float)y / 10.0f + offset;
-            translation.y = MyObj.y - 0.02f - globalfontsize * 3.0/window_height;
+            translation.y = MyObj.y - 0.02f - globalfontsize * 2.3/window_height;
             translations[index++] = translation;
             offset += fmax(sentence_width, globalfontsize * 3.0) / window_width - 0.02f;
         }
@@ -180,7 +180,7 @@ NeuralObj createobj(NeuralObj &MyObj){
     // render font
     // create the background box
     sentence_width = MyObj.objname.length() * globalfontsize * 2.0;
-    drawobject(MyObj.x, MyObj.y, MyObj.color, MyObj.verts, fmax(sentence_width, globalfontsize * 3.0), globalfontsize * 3.0);
+    drawobject(MyObj.x, MyObj.y, MyObj.color, MyObj.verts, fmax(sentence_width, globalfontsize * 3.0), globalfontsize * 2.3);
     unsigned int indices[] = {
             0, 1, 3, // first triangle
             1, 2, 3  // second triangle
