@@ -22,8 +22,19 @@ class NeuralObj {       // The class
     GLuint Matrix;
     int Inletnum;
     int Outletnum;
-    int *Inlets;        // store inlet types
-    int *Outlets;       // store outlet types
+    int **Inlets;        // store inlet types
+    int **Outlets;       // store outlet types
+};
+
+class NeuralLines {
+  public:
+    float startx;
+    float starty;
+    float endx;
+    float endy;
+    unsigned int VAO, VBO, EBO;
+    GLuint Matrix;
+    unsigned int texture;
 };
 
 #endif

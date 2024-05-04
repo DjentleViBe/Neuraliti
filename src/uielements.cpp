@@ -275,6 +275,7 @@ void Displayloop(){
     Shader fontShader((CurrentDir + "/bin/fontshader.vs").c_str(), (CurrentDir + "/bin/fontshader.fs").c_str());
     Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     Shader nodeShader((CurrentDir + "/bin/inletshader.vs").c_str(), (CurrentDir + "/bin/inletshader.fs").c_str());
+    Shader lineShader((CurrentDir + "/bin/lineshader.vs").c_str(), (CurrentDir + "/bin/lineshader.fs").c_str());
     
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
@@ -290,12 +291,24 @@ void Displayloop(){
     NeuralObj *MyObj_rect = new NeuralObj[objnumber];
     for (int i = 0; i < objnumber; ++i) {
         MyObj_rect[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0);
-
+        MyObj_rect[i].Inlets = new int*[MyObj_rect[i].Inletnum];
+        MyObj_rect[i].Outlets = new int*[MyObj_rect[i].Outletnum];
     }
     NeuralObj *MyObj_font = new NeuralObj[objnumber];
     for (int i = 0; i < objnumber; ++i) {
         MyObj_font[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1);
     }
+
+    NeuralLines *MyObj_lines = new NeuralLines[5];
+    MyObj_lines[0] = createline1(0, 0, 0.25, 0.25);
+
+    // inlet outlet mapping
+    MyObj_rect[1].Inlets[0] = new int[4];
+    MyObj_rect[0].Outlets[0] = new int[4];
+    MyObj_rect[1].Inlets[0] = MyObj_rect[0].Outlets[0];
+    MyObj_rect[0].Outlets[0][0] = 10;
+    MyObj_rect[0].Outlets[0][1] = 20;
+    std::cout << MyObj_rect[1].Inlets[0][1] * 20 << "\n";
 
     while (!glfwWindowShouldClose(window))
     {
@@ -325,6 +338,13 @@ void Displayloop(){
             glBindVertexArray(MyObj_rect[i].outquadVAO);
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Outletnum); 
         }
+        
+        
+        lineShader.use();
+        MyObj_lines[0].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
+        glUniformMatrix4fv(MyObj_lines[0].Matrix, 1, GL_FALSE, &mvp[0][0]);
+        glBindVertexArray(MyObj_lines[0].VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
         fontShader.use();
         for (int i = 0; i < objnumber; ++i) {
