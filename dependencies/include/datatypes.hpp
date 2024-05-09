@@ -27,8 +27,14 @@ class NeuralObj {       // The class
     int Outletnum;
     int **Inlets;        // store inlet types
     int **Outlets;       // store outlet types
-    float x_project;
     glm::vec4 result;
+    float sentencewidth;
+    float sentenceheight;
+    int select;
+    float offsetx;
+    float offsety;
+    float transX;
+    float transY;
 };
 
 class NeuralLines {

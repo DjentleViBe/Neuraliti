@@ -41,8 +41,12 @@ picojson::value v;
 glm::mat4* mvp;
 NeuralObj *MyObj_rect;
 std::string CurrentDir;
+int selectindex;
+bool selected;
+glm::vec2 mouseloc;
+std::vector<unsigned char> pixels(window_width * window_height); // Assuming RGB color format
 int globalfontsize = 0;
-double Xpos, Ypos ,tempmouseX, tempmouseY = 0.0;
+double Xpos, Ypos ,tempmouseX, tempmouseY, transmouseX, transmouseY = 0.0;
 float zoomlevel = 1.15f;
 bool show_demo_window = true;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
@@ -51,12 +55,13 @@ bool show_demo_window = true;
 int window_width 			= 1280;
 int window_height 			= 960;
 float primary_color_1[]     = {0.8196, 0.8352, 0.8313}; // grey
-float primary_color_2[]     = {0.12941, 0.1568, 0.1960}; // blue
+float primary_color_2[]     = {0.1294, 0.1568, 0.1960}; // blue
 float primary_color_3[]     = {0.9490, 0.9490, 0.9372}; // white
 float primary_color_4[]     = {0.9411, 0.4705, 0.2235}; // orange
 float primary_color_5[]     = {0.2313, 0.6862, 0.6862}; // green
 float primary_color_6[]     = {0.9529, 0.6666, 0.2549}; // yellow
 float primary_color_7[]     = {0.2784, 0.4705, 0.4901}; // dark green
+float primary_color_8[]     = {0.1647, 0.2862, 0.4784}; // IMGUI blue
 std::vector<int> globalinlets;
 std::vector<int> globaloutlets;
 
@@ -200,8 +205,8 @@ int INITgraphics(){
     addlogs("Initialisation ended\n");
     addlogs("Opening file\n");
     initobjs(CurrentDir + "/Untitled-1.pd");
-    printvector(globalinlets, "Inlets");
-    printvector(globaloutlets, "Outlets");
+    //printvector(globalinlets, "Inlets");
+    //printvector(globaloutlets, "Outlets");
     return 0;
 }
 
@@ -228,11 +233,10 @@ GLuint calculate_view(float wid, float hei, glm::vec3 point, double transX, doub
     glm::mat4 translateBack = glm::translate(glm::mat4(1.0f), point);
     // Our ModelViewProjection: multiplication of our 3 matrices
     for(int m = 0; m < objnumber; m++){
-        mvp[m] =  projection * View * translateBack * scaleMatrix * translateToOrigin;
+        glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(MyObj_rect[m].offsetx, MyObj_rect[m].offsety, 0.0));
+        mvp[m] = projection * View * translateBack * scaleMatrix * translateToOrigin * translate;
         MyObj_rect[m].result = mvp[m] * glm::vec4(MyObj_rect[m].x, MyObj_rect[m].y, 0.0, 1.0);
     }
-    //std::cout << MyObj_rect[0].result.x << "\n";
-    //std::cout << Xpos << "\n";
     return 0;
 }
 
@@ -245,20 +249,40 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     
     //addlogs("scaled");
 }
+double deltaX;
+double deltaY;
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos){
+    ImGui_ImplGlfw_CursorPosCallback(window, xpos, ypos);
     int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
-    double deltaX = xpos - tempmouseX;
-    double deltaY = ypos - tempmouseY;
-    if (state == GLFW_PRESS){
-        // if pressed at an empty space
-        calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), deltaX * 0.1, deltaY * 0.1);
-        // if an object is pressed
-        addlogs(std::to_string((xpos * 2 / window_width) - 1) + "\n");
-        }
     
+    float boundingx = (xpos * 2 / window_width) - 1;
+    float boundingy = -(ypos * 2 / window_height) + 1;
+
+    if (state == GLFW_PRESS){
+        if(selected){
+            transmouseX = mouseloc.x;
+            transmouseY = mouseloc.y;
+            deltaX = boundingx - transmouseX;
+            deltaY = boundingy - transmouseY;
+            MyObj_rect[selectindex].offsetx = MyObj_rect[selectindex].transX + deltaX;
+            MyObj_rect[selectindex].offsety = MyObj_rect[selectindex].transY + deltaY;
+        }
+        else{
+            deltaX = xpos - tempmouseX;
+            deltaY = ypos - tempmouseY;
+            calculate_view(window_width, window_height, glm::vec3(-0.45f, 0.0f, 0.0f), deltaX * 0.1, deltaY * 0.1);
+        }
+    }
+    if(state == GLFW_RELEASE){
+        MyObj_rect[selectindex].transX = MyObj_rect[selectindex].offsetx;
+        MyObj_rect[selectindex].transY = MyObj_rect[selectindex].offsety;
+    }
     tempmouseX = xpos;
     tempmouseY = ypos;
+    transmouseX = boundingx;
+    transmouseY = boundingy;
+    
 }
 
 void processInput(GLFWwindow *window) {
@@ -269,10 +293,44 @@ void processInput(GLFWwindow *window) {
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods){
     ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-        std::cout << "pressed" << "\n";
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
-        addlogs(std::to_string((xpos * 2 / window_width) - 1) + "\n");
+        float boundingx = (xpos * 2 / window_width) - 1;
+        float boundingy = -(ypos * 2 / window_height) + 1;
+
+        for(int o = 0; o < objnumber; o++){
+            if(MyObj_rect[o].result.x < boundingx && MyObj_rect[o].result.x + MyObj_rect[o].sentencewidth > boundingx){
+                if(MyObj_rect[o].result.y > boundingy && MyObj_rect[o].result.y - MyObj_rect[o].sentenceheight < boundingy){
+                    addlogs("Pressed :" + MyObj_rect[o].objname + "\n");
+                    MyObj_rect[o].select = 1;
+                    selectindex = o;
+                    selected = true;
+                    mouseloc.x = boundingx;
+                    mouseloc.y = boundingy;
+                    break;
+                }
+            }
+            else{
+                selected = false;
+            }
+        }
+        float xscale, yscale;
+        GLFWmonitor* primary = glfwGetPrimaryMonitor();
+        glfwGetMonitorContentScale(primary, &xscale, &yscale);
+        unsigned char pick_col[0];
+        glReadPixels(xpos*xscale, (window_height - ypos)*yscale, 1, 1, GL_RED, GL_UNSIGNED_BYTE, pick_col);
+        if(abs(static_cast<int>(pick_col[0]) / 255.0 - primary_color_1[0]) < 0.001){
+            std::cout << "reset\n";
+            for(int o = 0; o < objnumber; o++){
+                MyObj_rect[o].select = 0;
+            }
+        }
+    }
+    if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
+        //MyObj_rect[selectindex].x = MyObj_rect[selectindex].offsetx;
+        //MyObj_rect[selectindex].y = MyObj_rect[selectindex].offsety;
+        //MyObj_rect[selectindex].offsetx = 0.0;
+        //MyObj_rect[selectindex].offsety = 0.0;
     }
 }
 
@@ -287,10 +345,6 @@ void Displayloop(){
     
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-    
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetMouseButtonCallback(window, mouse_button_callback);
 
     //nodeShader.use();
     // loop through objects here
@@ -313,7 +367,12 @@ void Displayloop(){
     MyObj_rect[1].Inlets[0] = MyObj_rect[0].Outlets[0];
     MyObj_rect[0].Outlets[0][0] = 10;
     MyObj_rect[0].Outlets[0][1] = 20;
-    calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), Xpos, Ypos);
+    calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), Xpos, Ypos);
+    unsigned int objectColorLoc = glGetUniformLocation(objShader.ID, "aColor");
+
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
     
     while (!glfwWindowShouldClose(window))
     {
@@ -322,8 +381,7 @@ void Displayloop(){
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        calculate_view(window_width, window_height, glm::vec3(-0.45, 0.1f, 0.0f), 0.0, 0.0);
-        
+        calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), 0.0, 0.0);
         lineShader.use();
         for (int i = 0; i < connectnumber; i++){
             MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
@@ -332,7 +390,6 @@ void Displayloop(){
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
         
-        
         for (int i = 0; i < objnumber; ++i) {
             objShader.use();
             MyObj_rect[i].Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
@@ -340,9 +397,15 @@ void Displayloop(){
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, MyObj_rect[i].texture);
             glBindVertexArray(MyObj_rect[i].VAO);
+            if(MyObj_rect[i].select == 1){
+                glUniform3fv(objectColorLoc, 1, primary_color_8);
+            }
+            else{
+                glUniform3fv(objectColorLoc, 1, primary_color_2);
+            }
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-            
+
             nodeShader.use();
             MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
             glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
@@ -422,7 +485,7 @@ void Displayloop(){
         ImGui::Render();
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -432,6 +495,7 @@ void Displayloop(){
     ImGui::DestroyContext();
     delete[] MyObj_font;
     delete[] MyObj_rect;
+    delete[] MyObj_lines;
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     /*glDeleteVertexArrays(1, &MyObj1.VAO);
