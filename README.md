@@ -11,6 +11,8 @@ Neuraliti is a Git repository dedicated to the development of audio synthesis to
 2. navigate to /bin in Terminal
 3. Launch GENT.
 
+![Screenshot](./neuraliti-screenshot.png)
+
 ## Collaborating
 Please feel free to send an Email if you would like to make contributions to this project.
 ## Roadmap

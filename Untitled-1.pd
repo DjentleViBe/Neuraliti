@@ -1,8 +1,8 @@
 #N canvas 512 341 450 300 12;
-#X obj -0.45 0.4 HelloWorld_0;
+#X obj -0.45 0.4 oscdsp;
 #X obj 0.0 0.2 *~;
-#X obj 0.20 0.0 HelloWorld_3 1 4;
-#X obj 0.15 -0.2 endWorld_4 1 2 3 4;
+#X obj 0.20 0.0 fftinverse 1 4;
+#X obj 0.15 -0.2 echo 1 2 3 4;
 #X connect 0 0 1 0;
 #X connect 1 0 2 1;
 #X connect 2 0 3 2;
