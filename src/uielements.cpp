@@ -39,6 +39,7 @@ std::vector<std::string> fontlist, configlist, fontsizelist;
 const char* homeDir;
 picojson::value v;
 glm::mat4* mvp;
+glm::mat4* mvp_lines;
 NeuralObj *MyObj_rect;
 std::string CurrentDir;
 int selectindex;
@@ -242,6 +243,11 @@ GLuint calculate_view(float wid, float hei, glm::vec3 point, double transX, doub
         mvp[m] = projection * View * translateBack * scaleMatrix * translateToOrigin * translate;
         MyObj_rect[m].result = mvp[m] * glm::vec4(MyObj_rect[m].x, MyObj_rect[m].y, 0.0, 1.0);
     }
+
+    for(int m = 0; m < objnumber; m++){
+        //glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(MyObj_rect[m].offsetx, MyObj_rect[m].offsety, 0.0));
+        mvp_lines[m] = projection * View * translateBack * scaleMatrix * translateToOrigin;
+    }
     return 0;
 }
 
@@ -378,6 +384,7 @@ void Displayloop(){
     // loop through objects here
     MyObj_rect = new NeuralObj[objnumber];
     mvp = new glm::mat4[objnumber];
+    mvp_lines = new glm::mat4[objnumber];
     for (int i = 0; i < objnumber; ++i) {
         MyObj_rect[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0);
         MyObj_rect[i].Inlets = new int*[MyObj_rect[i].Inletnum];
@@ -413,9 +420,10 @@ void Displayloop(){
         
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), 0.0, 0.0);
         lineShader.use();
+        
         for (int i = 0; i < connectnumber; i++){
             MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
+            glUniformMatrix4fv(MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp_lines[i][0][0]);
             glBindVertexArray(MyObj_lines[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
