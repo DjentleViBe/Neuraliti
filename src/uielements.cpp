@@ -49,6 +49,11 @@ int globalfontsize = 0;
 double Xpos, Ypos ,tempmouseX, tempmouseY, transmouseX, transmouseY = 0.0;
 float zoomlevel = 1.15f;
 bool show_demo_window = true;
+GLFWcursor* cursor_normal; 
+GLFWcursor* cursor_hand;
+GLFWcursor* custom_cursor;
+int cursor_type = 0; // 0: default, 1: hand
+
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
@@ -252,13 +257,34 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 double deltaX;
 double deltaY;
 
+void cursor_enter_callback(GLFWwindow* window, int entered)
+{   
+    if (entered)
+    {
+        // The cursor entered the content area of the window
+        addlogs("entered\n");
+    }
+    else
+    {
+        // The cursor left the content area of the window
+    }
+}
+
 void mouse_callback(GLFWwindow* window, double xpos, double ypos){
     ImGui_ImplGlfw_CursorPosCallback(window, xpos, ypos);
     int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
     
     float boundingx = (xpos * 2 / window_width) - 1;
     float boundingy = -(ypos * 2 / window_height) + 1;
-
+    cursor_type = 0;
+    for(int o = 0; o < objnumber; o++){
+        if(MyObj_rect[o].result.x < boundingx && MyObj_rect[o].result.x + MyObj_rect[o].sentencewidth > boundingx){
+            if(MyObj_rect[o].result.y > boundingy && MyObj_rect[o].result.y - MyObj_rect[o].sentenceheight < boundingy){
+                cursor_type = 1;
+                }
+            }
+    }
+                    
     if (state == GLFW_PRESS){
         if(selected){
             transmouseX = mouseloc.x;
@@ -292,15 +318,15 @@ void processInput(GLFWwindow *window) {
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods){
     ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
         float boundingx = (xpos * 2 / window_width) - 1;
         float boundingy = -(ypos * 2 / window_height) + 1;
-
+        
         for(int o = 0; o < objnumber; o++){
             if(MyObj_rect[o].result.x < boundingx && MyObj_rect[o].result.x + MyObj_rect[o].sentencewidth > boundingx){
                 if(MyObj_rect[o].result.y > boundingy && MyObj_rect[o].result.y - MyObj_rect[o].sentenceheight < boundingy){
+                    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
                     addlogs("Pressed :" + MyObj_rect[o].objname + "\n");
                     MyObj_rect[o].select = 1;
                     selectindex = o;
@@ -309,9 +335,10 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                     mouseloc.y = boundingy;
                     break;
                 }
+                else{
+                    selected = false;
+                }
             }
-            else{
-                selected = false;
             }
         }
         float xscale, yscale;
@@ -325,7 +352,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                 MyObj_rect[o].select = 0;
             }
         }
-    }
     if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
         //MyObj_rect[selectindex].x = MyObj_rect[selectindex].offsetx;
         //MyObj_rect[selectindex].y = MyObj_rect[selectindex].offsety;
@@ -342,10 +368,12 @@ void Displayloop(){
     Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     Shader nodeShader((CurrentDir + "/bin/inletshader.vs").c_str(), (CurrentDir + "/bin/inletshader.fs").c_str());
     Shader lineShader((CurrentDir + "/bin/lineshader.vs").c_str(), (CurrentDir + "/bin/lineshader.fs").c_str());
-    
+    cursor_normal = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+    cursor_hand = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-
+    
     //nodeShader.use();
     // loop through objects here
     MyObj_rect = new NeuralObj[objnumber];
@@ -373,9 +401,11 @@ void Displayloop(){
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
+    //glfwSetCursorEnterCallback(window, cursor_enter_callback);
     
     while (!glfwWindowShouldClose(window))
-    {
+    {   
+        
         glfwGetWindowSize(window, &window_width, &window_height);
         glfwSetKeyCallback(window, key_callback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
@@ -485,7 +515,12 @@ void Displayloop(){
         ImGui::Render();
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
+        if(cursor_type == 1){
+            glfwSetCursor(window, cursor_hand);
+        }
+        else{
+            glfwSetCursor(window, cursor_normal);
+        }
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
