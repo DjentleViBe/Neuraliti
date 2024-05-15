@@ -26,6 +26,7 @@
 #include "../dependencies/include/datatypes.hpp"
 #include "../dependencies/include/createobjs.hpp"
 #include "../dependencies/include/fileoperations.hpp"
+#include "../dependencies/include/mathoperations.h"
 #include "../dependencies/include/initobjs.hpp"
 #include <mach-o/dyld.h>
 
@@ -410,6 +411,10 @@ void Displayloop(){
     glfwSetCursorPosCallback(window, mouse_callback);
     //glfwSetCursorEnterCallback(window, cursor_enter_callback);
     
+    glm::vec3 startPos;
+    glm::mediump_vec3 endPos;
+    float angle;
+
     while (!glfwWindowShouldClose(window))
     {   
         
@@ -423,9 +428,19 @@ void Displayloop(){
         
         for (int i = 0; i < connectnumber; i++){
             MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
+            startPos = glm::vec3(MyObj_lines[i].startx, MyObj_lines[i].starty, 0.0f);
+            endPos = glm::vec3(MyObj_lines[i].startx + calculate_distance(MyObj_lines[i].startx, MyObj_lines[i].starty,
+                                MyObj_lines[i].endx, MyObj_lines[i].endy), 
+                                MyObj_lines[i].starty + 0.003, 0.0f);
+            angle = M_PI + calculate_angle(MyObj_lines[i].endx, MyObj_lines[i].endy,
+                                MyObj_lines[i].startx, MyObj_lines[i].starty);
+            glUniform3fv(glGetUniformLocation(lineShader.ID, "startPos"), 1, &startPos[0]);
+            glUniform3fv(glGetUniformLocation(lineShader.ID, "endPos"), 1, &endPos[0]);
+            glUniform1fv(glGetUniformLocation(lineShader.ID, "angle"), 1, &angle);
             glUniformMatrix4fv(MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp_lines[i][0][0]);
             glBindVertexArray(MyObj_lines[i].VAO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }
         
         for (int i = 0; i < objnumber; ++i) {
@@ -442,7 +457,6 @@ void Displayloop(){
                 glUniform3fv(objectColorLoc, 1, primary_color_2);
             }
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
 
             nodeShader.use();
             MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
