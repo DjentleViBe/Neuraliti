@@ -428,12 +428,17 @@ void Displayloop(){
         
         for (int i = 0; i < connectnumber; i++){
             MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
-            startPos = glm::vec3(MyObj_lines[i].startx, MyObj_lines[i].starty, 0.0f);
-            endPos = glm::vec3(MyObj_lines[i].startx + calculate_distance(MyObj_lines[i].startx, MyObj_lines[i].starty,
+            // std::cout << MyObj_rect[MyObj_lines[i].endobj].offsety << std::endl;
+            startPos = glm::vec3(MyObj_lines[i].startx + MyObj_rect[MyObj_lines[i].startobj].offsetx,
+                                 MyObj_lines[i].starty + MyObj_rect[MyObj_lines[i].startobj].offsety, 0.0f);
+            endPos = glm::vec3(MyObj_lines[i].startx + MyObj_rect[MyObj_lines[i].startobj].offsetx + 
+                                calculate_distance(MyObj_lines[i].startx + MyObj_rect[MyObj_lines[i].startobj].offsetx,
+                                MyObj_lines[i].starty + MyObj_rect[MyObj_lines[i].startobj].offsety,
                                 MyObj_lines[i].endx, MyObj_lines[i].endy), 
-                                MyObj_lines[i].starty + 0.003, 0.0f);
+                                MyObj_lines[i].starty + MyObj_rect[MyObj_lines[i].startobj].offsety + 0.003, 0.0f);
             angle = M_PI + calculate_angle(MyObj_lines[i].endx, MyObj_lines[i].endy,
-                                MyObj_lines[i].startx, MyObj_lines[i].starty);
+                                MyObj_lines[i].startx + MyObj_rect[MyObj_lines[i].startobj].offsetx,
+                                MyObj_lines[i].starty + MyObj_rect[MyObj_lines[i].startobj].offsety);
             glUniform3fv(glGetUniformLocation(lineShader.ID, "startPos"), 1, &startPos[0]);
             glUniform3fv(glGetUniformLocation(lineShader.ID, "endPos"), 1, &endPos[0]);
             glUniform1fv(glGetUniformLocation(lineShader.ID, "angle"), 1, &angle);
