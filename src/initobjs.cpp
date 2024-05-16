@@ -61,6 +61,8 @@ NeuralLines* setupconnections(NeuralObj* MyObj_rect, std::string path){
             MyObj_line[linenumber].starty = MyObj_rect[fromobj].y - globalfontsize * 3 / (float)window_height;
             MyObj_line[linenumber].endx = MyObj_rect[toobj].x + toffsetx;
             MyObj_line[linenumber].endy = MyObj_rect[toobj].y;
+            MyObj_line[linenumber].startobj = fromobj;
+            MyObj_line[linenumber].endobj = toobj;
 
             linenumber++;
         }
