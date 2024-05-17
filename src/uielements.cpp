@@ -434,9 +434,11 @@ void Displayloop(){
             endPos = glm::vec3(MyObj_lines[i].startx + MyObj_rect[MyObj_lines[i].startobj].offsetx + 
                                 calculate_distance(MyObj_lines[i].startx + MyObj_rect[MyObj_lines[i].startobj].offsetx,
                                 MyObj_lines[i].starty + MyObj_rect[MyObj_lines[i].startobj].offsety,
-                                MyObj_lines[i].endx, MyObj_lines[i].endy), 
+                                MyObj_lines[i].endx + MyObj_rect[MyObj_lines[i].endobj].offsetx, 
+                                MyObj_lines[i].endy + MyObj_rect[MyObj_lines[i].endobj].offsety), 
                                 MyObj_lines[i].starty + MyObj_rect[MyObj_lines[i].startobj].offsety + 0.003, 0.0f);
-            angle = M_PI + calculate_angle(MyObj_lines[i].endx, MyObj_lines[i].endy,
+            angle = M_PI + calculate_angle(MyObj_lines[i].endx + MyObj_rect[MyObj_lines[i].endobj].offsetx, 
+                                MyObj_lines[i].endy + MyObj_rect[MyObj_lines[i].endobj].offsety,
                                 MyObj_lines[i].startx + MyObj_rect[MyObj_lines[i].startobj].offsetx,
                                 MyObj_lines[i].starty + MyObj_rect[MyObj_lines[i].startobj].offsety);
             glUniform3fv(glGetUniformLocation(lineShader.ID, "startPos"), 1, &startPos[0]);
