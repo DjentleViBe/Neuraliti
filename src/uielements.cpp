@@ -141,7 +141,7 @@ int INITgraphics(){
     }
     // Initial startup
     addlogs("Opening preferences\n");
-    CurrentDir = std::string(path).erase(std::string(path).size() - 9);
+    CurrentDir = std::string(path).erase(std::string(path).size() - 14);
     std::cout << CurrentDir;
     loadconfig(CurrentDir + "/prefs.json");
     // Setup window

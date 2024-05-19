@@ -24,7 +24,7 @@ OBJS_CPP := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES_CPP))
 HEADERS_C := $(wildcard $(INCDIR)/**/*.h)
 HEADERS_CPP := $(wildcard $(INCDIR)/**/*.hpp)
 # Executable
-EXEC = $(BINDIR)/main
+EXEC = $(BINDIR)/Neuraliti
 OBJS := $(OBJS_C) $(OBJS_CPP)
 # Default target
 all: $(EXEC)
