@@ -38,8 +38,8 @@ NeuralLines createline(NeuralLines MyObj, float startx, float starty, float endx
     MyObj.endx = endx;
     MyObj.starty = starty;
     MyObj.endy = endy;
-    MyObj = createlines(MyObj);
-    
+    //MyObj = createlines(MyObj);
+    MyObj = createhorizontallines(MyObj);
     return MyObj;
 }
 
@@ -56,6 +56,12 @@ NeuralObj createobj1(int ind, float x, float y, std::string objname, int neuralo
 }
 
 NeuralLines createline1(float startx, float starty, float endx, float endy){
+    NeuralLines MyObj4;
+    MyObj4 = createline(MyObj4, startx, starty, endx, endy);
+    return MyObj4;
+}
+
+NeuralLines createline2(float startx, float starty, float endx, float endy){
     NeuralLines MyObj4;
     MyObj4 = createline(MyObj4, startx, starty, endx, endy);
     return MyObj4;

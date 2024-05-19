@@ -7,4 +7,5 @@
 extern int sentence_width;
 NeuralObj createobj(NeuralObj &MyObj);
 NeuralLines createlines(NeuralLines &MyObj);
+NeuralLines createhorizontallines(NeuralLines &MyObj);
 #endif /* creategeom_h */

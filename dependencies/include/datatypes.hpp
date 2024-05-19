@@ -43,6 +43,8 @@ class NeuralLines {
     float starty;
     float endx;
     float endy;
+    int startobj;
+    int endobj;
     unsigned int VAO, VBO, EBO;
     GLuint Matrix;
     unsigned int texture;
