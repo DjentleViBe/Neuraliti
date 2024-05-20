@@ -17,7 +17,6 @@ int initobjs(std::string path){
 }
 
 NeuralLines* setupconnections(NeuralObj* MyObj_rect, std::string path){
-    // std::cout << connectnumber << "\n";
     NeuralLines *MyObj_line = new NeuralLines[connectnumber];
     char delimiter = ' ';
     std::vector<std::string> lines;
@@ -52,10 +51,6 @@ NeuralLines* setupconnections(NeuralObj* MyObj_rect, std::string path){
             toffsetx = (MyObj_rect[toobj].sentencewidth / (fmax(MyObj_rect[toobj].Inletnum - 1, 1))) * toinlet;
             foffsetx = (MyObj_rect[fromobj].sentencewidth / (fmax(MyObj_rect[toobj].Outletnum - 1, 1))) * fromoutlet;
 
-            //MyObj_line[linenumber] = createline1(MyObj_rect[fromobj].x + foffsetx, 
-            //                                    MyObj_rect[fromobj].y - globalfontsize * 3 / (float)window_height,
-            //                                    MyObj_rect[toobj].x + toffsetx, 
-            //                                   MyObj_rect[toobj].y);
             MyObj_line[linenumber] = createline2(0, 0, 0, 0);
             MyObj_line[linenumber].startx = MyObj_rect[fromobj].x + foffsetx;
             MyObj_line[linenumber].starty = MyObj_rect[fromobj].y - globalfontsize * 3 / (float)window_height;
