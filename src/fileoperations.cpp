@@ -26,7 +26,6 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
     for (int l = 0; l < lines.size(); l++){
         // check if obj
         if(lines[l].find("obj")!= std::string::npos){
-            
             int wordpos = 0;
             std::stringstream ss(lines[l]);
             std::string token;
@@ -56,6 +55,33 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
             objectnames.push_back(tokentemp.erase(tokentemp.size() - 1));
             objnumber++;
             }   
+        else if(lines[l].find("floatatom")!= std::string::npos){
+            int wordpos = 0;
+            std::stringstream ss(lines[l]);
+            std::string token;
+            std::string tokentemp = "";
+            while (std::getline(ss, token, delimiter)) {
+                tokens.push_back(token);
+                if(wordpos == 2){
+                    // x position
+                    Xposition.push_back(stof(token));
+                }
+                else if(wordpos == 3){
+                    // y position
+                    Yposition.push_back(stof(token));
+                }
+                else if(wordpos == 4){
+                    // object name
+                    objinlets.push_back(1);
+                    objoutlets.push_back(1);
+                    tokentemp += token;
+                    // std::cout << tokentemp << std::endl;
+                }
+                wordpos++;
+            }
+            objectnames.push_back(tokentemp.erase(tokentemp.size() - 0));
+            objnumber++;
+            }
         }
 
     std::vector<std::vector<int>> connectionmatrix(objnumber, std::vector<int>(objnumber));

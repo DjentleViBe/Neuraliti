@@ -50,4 +50,16 @@ class NeuralLines {
     unsigned int texture;
 };
 
+class NeuralFloat{
+  public:
+    float displayvalue;
+    float minvalue;
+    float maxvalue;
+    bool logvalue;
+    float defaultvalue;
+    float hidevalue;
+    int precisionvalue;
+    int labelvalue;
+};
+
 #endif

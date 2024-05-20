@@ -37,10 +37,10 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 std::map<std::string, std::string> appsettings;
 std::vector<std::string> fontlist, configlist, fontsizelist;
-const char* homeDir;
+const char *homeDir;
 picojson::value v;
-glm::mat4* mvp;
-glm::mat4* mvp_lines;
+glm::mat4 *mvp;
+glm::mat4 *mvp_lines;
 NeuralObj *MyObj_rect;
 std::string CurrentDir;
 int selectindex;
@@ -51,9 +51,9 @@ int globalfontsize = 0;
 double Xpos, Ypos ,tempmouseX, tempmouseY, transmouseX, transmouseY = 0.0;
 float zoomlevel = 1.15f;
 bool show_demo_window = true;
-GLFWcursor* cursor_normal; 
-GLFWcursor* cursor_hand;
-GLFWcursor* custom_cursor;
+GLFWcursor *cursor_normal; 
+GLFWcursor *cursor_hand;
+GLFWcursor *custom_cursor;
 int cursor_type = 0; // 0: default, 1: hand
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
@@ -72,7 +72,7 @@ float primary_color_8[]     = {0.1647, 0.2862, 0.4784}; // IMGUI blue
 std::vector<int> globalinlets;
 std::vector<int> globaloutlets;
 
-GLFWwindow* window;
+GLFWwindow *window;
 
 static void glfw_error_callback(int error, const char* description)
 {
