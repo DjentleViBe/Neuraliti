@@ -14,6 +14,12 @@ extern float primary_color_4[3]; // orange
 extern float primary_color_5[3]; // green
 extern float primary_color_6[3]; // yellow
 extern float primary_color_7[3]; // dark green
+extern float primary_color_8[3];
+extern float primary_color_9[3];
+extern float primary_color_10[3];
+extern float primary_color_11[3];
+extern float primary_color_12[3];
+extern float primary_color_13[3];
 
 extern int window_width, window_height;
 extern float zoomlevel;

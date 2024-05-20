@@ -133,7 +133,7 @@ NeuralObj createoutlets(NeuralObj &MyObj){
     glm::vec2 translations[MyObj.Outletnum];
     int index = 0;
     float offset = 0.0f;
-    
+
     for (int x = 0; x <= MyObj.Outletnum; x++)
         {
             glm::vec2 translation;
@@ -153,7 +153,14 @@ NeuralObj createoutlets(NeuralObj &MyObj){
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
-    float *quadVertices = drawnodes(0.02f, primary_color_5);
+    float *quadVertices;
+    if(MyObj.objtype != 0){
+        quadVertices = drawnodes(0.02f, primary_color_9);
+    }
+    else{
+        quadVertices = drawnodes(0.02f, primary_color_5);
+    }
+    
     glGenVertexArrays(1, &MyObj.outquadVAO);
     glGenBuffers(1, &MyObj.outquadVBO);
     glBindVertexArray(MyObj.outquadVAO);

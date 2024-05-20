@@ -13,7 +13,7 @@ int connectnumber = 0;
 std::vector<float> Xposition;
 std::vector<float> Yposition;
 std::vector<std::string> objectnames;
-// create connection matrix;
+std::vector<int> objecttypes;
 std::vector<int> objinlets;
 std::vector<int> objoutlets;
 
@@ -26,6 +26,7 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
     for (int l = 0; l < lines.size(); l++){
         // check if obj
         if(lines[l].find("obj")!= std::string::npos){
+            objecttypes.push_back(0);
             int wordpos = 0;
             std::stringstream ss(lines[l]);
             std::string token;
@@ -56,6 +57,7 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
             objnumber++;
             }   
         else if(lines[l].find("floatatom")!= std::string::npos){
+            objecttypes.push_back(1);
             int wordpos = 0;
             std::stringstream ss(lines[l]);
             std::string token;

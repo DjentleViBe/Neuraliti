@@ -1,9 +1,11 @@
 #include "../dependencies/include/createobjs.hpp"
 #include "stdio.h"
 #include <string>
+#include <iostream>
 #include "../dependencies/include/datatypes.hpp"
 #include "../dependencies/include/creategeom.h"
 #include "../dependencies/include/uielements.h"
+#include "../dependencies/include/fileoperations.hpp"
 
 int createobjs(){
     return 0;
@@ -17,6 +19,7 @@ NeuralObj createrect(int ind, NeuralObj MyObj, float x, float y, float objtype, 
     MyObj.objname = objname;
     MyObj.Inletnum = globalinlets[ind];
     MyObj.Outletnum = globaloutlets[ind];
+    MyObj.objtype = objecttypes[ind];
     MyObj = createobj(MyObj);
 
     return MyObj;
@@ -38,15 +41,26 @@ NeuralLines createline(NeuralLines MyObj, float startx, float starty, float endx
     MyObj.endx = endx;
     MyObj.starty = starty;
     MyObj.endy = endy;
-    //MyObj = createlines(MyObj);
     MyObj = createhorizontallines(MyObj);
     return MyObj;
 }
 
 NeuralObj createobj1(int ind, float x, float y, std::string objname, int neuralobjtype){
     NeuralObj MyObj3;
+    float* color;
     if(neuralobjtype == 0){
-        MyObj3 = createrect(ind, MyObj3, x, y, 0, primary_color_2, objname);
+        switch(objecttypes[ind]){
+            case 0:
+                color = primary_color_2;
+                break;
+            case 1:
+                color = primary_color_10;
+                std::cout << objecttypes[ind] << std::endl;
+                break;
+            default:
+                color = primary_color_2;
+        }
+        MyObj3 = createrect(ind, MyObj3, x, y, 0, color, objname);
     }
     else{
         MyObj3 = createfont(MyObj3, x, y, 0, primary_color_3, objname);

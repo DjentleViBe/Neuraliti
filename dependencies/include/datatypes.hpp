@@ -52,6 +52,7 @@ class NeuralLines {
 
 class NeuralFloat{
   public:
+    std::string objname;
     float displayvalue;
     float minvalue;
     float maxvalue;

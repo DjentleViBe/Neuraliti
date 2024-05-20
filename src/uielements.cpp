@@ -69,6 +69,13 @@ float primary_color_5[]     = {0.2313, 0.6862, 0.6862}; // green
 float primary_color_6[]     = {0.9529, 0.6666, 0.2549}; // yellow
 float primary_color_7[]     = {0.2784, 0.4705, 0.4901}; // dark green
 float primary_color_8[]     = {0.1647, 0.2862, 0.4784}; // IMGUI blue
+float primary_color_9[]     = {0.0000, 0.0000, 1.0000}; // Navy blue
+
+float primary_color_10[]    = {0.3098, 0.3529, 0.2980}; // float
+float primary_color_11[]    = {0.7098, 0.6470, 0.5568};
+float primary_color_12[]    = {0.9058, 0.8392, 0.7607};
+float primary_color_13[]    = {0.6588, 0.6431, 0.5450};
+
 std::vector<int> globalinlets;
 std::vector<int> globaloutlets;
 
@@ -461,7 +468,7 @@ void Displayloop(){
                 glUniform3fv(objectColorLoc, 1, primary_color_8);
             }
             else{
-                glUniform3fv(objectColorLoc, 1, primary_color_2);
+                glUniform3fv(objectColorLoc, 1, MyObj_rect[i].color);
             }
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -473,8 +480,7 @@ void Displayloop(){
 
             glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glBindVertexArray(MyObj_rect[i].outquadVAO);
-            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Outletnum); 
-            
+            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Outletnum);
         }
         
         fontShader.use();
