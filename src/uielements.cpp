@@ -41,7 +41,10 @@ const char *homeDir;
 picojson::value v;
 glm::mat4 *mvp;
 glm::mat4 *mvp_lines;
-NeuralObj *MyObj_rect;
+std::vector <NeuralObj> MyObj_rect;
+std::vector <NeuralObj> MyObj_font;
+std::vector <NeuralLines> MyObj_lines;
+// NeuralObj *MyObj_rect;
 std::string CurrentDir;
 int selectindex;
 bool selected;
@@ -390,20 +393,22 @@ void Displayloop(){
     
     //nodeShader.use();
     // loop through objects here
-    MyObj_rect = new NeuralObj[objnumber];
+    // std::vector<NeuralObj> MyObj_rect(objnumber); 
+    // MyObj_rect = new NeuralObj[objnumber];
     mvp = new glm::mat4[objnumber];
     mvp_lines = new glm::mat4[objnumber];
     for (int i = 0; i < objnumber; ++i) {
-        MyObj_rect[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0);
+        MyObj_rect.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0));
         MyObj_rect[i].Inlets = new int*[MyObj_rect[i].Inletnum];
         MyObj_rect[i].Outlets = new int*[MyObj_rect[i].Outletnum];
     }
-    NeuralObj *MyObj_font = new NeuralObj[objnumber];
+    //NeuralObj *MyObj_font = new NeuralObj[objnumber];
+    // std::vector<NeuralObj> MyObj_font(objnumber);
     for (int i = 0; i < objnumber; ++i) {
-        MyObj_font[i] = createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1);
+        MyObj_font.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1));
     }
 
-    NeuralLines* MyObj_lines = setupconnections(MyObj_rect, CurrentDir + "/Untitled-1.pd");
+    MyObj_lines = setupconnections(MyObj_rect, CurrentDir + "/Untitled-1.pd");
     // inlet outlet mapping
     MyObj_rect[1].Inlets[0] = new int[4];
     MyObj_rect[0].Outlets[0] = new int[4];
@@ -563,9 +568,9 @@ void Displayloop(){
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    delete[] MyObj_font;
-    delete[] MyObj_rect;
-    delete[] MyObj_lines;
+    // delete[] MyObj_font;
+    // delete[] MyObj_rect;
+    // delete[] MyObj_lines;
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     /*glDeleteVertexArrays(1, &MyObj1.VAO);

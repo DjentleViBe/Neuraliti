@@ -263,6 +263,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 break;
         }
     }
+    if(glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS ||
+    glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS){
+        std::cout << "delete" << std::endl;
+    }
 }
 
 void assignbinding(std::vector<std::string> bind){
