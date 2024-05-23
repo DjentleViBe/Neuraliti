@@ -32,7 +32,7 @@
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
-
+std::string filename = "Untitled-0.pd";
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 std::map<std::string, std::string> appsettings;
@@ -222,7 +222,7 @@ int INITgraphics(){
     
     addlogs("Initialisation ended\n");
     addlogs("Opening file\n");
-    initobjs(CurrentDir + "/Untitled-1.pd");
+    initobjs(CurrentDir + "/" + filename);
     //printvector(globalinlets, "Inlets");
     //printvector(globaloutlets, "Outlets");
     return 0;
@@ -409,7 +409,7 @@ void Displayloop(){
         NC.MyObj_font.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1));
     }
 
-    NC.MyObj_lines = setupconnections(NC.MyObj_rect, CurrentDir + "/Untitled-1.pd");
+    NC.MyObj_lines = setupconnections(NC.MyObj_rect, CurrentDir + "/" + filename);
     // inlet outlet mapping
     NC.MyObj_rect[1].Inlets[0] = new int[4];
     NC.MyObj_rect[0].Outlets[0] = new int[4];
