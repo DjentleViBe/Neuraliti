@@ -458,7 +458,6 @@ void Displayloop(){
             glUniform1fv(glGetUniformLocation(lineShader.ID, "angle"), 1, &angle);
             glUniformMatrix4fv(NC.MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp_lines[i][0][0]);
             glBindVertexArray(NC.MyObj_lines[i].VAO);
-            //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }
         

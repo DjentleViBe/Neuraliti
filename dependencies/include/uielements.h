@@ -6,6 +6,7 @@
 #define BMP_H OBJ_H
 #include <map>
 #include "stdio.h"
+#include "datatypes.hpp"
 
 extern float primary_color_1[3]; // grey
 extern float primary_color_2[3]; 
@@ -21,6 +22,7 @@ extern float primary_color_11[3];
 extern float primary_color_12[3];
 extern float primary_color_13[3];
 
+extern int selectindex;
 extern int window_width, window_height;
 extern float zoomlevel;
 extern std::map<std::string, std::string> appsettings;
@@ -29,6 +31,7 @@ extern int globalfontsize;
 extern std::vector<int> globalinlets;
 extern std::vector<int> globaloutlets;
 
+extern NeuralCanvas NC;
 int INITgraphics();
 void Displayloop();
 

@@ -5,6 +5,7 @@
 #include "../dependencies/include/GLFW/glfw3.h"
 #include "../dependencies/include/extras.h"
 #include "../dependencies/include/uielements.h"
+#include "../dependencies/include/fileoperations.hpp"
 
 #define     GLFW_KEY_SPACE          32
 #define     GLFW_KEY_APOSTROPHE     39 /* ' */
@@ -266,6 +267,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if(glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS ||
     glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS){
         std::cout << "delete" << std::endl;
+        NC.MyObj_rect.erase(NC.MyObj_rect.begin()+selectindex);
+        NC.MyObj_font.erase(NC.MyObj_font.begin()+selectindex);
+        objnumber--;
+        std::cout << selectindex << std::endl;
     }
 }
 
