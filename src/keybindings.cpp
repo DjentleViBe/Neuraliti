@@ -130,7 +130,7 @@
 #define     GLFW_KEY_MENU           348
 #define     GLFW_KEY_LAST   GLFW_KEY_MENU
 
-void NeuralCanvas::eraseLinesIf(std::function<bool(const NeuralLines&)> condition) {
+void NeuralCanvas::eraseLinesIf(std::function<bool(NeuralLines&)> condition) {
     MyObj_lines.erase(std::remove_if(MyObj_lines.begin(), MyObj_lines.end(), condition), MyObj_lines.end());
 }
 
@@ -271,13 +271,18 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
     if(glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS ||
     glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS){
-        //std::cout << "delete" << std::endl;
         // delete connections
-        auto linesCondition = [](const NeuralLines& line) {
+        auto linesCondition = [&](NeuralLines& line) {
             if (line.startobj == selectindex || line.endobj == selectindex) {
                 connectnumber--;
             return true;
-        }
+            }
+            if (line.startobj >= selectindex){
+                line.startobj--;
+            }
+            if (line.endobj >= selectindex){
+                line.endobj--;
+            }
         return false;
         };
         NC.eraseLinesIf(linesCondition);

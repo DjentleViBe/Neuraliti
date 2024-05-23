@@ -71,7 +71,7 @@ class NeuralCanvas{
     std::vector<NeuralLines> MyObj_lines;
     std::vector<NeuralFloat> MyObj_floats;
 
-    void eraseLinesIf(std::function<bool(const NeuralLines&)> condition);
+    void eraseLinesIf(std::function<bool(NeuralLines&)> condition);
 };
 
 #endif
