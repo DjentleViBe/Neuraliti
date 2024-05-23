@@ -7,6 +7,7 @@
 extern std::vector<float> Xposition;
 extern std::vector<float> Yposition;
 extern std::vector<std::string> objectnames;
+extern std::vector<int> objecttypes;
 extern int objnumber;
 extern int connectnumber;
 

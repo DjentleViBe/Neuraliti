@@ -50,4 +50,25 @@ class NeuralLines {
     unsigned int texture;
 };
 
+class NeuralFloat{
+  public:
+    std::string objname;
+    float displayvalue;
+    float minvalue;
+    float maxvalue;
+    bool logvalue;
+    float defaultvalue;
+    float hidevalue;
+    int precisionvalue;
+    int labelvalue;
+};
+
+class NeuralCanvas{
+  public:
+    std::vector<NeuralObj> MyObj_rect;
+    std::vector<NeuralObj> MyObj_font;
+    std::vector<NeuralLines> MyObj_lines;
+    std::vector<NeuralFloat> MyObj_floats;
+};
+
 #endif
