@@ -13,6 +13,7 @@
 class NeuralObj {       // The class
   public:               // Access specifier
     int objtype;        // 0: Object, 1: bang, 2: float
+    int objnumber;
     float x;            // x position
     float y;            // y position
     std::string objname;  // Attribute (string variable)
@@ -69,6 +70,8 @@ class NeuralCanvas{
     std::vector<NeuralObj> MyObj_font;
     std::vector<NeuralLines> MyObj_lines;
     std::vector<NeuralFloat> MyObj_floats;
+
+    void eraseLinesIf(std::function<bool(NeuralLines&)> condition);
 };
 
 #endif

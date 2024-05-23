@@ -6,6 +6,7 @@
 #include "../dependencies/include/extras.h"
 #include "../dependencies/include/uielements.h"
 #include "../dependencies/include/fileoperations.hpp"
+#include "../dependencies/include/datatypes.hpp"
 
 #define     GLFW_KEY_SPACE          32
 #define     GLFW_KEY_APOSTROPHE     39 /* ' */
@@ -128,6 +129,10 @@
 #define     GLFW_KEY_RIGHT_SUPER    347
 #define     GLFW_KEY_MENU           348
 #define     GLFW_KEY_LAST   GLFW_KEY_MENU
+
+void NeuralCanvas::eraseLinesIf(std::function<bool(NeuralLines&)> condition) {
+    MyObj_lines.erase(std::remove_if(MyObj_lines.begin(), MyObj_lines.end(), condition), MyObj_lines.end());
+}
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -266,11 +271,24 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
     if(glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS ||
     glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS){
-        std::cout << "delete" << std::endl;
+        // delete connections
+        auto linesCondition = [&](NeuralLines& line) {
+            if (line.startobj == selectindex || line.endobj == selectindex) {
+                connectnumber--;
+            return true;
+            }
+            if (line.startobj >= selectindex){
+                line.startobj--;
+            }
+            if (line.endobj >= selectindex){
+                line.endobj--;
+            }
+        return false;
+        };
+        NC.eraseLinesIf(linesCondition);
         NC.MyObj_rect.erase(NC.MyObj_rect.begin()+selectindex);
         NC.MyObj_font.erase(NC.MyObj_font.begin()+selectindex);
         objnumber--;
-        std::cout << selectindex << std::endl;
     }
 }
 
