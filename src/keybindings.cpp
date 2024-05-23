@@ -284,8 +284,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         NC.MyObj_rect.erase(NC.MyObj_rect.begin()+selectindex);
         NC.MyObj_font.erase(NC.MyObj_font.begin()+selectindex);
         objnumber--;
-        
-        std::cout << connectnumber << std::endl;
     }
 }
 
