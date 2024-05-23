@@ -66,8 +66,9 @@ class NeuralFloat{
 class NeuralCanvas{
   public:
     std::vector<NeuralObj> MyObj_rect;
+    std::vector<NeuralObj> MyObj_font;
     std::vector<NeuralLines> MyObj_lines;
     std::vector<NeuralFloat> MyObj_floats;
-}
+};
 
 #endif

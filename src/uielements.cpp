@@ -41,10 +41,11 @@ const char *homeDir;
 picojson::value v;
 glm::mat4 *mvp;
 glm::mat4 *mvp_lines;
-std::vector <NeuralObj> MyObj_rect;
-std::vector <NeuralObj> MyObj_font;
-std::vector <NeuralLines> MyObj_lines;
-// NeuralObj *MyObj_rect;
+NeuralCanvas NC;
+// std::vector <NeuralObj> NC.MyObj_rect;
+// std::vector <NeuralObj> NC.MyObj_font;
+// std::vector <NeuralLines> NC.NC.MyObj_lines;
+// NeuralObj *NC.MyObj_rect;
 std::string CurrentDir;
 int selectindex;
 bool selected;
@@ -250,13 +251,13 @@ GLuint calculate_view(float wid, float hei, glm::vec3 point, double transX, doub
     glm::mat4 translateBack = glm::translate(glm::mat4(1.0f), point);
     // Our ModelViewProjection: multiplication of our 3 matrices
     for(int m = 0; m < objnumber; m++){
-        glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(MyObj_rect[m].offsetx, MyObj_rect[m].offsety, 0.0));
+        glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(NC.MyObj_rect[m].offsetx, NC.MyObj_rect[m].offsety, 0.0));
         mvp[m] = projection * View * translateBack * scaleMatrix * translateToOrigin * translate;
-        MyObj_rect[m].result = mvp[m] * glm::vec4(MyObj_rect[m].x, MyObj_rect[m].y, 0.0, 1.0);
+        NC.MyObj_rect[m].result = mvp[m] * glm::vec4(NC.MyObj_rect[m].x, NC.MyObj_rect[m].y, 0.0, 1.0);
     }
 
     for(int m = 0; m < objnumber; m++){
-        //glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(MyObj_rect[m].offsetx, MyObj_rect[m].offsety, 0.0));
+        //glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(NC.MyObj_rect[m].offsetx, NC.MyObj_rect[m].offsety, 0.0));
         mvp_lines[m] = projection * View * translateBack * scaleMatrix * translateToOrigin;
     }
     return 0;
@@ -295,8 +296,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
     float boundingy = -(ypos * 2 / window_height) + 1;
     cursor_type = 0;
     for(int o = 0; o < objnumber; o++){
-        if(MyObj_rect[o].result.x < boundingx && MyObj_rect[o].result.x + MyObj_rect[o].sentencewidth > boundingx){
-            if(MyObj_rect[o].result.y > boundingy && MyObj_rect[o].result.y - MyObj_rect[o].sentenceheight < boundingy){
+        if(NC.MyObj_rect[o].result.x < boundingx && NC.MyObj_rect[o].result.x + NC.MyObj_rect[o].sentencewidth > boundingx){
+            if(NC.MyObj_rect[o].result.y > boundingy && NC.MyObj_rect[o].result.y - NC.MyObj_rect[o].sentenceheight < boundingy){
                 cursor_type = 1;
                 }
             }
@@ -308,8 +309,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
             transmouseY = mouseloc.y;
             deltaX = boundingx - transmouseX;
             deltaY = boundingy - transmouseY;
-            MyObj_rect[selectindex].offsetx = MyObj_rect[selectindex].transX + deltaX;
-            MyObj_rect[selectindex].offsety = MyObj_rect[selectindex].transY + deltaY;
+            NC.MyObj_rect[selectindex].offsetx = NC.MyObj_rect[selectindex].transX + deltaX;
+            NC.MyObj_rect[selectindex].offsety = NC.MyObj_rect[selectindex].transY + deltaY;
         }
         else{
             deltaX = xpos - tempmouseX;
@@ -318,8 +319,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
         }
     }
     if(state == GLFW_RELEASE){
-        MyObj_rect[selectindex].transX = MyObj_rect[selectindex].offsetx;
-        MyObj_rect[selectindex].transY = MyObj_rect[selectindex].offsety;
+        NC.MyObj_rect[selectindex].transX = NC.MyObj_rect[selectindex].offsetx;
+        NC.MyObj_rect[selectindex].transY = NC.MyObj_rect[selectindex].offsety;
     }
     tempmouseX = xpos;
     tempmouseY = ypos;
@@ -341,11 +342,11 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         float boundingy = -(ypos * 2 / window_height) + 1;
         
         for(int o = 0; o < objnumber; o++){
-            if(MyObj_rect[o].result.x < boundingx && MyObj_rect[o].result.x + MyObj_rect[o].sentencewidth > boundingx){
-                if(MyObj_rect[o].result.y > boundingy && MyObj_rect[o].result.y - MyObj_rect[o].sentenceheight < boundingy){
+            if(NC.MyObj_rect[o].result.x < boundingx && NC.MyObj_rect[o].result.x + NC.MyObj_rect[o].sentencewidth > boundingx){
+                if(NC.MyObj_rect[o].result.y > boundingy && NC.MyObj_rect[o].result.y - NC.MyObj_rect[o].sentenceheight < boundingy){
                     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-                    addlogs("Pressed :" + MyObj_rect[o].objname + "\n");
-                    MyObj_rect[o].select = 1;
+                    addlogs("Pressed :" + NC.MyObj_rect[o].objname + "\n");
+                    NC.MyObj_rect[o].select = 1;
                     selectindex = o;
                     selected = true;
                     mouseloc.x = boundingx;
@@ -366,14 +367,14 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         if(abs(static_cast<int>(pick_col[0]) / 255.0 - primary_color_1[0]) < 0.001){
             std::cout << "reset\n";
             for(int o = 0; o < objnumber; o++){
-                MyObj_rect[o].select = 0;
+                NC.MyObj_rect[o].select = 0;
             }
         }
     if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
-        //MyObj_rect[selectindex].x = MyObj_rect[selectindex].offsetx;
-        //MyObj_rect[selectindex].y = MyObj_rect[selectindex].offsety;
-        //MyObj_rect[selectindex].offsetx = 0.0;
-        //MyObj_rect[selectindex].offsety = 0.0;
+        //NC.MyObj_rect[selectindex].x = NC.MyObj_rect[selectindex].offsetx;
+        //NC.MyObj_rect[selectindex].y = NC.MyObj_rect[selectindex].offsety;
+        //NC.MyObj_rect[selectindex].offsetx = 0.0;
+        //NC.MyObj_rect[selectindex].offsety = 0.0;
     }
 }
 
@@ -393,28 +394,28 @@ void Displayloop(){
     
     //nodeShader.use();
     // loop through objects here
-    // std::vector<NeuralObj> MyObj_rect(objnumber); 
-    // MyObj_rect = new NeuralObj[objnumber];
+    // std::vector<NeuralObj> NC.MyObj_rect(objnumber); 
+    // NC.MyObj_rect = new NeuralObj[objnumber];
     mvp = new glm::mat4[objnumber];
     mvp_lines = new glm::mat4[objnumber];
     for (int i = 0; i < objnumber; ++i) {
-        MyObj_rect.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0));
-        MyObj_rect[i].Inlets = new int*[MyObj_rect[i].Inletnum];
-        MyObj_rect[i].Outlets = new int*[MyObj_rect[i].Outletnum];
+        NC.MyObj_rect.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0));
+        NC.MyObj_rect[i].Inlets = new int*[NC.MyObj_rect[i].Inletnum];
+        NC.MyObj_rect[i].Outlets = new int*[NC.MyObj_rect[i].Outletnum];
     }
-    //NeuralObj *MyObj_font = new NeuralObj[objnumber];
-    // std::vector<NeuralObj> MyObj_font(objnumber);
+    //NeuralObj *NC.MyObj_font = new NeuralObj[objnumber];
+    // std::vector<NeuralObj> NC.MyObj_font(objnumber);
     for (int i = 0; i < objnumber; ++i) {
-        MyObj_font.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1));
+        NC.MyObj_font.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1));
     }
 
-    MyObj_lines = setupconnections(MyObj_rect, CurrentDir + "/Untitled-1.pd");
+    NC.MyObj_lines = setupconnections(NC.MyObj_rect, CurrentDir + "/Untitled-1.pd");
     // inlet outlet mapping
-    MyObj_rect[1].Inlets[0] = new int[4];
-    MyObj_rect[0].Outlets[0] = new int[4];
-    MyObj_rect[1].Inlets[0] = MyObj_rect[0].Outlets[0];
-    MyObj_rect[0].Outlets[0][0] = 10;
-    MyObj_rect[0].Outlets[0][1] = 20;
+    NC.MyObj_rect[1].Inlets[0] = new int[4];
+    NC.MyObj_rect[0].Outlets[0] = new int[4];
+    NC.MyObj_rect[1].Inlets[0] = NC.MyObj_rect[0].Outlets[0];
+    NC.MyObj_rect[0].Outlets[0][0] = 10;
+    NC.MyObj_rect[0].Outlets[0][1] = 20;
     calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), Xpos, Ypos);
     unsigned int objectColorLoc = glGetUniformLocation(objShader.ID, "aColor");
 
@@ -439,62 +440,61 @@ void Displayloop(){
         lineShader.use();
         
         for (int i = 0; i < connectnumber; i++){
-            MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
-            // std::cout << MyObj_rect[MyObj_lines[i].endobj].offsety << std::endl;
-            startPos = glm::vec3(MyObj_lines[i].startx + MyObj_rect[MyObj_lines[i].startobj].offsetx,
-                                 MyObj_lines[i].starty + MyObj_rect[MyObj_lines[i].startobj].offsety, 0.0f);
-            endPos = glm::vec3(MyObj_lines[i].startx + MyObj_rect[MyObj_lines[i].startobj].offsetx + 
-                                calculate_distance(MyObj_lines[i].startx + MyObj_rect[MyObj_lines[i].startobj].offsetx,
-                                MyObj_lines[i].starty + MyObj_rect[MyObj_lines[i].startobj].offsety,
-                                MyObj_lines[i].endx + MyObj_rect[MyObj_lines[i].endobj].offsetx, 
-                                MyObj_lines[i].endy + MyObj_rect[MyObj_lines[i].endobj].offsety), 
-                                MyObj_lines[i].starty + MyObj_rect[MyObj_lines[i].startobj].offsety + 0.003, 0.0f);
-            angle = M_PI + calculate_angle(MyObj_lines[i].endx + MyObj_rect[MyObj_lines[i].endobj].offsetx, 
-                                MyObj_lines[i].endy + MyObj_rect[MyObj_lines[i].endobj].offsety,
-                                MyObj_lines[i].startx + MyObj_rect[MyObj_lines[i].startobj].offsetx,
-                                MyObj_lines[i].starty + MyObj_rect[MyObj_lines[i].startobj].offsety);
+            NC.MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
+            startPos = glm::vec3(NC.MyObj_lines[i].startx + NC.MyObj_rect[NC.MyObj_lines[i].startobj].offsetx,
+                                 NC.MyObj_lines[i].starty + NC.MyObj_rect[NC.MyObj_lines[i].startobj].offsety, 0.0f);
+            endPos = glm::vec3(NC.MyObj_lines[i].startx + NC.MyObj_rect[NC.MyObj_lines[i].startobj].offsetx + 
+                                calculate_distance(NC.MyObj_lines[i].startx + NC.MyObj_rect[NC.MyObj_lines[i].startobj].offsetx,
+                                NC.MyObj_lines[i].starty + NC.MyObj_rect[NC.MyObj_lines[i].startobj].offsety,
+                                NC.MyObj_lines[i].endx + NC.MyObj_rect[NC.MyObj_lines[i].endobj].offsetx, 
+                                NC.MyObj_lines[i].endy + NC.MyObj_rect[NC.MyObj_lines[i].endobj].offsety), 
+                                NC.MyObj_lines[i].starty + NC.MyObj_rect[NC.MyObj_lines[i].startobj].offsety + 0.003, 0.0f);
+            angle = M_PI + calculate_angle(NC.MyObj_lines[i].endx + NC.MyObj_rect[NC.MyObj_lines[i].endobj].offsetx, 
+                                NC.MyObj_lines[i].endy + NC.MyObj_rect[NC.MyObj_lines[i].endobj].offsety,
+                                NC.MyObj_lines[i].startx + NC.MyObj_rect[NC.MyObj_lines[i].startobj].offsetx,
+                                NC.MyObj_lines[i].starty + NC.MyObj_rect[NC.MyObj_lines[i].startobj].offsety);
             glUniform3fv(glGetUniformLocation(lineShader.ID, "startPos"), 1, &startPos[0]);
             glUniform3fv(glGetUniformLocation(lineShader.ID, "endPos"), 1, &endPos[0]);
             glUniform1fv(glGetUniformLocation(lineShader.ID, "angle"), 1, &angle);
-            glUniformMatrix4fv(MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp_lines[i][0][0]);
-            glBindVertexArray(MyObj_lines[i].VAO);
+            glUniformMatrix4fv(NC.MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp_lines[i][0][0]);
+            glBindVertexArray(NC.MyObj_lines[i].VAO);
             //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }
         
         for (int i = 0; i < objnumber; ++i) {
             objShader.use();
-            MyObj_rect[i].Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
+            NC.MyObj_rect[i].Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
+            glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, MyObj_rect[i].texture);
-            glBindVertexArray(MyObj_rect[i].VAO);
-            if(MyObj_rect[i].select == 1){
+            glBindTexture(GL_TEXTURE_2D, NC.MyObj_rect[i].texture);
+            glBindVertexArray(NC.MyObj_rect[i].VAO);
+            if(NC.MyObj_rect[i].select == 1){
                 glUniform3fv(objectColorLoc, 1, primary_color_8);
             }
             else{
-                glUniform3fv(objectColorLoc, 1, MyObj_rect[i].color);
+                glUniform3fv(objectColorLoc, 1, NC.MyObj_rect[i].color);
             }
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
             nodeShader.use();
-            MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
-            glBindVertexArray(MyObj_rect[i].inquadVAO);
-            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Inletnum); 
+            NC.MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
+            glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
+            glBindVertexArray(NC.MyObj_rect[i].inquadVAO);
+            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Inletnum); 
 
-            glUniformMatrix4fv(MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
-            glBindVertexArray(MyObj_rect[i].outquadVAO);
-            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, MyObj_rect[i].Outletnum);
+            glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
+            glBindVertexArray(NC.MyObj_rect[i].outquadVAO);
+            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Outletnum);
         }
         
         fontShader.use();
         for (int i = 0; i < objnumber; ++i) {
-            MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
-            glUniformMatrix4fv(MyObj_font[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
+            NC.MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
+            glUniformMatrix4fv(NC.MyObj_font[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, MyObj_font[i].texture);
-            glBindVertexArray(MyObj_font[i].VAO);
+            glBindTexture(GL_TEXTURE_2D, NC.MyObj_font[i].texture);
+            glBindVertexArray(NC.MyObj_font[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
 
@@ -568,9 +568,9 @@ void Displayloop(){
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    // delete[] MyObj_font;
-    // delete[] MyObj_rect;
-    // delete[] MyObj_lines;
+    // delete[] NC.MyObj_font;
+    // delete[] NC.MyObj_rect;
+    // delete[] NC.NC.MyObj_lines;
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     /*glDeleteVertexArrays(1, &MyObj1.VAO);
