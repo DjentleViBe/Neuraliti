@@ -16,10 +16,6 @@ void editprefwindow(ImGui::FileBrowser fileDialog){
     ImGui::SetNextWindowSize(ImVec2(window_width / 3.0, (window_height / 3.0)));
     ImGui::Begin("Preferences", &editpref);
     
-    /*if(ImGui::Button("Choose font")){
-        fileDialog.Open();
-        fileDialog.Display();
-    }*/
     if (ImGui::TreeNode("Defaults"))
     {
         ImGui::Text("%s", "prefs.json [compiled]");
@@ -65,4 +61,23 @@ void editprefwindow(ImGui::FileBrowser fileDialog){
         overwriteLine("../prefs.json", 8, "\"fontsize\": \"" + appsettings["fontsize"] + "\"");
         addlogs("\nPreferences saved. Restart the app to see changes\n");
     }
+}
+
+void fileopenwindow(ImGui::FileBrowser openDialog){
+    ImGui::Begin("File", &openfile);
+    openDialog.SetTypeFilters({ ".pd" });
+    // open file dialog when user clicks this button
+    openDialog.Open();
+    openDialog.Display();
+        
+    if(openDialog.HasSelected())
+    {
+        std::cout << "Selected filename" << openDialog.GetSelected().string() << std::endl;
+        filename = openDialog.GetSelected().string();
+        // write the file name to .history
+        writefile("./.history", filename.substr(filename.rfind("/") + 1));
+        openDialog.ClearSelected();
+        openfile = false;
+    }
+    ImGui::End();
 }
