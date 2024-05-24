@@ -74,6 +74,23 @@ std::vector<std::string> splitString(const std::string& input, char delimiter) {
 
     return substrings;
 }
+int writefile(std::string file_path, std::string line_to_write){
+    // Create an output file stream (ofstream) object
+    std::ofstream outfile(file_path, std::ios::app);  // Open the file in append mode
+
+    // Check if the file is open
+    if (outfile.is_open()) {
+        // Write the line to the file
+        outfile << line_to_write << std::endl;
+
+        // Close the file stream
+        outfile.close();
+        std::cout << "Line written to file successfully." << std::endl;
+    } else {
+        std::cerr << "Failed to open the file." << std::endl;
+    }
+    return 0;
+}
 
 std::vector<std::string> readfile(char const *filename){
     std::string line;
