@@ -89,7 +89,9 @@ void fileopenwindow(ImGui::FileBrowser openDialog){
         initobjs(CurrentDir + "/" + filename);
         loadobjects();
         openfile = false;
+        sleep(1);
         openDialog.ClearSelected();
+
     }
     //ImGui::End();
 }
