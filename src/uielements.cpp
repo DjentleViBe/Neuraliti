@@ -436,9 +436,10 @@ void Displayloop(){
         glClear(GL_COLOR_BUFFER_BIT);
         
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), 0.0, 0.0);
-        lineShader.use();
+        
         
         for (int i = 0; i < connectnumber; i++){
+            lineShader.use();
             NC.MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
             startPos = glm::vec3(NC.MyObj_lines[i].startx + NC.MyObj_rect[NC.MyObj_lines[i].startobj].offsetx,
                                  NC.MyObj_lines[i].starty + NC.MyObj_rect[NC.MyObj_lines[i].startobj].offsety, 0.0f);
@@ -486,8 +487,9 @@ void Displayloop(){
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Outletnum);
         }
         
-        fontShader.use();
+        
         for (int i = 0; i < objnumber; ++i) {
+            fontShader.use();
             NC.MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
             glUniformMatrix4fv(NC.MyObj_font[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glActiveTexture(GL_TEXTURE0);
