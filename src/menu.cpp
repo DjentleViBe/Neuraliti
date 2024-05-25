@@ -1,6 +1,7 @@
 #include "../dependencies/include/menu.h"
 #include "../dependencies/include/imgui.h"
 #include "../dependencies/include/imfilebrowser.h"
+#include "../dependencies/include/windowing.h"
 #include "stdio.h"
 #include <iostream>
 #define _S(_LITERAL)    (const char*)u8##_LITERAL
@@ -28,7 +29,9 @@ void ShowMenu(bool* p_open)
                 }
                 if (ImGui::MenuItem("Open Recent", "")){}
                 ImGui::Separator();
-                if (ImGui::MenuItem("Close", (superkey + " W").c_str())){}
+                if (ImGui::MenuItem("Close", (superkey + " W").c_str())){
+                    closefile();
+                }
                 if (ImGui::MenuItem("Save", (superkey + " S").c_str())){}
                 if (ImGui::MenuItem("Save As...", ("⇧ " + superkey + " S").c_str())){}
                 ImGui::Separator();

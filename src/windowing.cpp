@@ -64,6 +64,10 @@ void editprefwindow(ImGui::FileBrowser fileDialog){
     }
 }
 
+void closefile(){
+    clearobjs();
+}
+
 void fileopenwindow(ImGui::FileBrowser openDialog){
     ImGui::Begin("File", &openfile);
     openDialog.SetTypeFilters({ ".pd" });
