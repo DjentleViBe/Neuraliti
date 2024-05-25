@@ -21,7 +21,7 @@ NeuralObj createrect(int ind, NeuralObj MyObj, float x, float y, float objtype, 
     MyObj.Outletnum = globaloutlets[ind];
     MyObj.objtype = objecttypes[ind];
     MyObj = createobj(MyObj);
-
+    
     return MyObj;
 }
 
@@ -63,7 +63,7 @@ NeuralObj createobj1(int ind, float x, float y, std::string objname, int neuralo
         MyObj3 = createrect(ind, MyObj3, x, y, 0, color, objname);
     }
     else{
-        MyObj3 = createfont(MyObj3, x, y, 0, primary_color_3, objname);
+        MyObj3 = createfont(MyObj3, x, y, 1, primary_color_3, objname);
     }
     
     return MyObj3;
