@@ -21,7 +21,7 @@ std::string logs;
 
 void printverbose(std::string verb, bool check){
     if(check == true){
-        std::cout << verb;
+        // std::cout << verb;
     }
     else{
         
@@ -86,9 +86,11 @@ int writefile(std::string file_path, std::string line_to_write){
 
         // Close the file stream
         outfile.close();
-        std::cout << "Line written to file successfully." << std::endl;
+        addlogs("Line written to file successfully");
+        // std::cout << "Line written to file successfully." << std::endl;
     } else {
-        std::cerr << "Failed to open the file." << std::endl;
+        addlogs("Filed to open the file");
+        // std::cerr << "Failed to open the file." << std::endl;
     }
     return 0;
 }
@@ -169,7 +171,7 @@ void overwriteLine(const std::string& filename, int lineNumber, const std::strin
         outfile << modifiedLine << std::endl;
     }
 
-    std::cout << "Line " << lineNumber << " overwritten successfully." << std::endl;
+    // std::cout << "Line " << lineNumber << " overwritten successfully." << std::endl;
 }
 
 void printMatrix(const std::vector<std::vector<int>>& matrix, std::string verbose) {
@@ -178,7 +180,7 @@ void printMatrix(const std::vector<std::vector<int>>& matrix, std::string verbos
     int cols = matrix[0].size(); // Assuming all rows have the same number of elements
 
     // Print the matrix
-    std::cout << verbose << "\n";
+    // std::cout << verbose << "\n";
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             std::cout << matrix[i][j] << " ";
