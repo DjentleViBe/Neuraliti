@@ -512,10 +512,6 @@ void Displayloop(){
             fileDialog.ClearSelected();
         }
         ImGui::End();
-        if(openDialog.HasSelected()){
-            std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
-            openDialog.ClearSelected();
-        }
 
         ImGui::SetNextWindowSize(ImVec2(window_width - (window_width / 4.0), window_height - window_height * 5.0 / 6.0));
         ImGui::SetNextWindowPos(ImVec2(window_width / 4.0, (window_height * 5.0 / 6.0)));
@@ -533,7 +529,7 @@ void Displayloop(){
         if(openfile){
             fileopenwindow(openDialog);
         }
-        
+        // std::cout << "looping" << std::endl;
         //ImGui::Text("This is the debug window");
         ImGui::TextUnformatted(logs.c_str());
         ImGui::SetScrollY(ImGui::GetScrollMaxY());

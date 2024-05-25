@@ -88,7 +88,7 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
                 }
                 wordpos++;
             }
-            objectnames.push_back(tokentemp.erase(tokentemp.size() - 0));
+            objectnames.push_back(tokentemp.erase(tokentemp.size()));
             objnumber++;
             }
         }
