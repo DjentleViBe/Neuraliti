@@ -241,7 +241,6 @@ int INITgraphics(){
     addlogs("Opening file\n");
     // open history file if it exists otherwise make empty .pd file
     std::vector<std::string> filenametemp = readfile("./.history");
-
     filename = filenametemp[filenametemp.size() - 1];
 
     if(filename.length() != 0){
@@ -513,6 +512,10 @@ void Displayloop(){
             fileDialog.ClearSelected();
         }
         ImGui::End();
+        if(openDialog.HasSelected()){
+            std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+            openDialog.ClearSelected();
+        }
 
         ImGui::SetNextWindowSize(ImVec2(window_width - (window_width / 4.0), window_height - window_height * 5.0 / 6.0));
         ImGui::SetNextWindowPos(ImVec2(window_width / 4.0, (window_height * 5.0 / 6.0)));
@@ -570,6 +573,7 @@ void Displayloop(){
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    clearobjs();
     // delete[] NC.MyObj_font;
     // delete[] NC.MyObj_rect;
     // delete[] NC.NC.MyObj_lines;
