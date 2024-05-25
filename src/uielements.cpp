@@ -309,11 +309,12 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
     float boundingx = (xpos * 2 / window_width) - 1;
     float boundingy = -(ypos * 2 / window_height) + 1;
     cursor_type = 0;
-    
-    for(int o = 0; o < objnumber; o++){
-        if(NC.MyObj_rect[o].result.x < boundingx && NC.MyObj_rect[o].result.x + NC.MyObj_rect[o].sentencewidth > boundingx){
-            if(NC.MyObj_rect[o].result.y > boundingy && NC.MyObj_rect[o].result.y - NC.MyObj_rect[o].sentenceheight < boundingy){
-                cursor_type = 1;
+    if(objnumber!=0){
+        for(int o = 0; o < objnumber; o++){
+            if(NC.MyObj_rect[o].result.x < boundingx && NC.MyObj_rect[o].result.x + NC.MyObj_rect[o].sentencewidth > boundingx){
+                if(NC.MyObj_rect[o].result.y > boundingy && NC.MyObj_rect[o].result.y - NC.MyObj_rect[o].sentenceheight < boundingy){
+                    cursor_type = 1;
+                    }
                 }
             }
     }
