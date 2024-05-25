@@ -34,5 +34,7 @@ extern std::vector<int> globaloutlets;
 extern NeuralCanvas NC;
 int INITgraphics();
 void Displayloop();
+void clearobjs();
+void loadobjects();
 
 #endif
