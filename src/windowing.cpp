@@ -9,6 +9,7 @@
 #include "../dependencies/include/menu.h"
 #include "../dependencies/include/extras.h"
 #include "../dependencies/include/picojson.h"
+#include "../dependencies/include/initobjs.hpp"
 
 void editprefwindow(ImGui::FileBrowser fileDialog){
     // Buffer to hold the current working directory
@@ -74,8 +75,12 @@ void fileopenwindow(ImGui::FileBrowser openDialog){
     {
         std::cout << "Selected filename" << openDialog.GetSelected().string() << std::endl;
         filename = openDialog.GetSelected().string();
+        filename = filename.substr(filename.rfind("/") + 1);
         // write the file name to .history
-        writefile("./.history", filename.substr(filename.rfind("/") + 1));
+        writefile("./.history", filename);
+        clearobjs();
+        initobjs(CurrentDir + "/" + filename);
+        loadobjects();
         openDialog.ClearSelected();
         openfile = false;
     }
