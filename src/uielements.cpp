@@ -32,7 +32,7 @@
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
-std::string filename = "Untitled-0.pd";
+std::string filename = "";
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 std::map<std::string, std::string> appsettings;
@@ -42,10 +42,6 @@ picojson::value v;
 glm::mat4 *mvp;
 glm::mat4 *mvp_lines;
 NeuralCanvas NC;
-// std::vector <NeuralObj> NC.MyObj_rect;
-// std::vector <NeuralObj> NC.MyObj_font;
-// std::vector <NeuralLines> NC.NC.MyObj_lines;
-// NeuralObj *NC.MyObj_rect;
 std::string CurrentDir;
 int selectindex;
 bool selected;
@@ -137,8 +133,29 @@ void loadfont(ImGuiIO& io){
     addlogs("Font loaded\n");
 }
 
-int INITgraphics(){
+void loadobjects(){
+    for (int i = 0; i < objnumber; ++i) {
+        NC.MyObj_rect.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0));
+        NC.MyObj_rect[i].Inlets = new int*[NC.MyObj_rect[i].Inletnum];
+        NC.MyObj_rect[i].Outlets = new int*[NC.MyObj_rect[i].Outletnum];
+    }
     
+    for (int i = 0; i < objnumber; ++i) {
+        NC.MyObj_font.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1));
+    }
+    
+    NC.MyObj_lines = setupconnections(NC.MyObj_rect, CurrentDir + "/" + filename);
+    
+    /*
+    // inlet outlet mapping
+    NC.MyObj_rect[1].Inlets[0] = new int[4];
+    NC.MyObj_rect[0].Outlets[0] = new int[4];
+    NC.MyObj_rect[1].Inlets[0] = NC.MyObj_rect[0].Outlets[0];
+    NC.MyObj_rect[0].Outlets[0][0] = 10;
+    NC.MyObj_rect[0].Outlets[0][1] = 20;*/
+}
+
+int INITgraphics(){
     homeDir = std::getenv("HOME");
     std::cout << std::string(homeDir);
     char path[1024];
@@ -222,9 +239,18 @@ int INITgraphics(){
     
     addlogs("Initialisation ended\n");
     addlogs("Opening file\n");
-    initobjs(CurrentDir + "/" + filename);
-    //printvector(globalinlets, "Inlets");
-    //printvector(globaloutlets, "Outlets");
+    // open history file if it exists otherwise make empty .pd file
+    std::vector<std::string> filenametemp = readfile("./.history");
+    filename = filenametemp[filenametemp.size() - 1];
+
+    if(filename.length() != 0){
+        addlogs("Opening file : " + filename);
+        initobjs(CurrentDir + "/" + filename);
+    }
+    else{
+        addlogs("no history found");
+    }
+
     return 0;
 }
 
@@ -272,21 +298,9 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     
     //addlogs("scaled");
 }
+
 double deltaX;
 double deltaY;
-
-void cursor_enter_callback(GLFWwindow* window, int entered)
-{   
-    if (entered)
-    {
-        // The cursor entered the content area of the window
-        addlogs("entered\n");
-    }
-    else
-    {
-        // The cursor left the content area of the window
-    }
-}
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos){
     ImGui_ImplGlfw_CursorPosCallback(window, xpos, ypos);
@@ -295,6 +309,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
     float boundingx = (xpos * 2 / window_width) - 1;
     float boundingy = -(ypos * 2 / window_height) + 1;
     cursor_type = 0;
+    
     for(int o = 0; o < objnumber; o++){
         if(NC.MyObj_rect[o].result.x < boundingx && NC.MyObj_rect[o].result.x + NC.MyObj_rect[o].sentencewidth > boundingx){
             if(NC.MyObj_rect[o].result.y > boundingy && NC.MyObj_rect[o].result.y - NC.MyObj_rect[o].sentenceheight < boundingy){
@@ -302,7 +317,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
                 }
             }
     }
-                    
+    
     if (state == GLFW_PRESS){
         if(selected){
             transmouseX = mouseloc.x;
@@ -318,10 +333,14 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
             calculate_view(window_width, window_height, glm::vec3(-0.45f, 0.0f, 0.0f), deltaX * 0.1, deltaY * 0.1);
         }
     }
+    
     if(state == GLFW_RELEASE){
-        NC.MyObj_rect[selectindex].transX = NC.MyObj_rect[selectindex].offsetx;
-        NC.MyObj_rect[selectindex].transY = NC.MyObj_rect[selectindex].offsety;
+        if(objnumber != 0){
+            NC.MyObj_rect[selectindex].transX = NC.MyObj_rect[selectindex].offsetx;
+            NC.MyObj_rect[selectindex].transY = NC.MyObj_rect[selectindex].offsety;
+        }
     }
+    
     tempmouseX = xpos;
     tempmouseY = ypos;
     transmouseX = boundingx;
@@ -381,6 +400,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 void Displayloop(){
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
+    ImGui::FileBrowser openDialog;
     
     Shader fontShader((CurrentDir + "/bin/fontshader.vs").c_str(), (CurrentDir + "/bin/fontshader.fs").c_str());
     Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
@@ -392,37 +412,17 @@ void Displayloop(){
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
     
-    //nodeShader.use();
     // loop through objects here
-    // std::vector<NeuralObj> NC.MyObj_rect(objnumber); 
-    // NC.MyObj_rect = new NeuralObj[objnumber];
     mvp = new glm::mat4[objnumber];
     mvp_lines = new glm::mat4[objnumber];
-    for (int i = 0; i < objnumber; ++i) {
-        NC.MyObj_rect.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0));
-        NC.MyObj_rect[i].Inlets = new int*[NC.MyObj_rect[i].Inletnum];
-        NC.MyObj_rect[i].Outlets = new int*[NC.MyObj_rect[i].Outletnum];
-    }
-    //NeuralObj *NC.MyObj_font = new NeuralObj[objnumber];
-    // std::vector<NeuralObj> NC.MyObj_font(objnumber);
-    for (int i = 0; i < objnumber; ++i) {
-        NC.MyObj_font.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 1));
-    }
-
-    NC.MyObj_lines = setupconnections(NC.MyObj_rect, CurrentDir + "/" + filename);
-    // inlet outlet mapping
-    NC.MyObj_rect[1].Inlets[0] = new int[4];
-    NC.MyObj_rect[0].Outlets[0] = new int[4];
-    NC.MyObj_rect[1].Inlets[0] = NC.MyObj_rect[0].Outlets[0];
-    NC.MyObj_rect[0].Outlets[0][0] = 10;
-    NC.MyObj_rect[0].Outlets[0][1] = 20;
+    loadobjects();
     calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), Xpos, Ypos);
     unsigned int objectColorLoc = glGetUniformLocation(objShader.ID, "aColor");
 
+    
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
-    //glfwSetCursorEnterCallback(window, cursor_enter_callback);
     
     glm::vec3 startPos;
     glm::mediump_vec3 endPos;
@@ -430,7 +430,6 @@ void Displayloop(){
 
     while (!glfwWindowShouldClose(window))
     {   
-        
         glfwGetWindowSize(window, &window_width, &window_height);
         glfwSetKeyCallback(window, key_callback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
@@ -527,7 +526,10 @@ void Displayloop(){
             ImGui::End();
             //ImGui::ShowDemoWindow(&editpref);
         }
-        
+        if(openfile){
+            fileopenwindow(openDialog);
+        }
+        // std::cout << "looping" << std::endl;
         //ImGui::Text("This is the debug window");
         ImGui::TextUnformatted(logs.c_str());
         ImGui::SetScrollY(ImGui::GetScrollMaxY());
@@ -567,6 +569,7 @@ void Displayloop(){
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    clearobjs();
     // delete[] NC.MyObj_font;
     // delete[] NC.MyObj_rect;
     // delete[] NC.NC.MyObj_lines;

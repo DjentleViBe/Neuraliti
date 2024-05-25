@@ -18,6 +18,13 @@ std::vector<int> objinlets;
 std::vector<int> objoutlets;
 
 std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
+    objectnames.erase(objectnames.begin(), objectnames.end());
+    Xposition.erase(Xposition.begin(), Xposition.end());
+    Yposition.erase(Yposition.begin(), Yposition.end());
+    objecttypes.erase(objecttypes.begin(), objecttypes.end());
+    objinlets.erase(objinlets.begin(), objinlets.end());
+    objoutlets.erase(objoutlets.begin(), objoutlets.end());
+
     std::vector<std::string> lines;
     char delimiter = ' ';
     lines = readfile(path.c_str());
@@ -57,7 +64,7 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
             objnumber++;
             }   
         else if(lines[l].find("floatatom")!= std::string::npos){
-            objecttypes.push_back(1);
+            objecttypes.push_back(2);
             int wordpos = 0;
             std::stringstream ss(lines[l]);
             std::string token;
@@ -81,7 +88,7 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
                 }
                 wordpos++;
             }
-            objectnames.push_back(tokentemp.erase(tokentemp.size() - 0));
+            objectnames.push_back(tokentemp.erase(tokentemp.size()));
             objnumber++;
             }
         }

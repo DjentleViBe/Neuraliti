@@ -11,6 +11,8 @@
 #include "../dependencies/include/glm/gtc/matrix_transform.hpp"
 #include "../dependencies/include/glm/gtc/type_ptr.hpp"
 
+// unsigned char *map;
+
 void InitShader(const char* shadevs, const char* shadefs);
 
 float* drawnodes(float wid, float* color){
@@ -221,18 +223,18 @@ NeuralObj createobj(NeuralObj &MyObj){
     // set texture filtering parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    if(MyObj.objtype == 0){
-        
+    
+    if(MyObj.objtype == 1){
         stbi_set_flip_vertically_on_load(true);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         unsigned char *map = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), MyObj.objname);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, fmax(sentence_width, globalfontsize * 3.0), globalfontsize * 3.0, 0, GL_RED, GL_UNSIGNED_BYTE, map);
     }
-    
-    createinlets(MyObj);
-    createoutlets(MyObj);
-
+    else{
+        createinlets(MyObj);
+        createoutlets(MyObj);
+    }
     return MyObj;
 }
 

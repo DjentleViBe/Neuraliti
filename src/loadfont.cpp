@@ -44,11 +44,8 @@ unsigned char* loadfont(std::string fontname,std::string sentence)
     
     // create a bitmap for the phrase //
     unsigned char* bitmap = (unsigned char *)calloc(b_w * b_h, sizeof(unsigned char));
-    //unsigned char* bitmap = new unsigned char[b_w * b_h];
     // calculate font scaling //
     float scale = stbtt_ScaleForPixelHeight(&info, l_h);
-    
-    //char* word = "Hello World!";
     
     int x = 0;
     
