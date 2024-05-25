@@ -84,12 +84,12 @@ void fileopenwindow(ImGui::FileBrowser openDialog){
         filename = filename.substr(filename.rfind("/") + 1);
         // write the file name to .history
         std::cout << CurrentDir + "/" + filename << std::endl;
-        writefile(CurrentDir + "/.history", filename);
+        // writefile(CurrentDir + "/.history", filename);
         clearobjs();
         initobjs(CurrentDir + "/" + filename);
         loadobjects();
         openfile = false;
-        sleep(1);
+        // sleep(1);
         openDialog.ClearSelected();
 
     }
