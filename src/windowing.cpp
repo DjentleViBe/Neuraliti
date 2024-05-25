@@ -69,24 +69,27 @@ void closefile(){
 }
 
 void fileopenwindow(ImGui::FileBrowser openDialog){
-    ImGui::Begin("File", &openfile);
+    //ImGui::Begin("File", &openfile);
     openDialog.SetTypeFilters({ ".pd" });
     // open file dialog when user clicks this button
+    openDialog.SetPwd(CurrentDir);
     openDialog.Open();
+
     openDialog.Display();
-        
+    
     if(openDialog.HasSelected())
     {
         std::cout << "Selected filename" << openDialog.GetSelected().string() << std::endl;
         filename = openDialog.GetSelected().string();
         filename = filename.substr(filename.rfind("/") + 1);
         // write the file name to .history
-        writefile("./.history", filename);
+        std::cout << CurrentDir + "/" + filename << std::endl;
+        writefile(CurrentDir + "/.history", filename);
         clearobjs();
         initobjs(CurrentDir + "/" + filename);
         loadobjects();
         openfile = false;
         openDialog.ClearSelected();
     }
-    ImGui::End();
+    //ImGui::End();
 }

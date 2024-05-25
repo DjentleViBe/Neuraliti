@@ -16,7 +16,7 @@
 #include "../dependencies/include/menu.h"
 #include "../dependencies/include/keybindings.h"
 #include "../dependencies/include/extras.h"
-//#include "../dependencies/include/imfilebrowser.h"
+#include "../dependencies/include/imfilebrowser.h"
 #include "../dependencies/include/windowing.h"
 #include "../dependencies/include/picojson.h"
 #include "../dependencies/include/glm/glm.hpp"
@@ -161,10 +161,10 @@ int INITgraphics(){
     char path[1024];
     uint32_t size = sizeof(path);
     if (_NSGetExecutablePath(path, &size) == 0){
-        printf("executable path is %s\n", path);
+        printf("\nexecutable path is %s\n", path);
     }
     else{
-        printf("buffer too small; need size %u\n", size);
+        printf("\nbuffer too small; need size %u\n", size);
         return 1;
     }
     // Initial startup
@@ -240,7 +240,7 @@ int INITgraphics(){
     addlogs("Initialisation ended\n");
     addlogs("Opening file\n");
     // open history file if it exists otherwise make empty .pd file
-    std::vector<std::string> filenametemp = readfile("./.history");
+    std::vector<std::string> filenametemp = readfile((CurrentDir + "/.history").c_str());
     filename = filenametemp[filenametemp.size() - 1];
 
     if(filename.length() != 0){
