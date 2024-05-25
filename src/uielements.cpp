@@ -157,20 +157,20 @@ void loadobjects(){
 
 int INITgraphics(){
     homeDir = std::getenv("HOME");
-    std::cout << std::string(homeDir);
+    // std::cout << std::string(homeDir);
     char path[1024];
     uint32_t size = sizeof(path);
     if (_NSGetExecutablePath(path, &size) == 0){
-        printf("\nexecutable path is %s\n", path);
+        // printf("\nexecutable path is %s\n", path);
     }
     else{
-        printf("\nbuffer too small; need size %u\n", size);
+        // printf("\nbuffer too small; need size %u\n", size);
         return 1;
     }
     // Initial startup
     addlogs("Opening preferences\n");
     CurrentDir = std::string(path).erase(std::string(path).size() - 14);
-    std::cout << CurrentDir;
+    // std::cout << CurrentDir;
     loadconfig(CurrentDir + "/prefs.json");
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
@@ -209,7 +209,7 @@ int INITgraphics(){
     
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        // std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
     
@@ -385,7 +385,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         unsigned char pick_col[0];
         glReadPixels(xpos*xscale, (window_height - ypos)*yscale, 1, 1, GL_RED, GL_UNSIGNED_BYTE, pick_col);
         if(abs(static_cast<int>(pick_col[0]) / 255.0 - primary_color_1[0]) < 0.001){
-            std::cout << "reset\n";
+            // std::cout << "reset\n";
             for(int o = 0; o < objnumber; o++){
                 NC.MyObj_rect[o].select = 0;
             }
@@ -511,7 +511,7 @@ void Displayloop(){
         // open file dialog when user clicks this button
         
         if(fileDialog.HasSelected()){
-            std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+            // std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
             fileDialog.ClearSelected();
         }
         ImGui::End();
