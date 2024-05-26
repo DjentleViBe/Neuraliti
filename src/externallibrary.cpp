@@ -3,14 +3,14 @@
 #include <dlfcn.h>
 
 // extern float add(float x, float y);
-typedef float (*func_t)(float, float);
+typedef float (*func_t)(int, ...);
 
 /*
 void readlibrary(){
     std::cout << add(4.0, 5.0) << std::endl;
 }*/
 
-int sharedlibrary(){
+int sharedlibrary(const char* func_name){
     // Load the shared library
     void* handle = dlopen((CurrentDir + "./sharedlib/shrsub.so").c_str(), RTLD_LAZY);
     if (!handle) {
@@ -22,7 +22,7 @@ int sharedlibrary(){
     dlerror();
 
     // Define the function name you want to call
-    const char* func_name = "add";  // Change to "subtract" to call the subtract function
+    // const char* func_name = "add";  // Change to "subtract" to call the subtract function
 
     // Load the symbol
     func_t func = (func_t) dlsym(handle, func_name);
@@ -34,7 +34,7 @@ int sharedlibrary(){
     }
 
     // Call the function
-    func(10.0, 5.0);
+    func(2, 10.0, 5.0);
 
     // Close the library
     dlclose(handle);
