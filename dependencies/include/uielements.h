@@ -36,5 +36,6 @@ int INITgraphics();
 void Displayloop();
 void clearobjs();
 void loadobjects();
+int sharedlibrary();
 
 #endif

@@ -13,6 +13,7 @@ OBJDIR = $(MAKEFILE_DIR)/bin/
 BINDIR = $(MAKEFILE_DIR)/bin/
 LIBS = -lglfw.3.3
 LIBDIR = $(MAKEFILE_DIR)/dependencies/library
+SHAREDLIB = $(MAKEFILE_DIR)/sharedlib
 FRAMEWORKS = -framework OpenGL -framework CoreFoundation -framework CoreVideo -framework IOKit -framework OpenCL
 # Source files
 SOURCES_C := $(foreach dir,$(SRCDIRS),$(wildcard $(dir)/*.c))
@@ -35,7 +36,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(HEADERS_C) $(HEADERS_CPP)| $(OBJDIR)
 
 # Link object files to create executable
 $(EXEC): $(OBJS) | $(BINDIR)
-	$(CC) $(CFLAGS) $(OBJS) -L$(LIBDIR) $(LIBS) $(FRAMEWORKS) -o $(EXEC)
+	$(CC) $(CFLAGS) $(OBJS) -L$(LIBDIR) $(LIBS) $(FRAMEWORKS) -o $(EXEC) $(SHAREDLIB)/shrsub.so -L$(SHAREDLIB)
 
 # Create directories if they don't exist
 $(OBJDIR):
