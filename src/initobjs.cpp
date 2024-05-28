@@ -59,7 +59,7 @@ std::vector <NeuralLines> setupconnections(std::vector<NeuralObj> MyObj_rect, st
             MyObj_line[linenumber].endy = MyObj_rect[toobj].y;
             MyObj_line[linenumber].startobj = fromobj;
             MyObj_line[linenumber].endobj = toobj;
-
+            NC.MyObj_rect[toobj].Inlets[toinlet] = NC.MyObj_rect[fromobj].Outlets[fromoutlet];
             linenumber++;
         }
     }

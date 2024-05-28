@@ -4,7 +4,6 @@
 
 int main()
 {
-	
 	INITgraphics();
     Displayloop();
 	

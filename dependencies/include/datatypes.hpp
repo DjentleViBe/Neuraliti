@@ -16,7 +16,8 @@ class NeuralObj {       // The class
     int objnumber;
     float x;            // x position
     float y;            // y position
-    std::string objname;  // Attribute (string variable)
+    std::string funcname;
+    std::string objdisplayname;  // Attribute (string variable)
     unsigned int VAO, VBO, EBO;
     unsigned int inquadVAO, inquadVBO, instanceVBO;
     unsigned int outquadVAO, outquadVBO, outstanceVBO;
@@ -53,6 +54,7 @@ class NeuralLines {
 
 class NeuralFloat{
   public:
+    std::string objdisplayname;
     std::string objname;
     float displayvalue;
     float minvalue;

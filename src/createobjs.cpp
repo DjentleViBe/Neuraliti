@@ -16,7 +16,7 @@ NeuralObj createrect(int ind, NeuralObj MyObj, float x, float y, float objtype, 
     MyObj.y = y;
     MyObj.objtype = objtype;
     MyObj.color = color;
-    MyObj.objname = objname;
+    MyObj.objdisplayname = objname;
     MyObj.Inletnum = globalinlets[ind];
     MyObj.Outletnum = globaloutlets[ind];
     MyObj.objtype = objecttypes[ind];
@@ -30,7 +30,8 @@ NeuralObj createfont(NeuralObj MyObj, float x, float y, float objtype, float* co
     MyObj.y = y;
     MyObj.objtype = objtype;
     MyObj.color = color;
-    MyObj.objname = objname;
+    MyObj.objdisplayname = objname;
+    MyObj.funcname = objname.substr(0, objname.find(" "));
     MyObj = createobj(MyObj);
     
     return MyObj;
