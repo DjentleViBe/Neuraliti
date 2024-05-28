@@ -136,8 +136,8 @@ void loadfont(ImGuiIO& io){
 void loadobjects(){
     for (int i = 0; i < objnumber; ++i) {
         NC.MyObj_rect.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0));
-        //NC.MyObj_rect[i].Inlets = new int*[NC.MyObj_rect[i].Inletnum];
-        //NC.MyObj_rect[i].Outlets = new int*[NC.MyObj_rect[i].Outletnum];
+        NC.MyObj_rect[i].Inlets = new int*[NC.MyObj_rect[i].Inletnum];
+        NC.MyObj_rect[i].Outlets = new int*[NC.MyObj_rect[i].Outletnum];
     }
     
     for (int i = 0; i < objnumber; ++i) {
@@ -365,7 +365,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
             if(NC.MyObj_rect[o].result.x < boundingx && NC.MyObj_rect[o].result.x + NC.MyObj_rect[o].sentencewidth > boundingx){
                 if(NC.MyObj_rect[o].result.y > boundingy && NC.MyObj_rect[o].result.y - NC.MyObj_rect[o].sentenceheight < boundingy){
                     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-                    addlogs("Pressed :" + NC.MyObj_rect[o].objname + "\n");
+                    addlogs("Pressed :" + NC.MyObj_rect[o].objdisplayname + "\n");
                     NC.MyObj_rect[o].select = 1;
                     selectindex = o;
                     selected = true;
@@ -438,7 +438,6 @@ void Displayloop(){
         
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), 0.0, 0.0);
         
-        
         for (int i = 0; i < connectnumber; i++){
             lineShader.use();
             NC.MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
@@ -486,10 +485,7 @@ void Displayloop(){
             glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glBindVertexArray(NC.MyObj_rect[i].outquadVAO);
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Outletnum);
-        }
-        
-        
-        for (int i = 0; i < objnumber; ++i) {
+
             fontShader.use();
             NC.MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
             glUniformMatrix4fv(NC.MyObj_font[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
@@ -497,8 +493,14 @@ void Displayloop(){
             glBindTexture(GL_TEXTURE_2D, NC.MyObj_font[i].texture);
             glBindVertexArray(NC.MyObj_font[i].VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
         }
 
+        for (int i = 0; i < objnumber; i++){
+            sharedlibrary(i);
+            // process the name of the methods
+        }
+        
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
