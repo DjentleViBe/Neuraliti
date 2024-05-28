@@ -36,6 +36,6 @@ int INITgraphics();
 void Displayloop();
 void clearobjs();
 void loadobjects();
-int sharedlibrary(const char* func_name);
+int sharedlibrary(int objindex);
 
 #endif
