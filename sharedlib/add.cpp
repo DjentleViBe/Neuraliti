@@ -3,7 +3,7 @@
 #include <cstdarg>
 
 extern "C" {
-    float add(int count, ...) {
+    float add_(int count, ...) {
         va_list args;
         va_start(args, count);
         float sum = 0;
@@ -13,10 +13,6 @@ extern "C" {
         va_end(args);
         std::cout << sum << std::endl;
         return sum;
-    }
-
-    int subtract(int a, int b) {
-        return a - b;
     }
 }
 
