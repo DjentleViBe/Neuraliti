@@ -4,7 +4,6 @@
 
 int main()
 {
-	sharedlibrary("add");
 	INITgraphics();
     Displayloop();
 	
