@@ -186,10 +186,10 @@ NeuralObj createobj(NeuralObj &MyObj){
     // if object type is 0
     // render font
     // create the background box
-    sentence_width = MyObj.objname.length() * globalfontsize * 2.0;
+    sentence_width = MyObj.objdisplayname.length() * globalfontsize * 2.0;
     MyObj.sentencewidth = (float)sentence_width/(float)window_width;
     MyObj.sentenceheight = (float)globalfontsize * 2.3/(float)window_height;
-    drawobject(MyObj.x, MyObj.y, MyObj.color, MyObj.verts, fmax(sentence_width, globalfontsize * 3.0), globalfontsize * 2.3);
+    drawobject(MyObj.x, MyObj.y, MyObj.color, MyObj.verts, fmax(sentence_width, globalfontsize * 2.0), globalfontsize * 2.3);
     unsigned int indices[] = {
             0, 1, 3, // first triangle
             1, 2, 3  // second triangle
@@ -228,7 +228,7 @@ NeuralObj createobj(NeuralObj &MyObj){
         stbi_set_flip_vertically_on_load(true);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        unsigned char *map = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), MyObj.objname);
+        unsigned char *map = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), MyObj.objdisplayname);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, fmax(sentence_width, globalfontsize * 3.0), globalfontsize * 3.0, 0, GL_RED, GL_UNSIGNED_BYTE, map);
     }
     else{
