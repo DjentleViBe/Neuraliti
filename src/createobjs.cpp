@@ -54,7 +54,7 @@ NeuralObj createobj1(int ind, float x, float y, std::string objname, int neuralo
             case 0:
                 color = primary_color_2;
                 break;
-            case 1:
+            case 2:
                 color = primary_color_10;
                 // std::cout << objecttypes[ind] << std::endl;
                 break;
