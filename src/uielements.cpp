@@ -136,8 +136,14 @@ void loadfont(ImGuiIO& io){
 void loadobjects(){
     for (int i = 0; i < objnumber; ++i) {
         NC.MyObj_rect.push_back(createobj1(i, Xposition[i], Yposition[i], objectnames[i], 0));
-        NC.MyObj_rect[i].Inlets = new int*[NC.MyObj_rect[i].Inletnum];
-        NC.MyObj_rect[i].Outlets = new int*[NC.MyObj_rect[i].Outletnum];
+        NC.MyObj_rect[i].Inlets = new float*[NC.MyObj_rect[i].Inletnum];
+        NC.MyObj_rect[i].Outlets = new float*[NC.MyObj_rect[i].Outletnum];
+        for (int j = 0; j < NC.MyObj_rect[i].Inletnum; j++){
+            NC.MyObj_rect[i].Inlets[j] = new float[1];
+        }
+        for (int j = 0; j < NC.MyObj_rect[i].Outletnum; j++){
+            NC.MyObj_rect[i].Outlets[j] = new float[1];
+        }   
     }
     
     for (int i = 0; i < objnumber; ++i) {
