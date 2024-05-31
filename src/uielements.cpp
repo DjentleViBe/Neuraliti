@@ -486,8 +486,7 @@ void Displayloop(){
             NC.MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
             glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glBindVertexArray(NC.MyObj_rect[i].inquadVAO);
-            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Inletnum); 
-
+            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Inletnum);
             glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glBindVertexArray(NC.MyObj_rect[i].outquadVAO);
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Outletnum);

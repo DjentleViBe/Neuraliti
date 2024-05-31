@@ -12,9 +12,10 @@
 #include "../dependencies/include/uielements.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "../dependencies/include/stb_image.h"
+#include "../dependencies/include/datatypes.hpp"
 
 int sentence_width = 0;
-unsigned char* loadfont(std::string fontname,std::string sentence)
+FontBitmap loadfont(std::string fontname, std::string sentence)
 {
     // load font file //
     long size;
@@ -96,5 +97,5 @@ unsigned char* loadfont(std::string fontname,std::string sentence)
     //free(fontBuffer);
     //free(bitmap);
     
-    return bitmap;
+    return { bitmap, b_w, b_h };
 }
