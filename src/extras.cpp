@@ -1,6 +1,7 @@
 #include "../dependencies/include/extras.h"
 #include <stdio.h>
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <filesystem>
 #include <fstream>
@@ -198,4 +199,11 @@ void printvector(const std::vector<int> vec, std::string verbose){
         }
     }
     std::cout << std::endl;
+}
+
+std::string floatToString(float value, int precision) {
+    std::ostringstream oss;
+    oss.precision(precision);   // Set the precision
+    oss << std::fixed << value; // Use fixed-point notation
+    return oss.str();           // Return the string representation
 }
