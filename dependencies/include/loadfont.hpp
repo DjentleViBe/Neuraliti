@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include "datatypes.hpp"
 
-unsigned char* loadfont(std::string fontname,std::string sentence);
+FontBitmap loadfont(std::string fontname,std::string sentence);
 #endif /* loadfont_hpp */

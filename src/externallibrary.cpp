@@ -1,5 +1,7 @@
 #include <iostream>
 #include "../dependencies/include/uielements.h"
+#include "../dependencies/include/fileoperations.hpp"
+#include "../dependencies/include/extras.h"
 #include <dlfcn.h>
 
 // extern float add(float x, float y);
@@ -31,6 +33,29 @@ int sharedlibrary(int objindex){
         }
     }
     else if(NC.MyObj_rect[objindex].objtype == 2){
+        // check if the inlet is connected to another
+        int objconnect = 0;
+        for(int cnr = 0; cnr < objnumber; cnr++){
+            if(connectionmatrix[cnr][objindex] != 0){
+                objconnect = 1;
+                // std::cout << "connected" << std::endl;
+            }
+        }
+        if(objconnect == 0){
+            // no input connection
+            NC.MyObj_rect[objindex].Outlets[0][0] = std::stof(NC.MyObj_rect[objindex].objdisplayname);
+        }
+        else{
+            // set output as input
+            NC.MyObj_rect[objindex].Outlets[0][0] = NC.MyObj_rect[objindex].Inlets[0][0];
+            NC.MyObj_font[objindex].objdisplayname = floatToString(NC.MyObj_rect[objindex].Inlets[0][0], 1);
+            FontBitmap fontBit = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), 
+                                            NC.MyObj_font[objindex].objdisplayname);
+            updateTexture(NC.MyObj_font[objindex].texture, fontBit.bitmap);
+            // std::cout << NC.MyObj_rect[objindex].Inlets[0][0] << " " << objindex << std::endl;
+        }
+        objconnect = 0;
+        // std::cout << NC.MyObj_rect[objindex].Inlets[0][0] << std::endl;
         // map inlet value to outlet. If inlet value is null, map objvalue to outlet, inlet(if) -> objname -> outlet
         //std::cout << NC.MyObj_font[objindex].funcname << std::endl;
     }

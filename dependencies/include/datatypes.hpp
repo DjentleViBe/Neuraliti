@@ -27,8 +27,8 @@ class NeuralObj {       // The class
     GLuint Matrix;
     int Inletnum;
     int Outletnum;
-    int **Inlets;        // store inlet types
-    int **Outlets;       // store outlet types
+    float **Inlets;        // store inlet types
+    float **Outlets;       // store outlet types
     glm::vec4 result;
     float sentencewidth;
     float sentenceheight;
@@ -74,6 +74,12 @@ class NeuralCanvas{
     std::vector<NeuralFloat> MyObj_floats;
 
     void eraseLinesIf(std::function<bool(NeuralLines&)> condition);
+};
+
+struct FontBitmap {
+    unsigned char* bitmap;
+    int width;
+    int height;
 };
 
 #endif

@@ -16,6 +16,11 @@ std::vector<std::string> objectnames;
 std::vector<int> objecttypes;
 std::vector<int> objinlets;
 std::vector<int> objoutlets;
+std::vector<std::vector<int>> connectionmatrix;
+
+void initializeMatrix(int size) {
+    connectionmatrix.resize(size, std::vector<int>(size, 0));
+}
 
 std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
     objectnames.erase(objectnames.begin(), objectnames.end());
@@ -93,7 +98,7 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
             }
         }
 
-    std::vector<std::vector<int>> connectionmatrix(objnumber, std::vector<int>(objnumber));
+    initializeMatrix(objnumber);
     for (int l = 0; l < lines.size(); l++){
     // check if obj
     // check if connect
@@ -103,13 +108,13 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
             std::stringstream cs(lines[l]);
             std::string tokenconnect;
             std::string tokenconnecttemp = "";
-            // int obj1 = 0;
-            // int obj2 = 0;
+            int obj1 = 0;
+            int obj2 = 0;
             while (std::getline(cs, tokenconnect, delimiter)) {
                 if(connectpos == 2){
                     // object
                     // std::cout << "\nobject number :" << tokenconnect << "\n";
-                    // obj1 = stoi(tokenconnect);
+                    obj1 = stoi(tokenconnect);
                 }
                 else if(connectpos == 3){
                     // outlet number
@@ -119,7 +124,7 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
                 else if(connectpos == 4){
                     // object
                     // std::cout << "object number :" << tokenconnect << "\n";
-                    // obj2 = stoi(tokenconnect);
+                    obj2 = stoi(tokenconnect);
                     
                 }
                 else if(connectpos == 5){
@@ -129,11 +134,11 @@ std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path){
                 }
                 connectpos++;
                 }
-            // connectionmatrix[obj1][obj2] += 1;
+            connectionmatrix[obj1][obj2] += 1;
             //std::cout << "\n";
         }
     }
-    // printMatrix(connectionmatrix, "Connection matrix");
+    printMatrix(connectionmatrix, "Connection matrix");
     //printvector(objinlets, "Inlets");
     //printvector(objoutlets, "Outlets");
     //std::cout << "read\n";
