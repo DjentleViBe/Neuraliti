@@ -76,4 +76,10 @@ class NeuralCanvas{
     void eraseLinesIf(std::function<bool(NeuralLines&)> condition);
 };
 
+struct FontBitmap {
+    unsigned char* bitmap;
+    int width;
+    int height;
+};
+
 #endif
