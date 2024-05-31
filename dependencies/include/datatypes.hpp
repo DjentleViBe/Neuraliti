@@ -27,8 +27,8 @@ class NeuralObj {       // The class
     GLuint Matrix;
     int Inletnum;
     int Outletnum;
-    int **Inlets;        // store inlet types
-    int **Outlets;       // store outlet types
+    float **Inlets;        // store inlet types
+    float **Outlets;       // store outlet types
     glm::vec4 result;
     float sentencewidth;
     float sentenceheight;
