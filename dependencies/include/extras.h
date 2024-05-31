@@ -20,4 +20,5 @@ std::string GetCurrentWorkingDirectory();
 void overwriteLine(const std::string& filename, int lineNumber, const std::string& newContent);
 void printMatrix(const std::vector<std::vector<int>>& matrix, std::string verbose);
 void printvector(const std::vector<int> vec, std::string verbose);
+std::string floatToString(float value, int precision);
 #endif /* extras_h */
