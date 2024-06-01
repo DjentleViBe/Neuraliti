@@ -54,7 +54,7 @@ int sharedlibrary(int objindex){
             updateTexture(NC.MyObj_font[objindex].texture, fontBit.bitmap);
             // std::cout << NC.MyObj_rect[objindex].Inlets[0][0] << " " << objindex << std::endl;
         }
-        objconnect = 0;
+        // objconnect = 0;
         // std::cout << NC.MyObj_rect[objindex].Inlets[0][0] << std::endl;
         // map inlet value to outlet. If inlet value is null, map objvalue to outlet, inlet(if) -> objname -> outlet
         //std::cout << NC.MyObj_font[objindex].funcname << std::endl;
