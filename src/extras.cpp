@@ -16,9 +16,9 @@
 #define GetCurrentDir getcwd
 #endif
 
-
 int verbose;
 std::string logs;
+std::string properties;
 
 void printverbose(std::string verb, bool check){
     if(check == true){
@@ -33,6 +33,16 @@ void addlogs(std::string logtoadd){
     if(verbose==0){
         logs += logtoadd;
     }
+}
+
+void addproperties(std::string proptoadd){
+    if(verbose==0){
+        properties += proptoadd;
+    }
+}
+
+void clearproperties(){
+    properties = "";
 }
 
 std::vector<std::string> listfiles(std::string path, std::string type){
@@ -206,4 +216,10 @@ std::string floatToString(float value, int precision) {
     oss.precision(precision);   // Set the precision
     oss << std::fixed << value; // Use fixed-point notation
     return oss.str();           // Return the string representation
+}
+
+std::string intToString(int value) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
 }
