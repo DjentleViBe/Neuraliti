@@ -378,9 +378,10 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                         mouseloc.x = boundingx;
                         mouseloc.y = boundingy;
                         clearproperties();
-                        addproperties("Object name : " + NC.MyObj_rect[o].objdisplayname + "\n");
-                        addproperties("Inlets : " + intToString(NC.MyObj_rect[o].Inletnum) + "\n");
-                        addproperties("Outlets : " + intToString(NC.MyObj_rect[o].Outletnum) + "\n");
+                        addproperties("Object name  : " + NC.MyObj_rect[o].objdisplayname + "\n");
+                        addproperties("Inlets       : " + intToString(NC.MyObj_rect[o].Inletnum) + "\n");
+                        addproperties("Outlets      : " + intToString(NC.MyObj_rect[o].Outletnum) + "\n");
+                        addproperties("Objtect type : " + intToString(NC.MyObj_rect[o].objtype) + "\n");
                         break;
                     }
                     else{
