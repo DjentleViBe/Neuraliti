@@ -371,18 +371,23 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
             if(NC.MyObj_rect[o].result.x < boundingx && NC.MyObj_rect[o].result.x + NC.MyObj_rect[o].sentencewidth > boundingx){
                 if(NC.MyObj_rect[o].result.y > boundingy && NC.MyObj_rect[o].result.y - NC.MyObj_rect[o].sentenceheight < boundingy){
                     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-                    addlogs("Pressed :" + NC.MyObj_rect[o].objdisplayname + "\n");
-                    NC.MyObj_rect[o].select = 1;
-                    selectindex = o;
-                    selected = true;
-                    mouseloc.x = boundingx;
-                    mouseloc.y = boundingy;
-                    break;
+                        // addlogs("Pressed :" + NC.MyObj_rect[o].objdisplayname + "\n");
+                        NC.MyObj_rect[o].select = 1;
+                        selectindex = o;
+                        selected = true;
+                        mouseloc.x = boundingx;
+                        mouseloc.y = boundingy;
+                        clearproperties();
+                        addproperties("Object name  : " + NC.MyObj_rect[o].objdisplayname + "\n");
+                        addproperties("Inlets       : " + intToString(NC.MyObj_rect[o].Inletnum) + "\n");
+                        addproperties("Outlets      : " + intToString(NC.MyObj_rect[o].Outletnum) + "\n");
+                        addproperties("Objtect type : " + intToString(NC.MyObj_rect[o].objtype) + "\n");
+                        break;
+                    }
+                    else{
+                        selected = false;
+                    }
                 }
-                else{
-                    selected = false;
-                }
-            }
             }
         }
         float xscale, yscale;
@@ -394,6 +399,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
             // std::cout << "reset\n";
             for(int o = 0; o < objnumber; o++){
                 NC.MyObj_rect[o].select = 0;
+                clearproperties();
             }
         }
     if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
@@ -513,10 +519,10 @@ void Displayloop(){
         ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
         ImGui::SetNextWindowPos(ImVec2(0, 20));
 
-        ImGui::Begin("Window A");
-        ImGui::Text("NEURALITI");
+        ImGui::Begin("Object Properties");
+        // ImGui::Text("NEURALITI");
         // open file dialog when user clicks this button
-        
+        ImGui::TextUnformatted(properties.c_str());
         if(fileDialog.HasSelected()){
             // std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
             fileDialog.ClearSelected();
