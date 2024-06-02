@@ -55,6 +55,8 @@ GLFWcursor *cursor_normal;
 GLFWcursor *cursor_hand;
 GLFWcursor *custom_cursor;
 int cursor_type = 0; // 0: default, 1: hand
+char buffer[256] = "";
+bool showobjprop = false;
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -84,6 +86,23 @@ GLFWwindow *window;
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+}
+
+bool MyInputTextCallback(ImGuiInputTextCallbackData* data) {
+    // Your callback logic here (optional)
+    return 0;
+}
+
+// GLFW key callback function
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
+
+    // Your custom key handling (if any)
+}
+
+// GLFW char callback function
+void CharCallback(GLFWwindow* window, unsigned int c) {
+    ImGui_ImplGlfw_CharCallback(window, c);
 }
 
 int loadconfig(const std::string& path){
@@ -366,7 +385,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         glfwGetCursorPos(window, &xpos, &ypos);
         float boundingx = (xpos * 2 / window_width) - 1;
         float boundingy = -(ypos * 2 / window_height) + 1;
-        
         for(int o = 0; o < objnumber; o++){
             if(NC.MyObj_rect[o].result.x < boundingx && NC.MyObj_rect[o].result.x + NC.MyObj_rect[o].sentencewidth > boundingx){
                 if(NC.MyObj_rect[o].result.y > boundingy && NC.MyObj_rect[o].result.y - NC.MyObj_rect[o].sentenceheight < boundingy){
@@ -378,7 +396,9 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                         mouseloc.x = boundingx;
                         mouseloc.y = boundingy;
                         clearproperties();
-                        addproperties("Object name  : " + NC.MyObj_rect[o].objdisplayname + "\n");
+                        showobjprop = true;
+                        std::strncpy(buffer, NC.MyObj_rect[o].objdisplayname.c_str(), sizeof(buffer));
+                        // addproperties("Object name  : " + NC.MyObj_rect[o].objdisplayname + "\n");
                         addproperties("Inlets       : " + intToString(NC.MyObj_rect[o].Inletnum) + "\n");
                         addproperties("Outlets      : " + intToString(NC.MyObj_rect[o].Outletnum) + "\n");
                         addproperties("Objtect type : " + intToString(NC.MyObj_rect[o].objtype) + "\n");
@@ -399,6 +419,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
             // std::cout << "reset\n";
             for(int o = 0; o < objnumber; o++){
                 NC.MyObj_rect[o].select = 0;
+                showobjprop = false;
                 clearproperties();
             }
         }
@@ -444,7 +465,7 @@ void Displayloop(){
     while (!glfwWindowShouldClose(window))
     {   
         glfwGetWindowSize(window, &window_width, &window_height);
-        glfwSetKeyCallback(window, key_callback);
+        glfwSetKeyCallback(window, KeyCallback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
@@ -516,10 +537,16 @@ void Displayloop(){
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         ShowMenu(&show_demo_window);
-        ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
+        ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0 - 20));
         ImGui::SetNextWindowPos(ImVec2(0, 20));
 
         ImGui::Begin("Object Properties");
+        if(showobjprop){
+            ImGui::Text("Object name  :");
+            ImGui::SameLine();
+            ImGui::SetNextItemWidth(window_width * 0.4 / 4.0);
+            ImGui::InputText("##Input", buffer, IM_ARRAYSIZE(buffer));
+        }
         // ImGui::Text("NEURALITI");
         // open file dialog when user clicks this button
         ImGui::TextUnformatted(properties.c_str());
