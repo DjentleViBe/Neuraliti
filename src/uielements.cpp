@@ -57,6 +57,8 @@ GLFWcursor *custom_cursor;
 int cursor_type = 0; // 0: default, 1: hand
 char buffer[256] = "";
 bool showobjprop = false;
+int inletnum = 0;
+int outletnum = 0;
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -398,10 +400,22 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                         clearproperties();
                         showobjprop = true;
                         std::strncpy(buffer, NC.MyObj_rect[o].objdisplayname.c_str(), sizeof(buffer));
-                        // addproperties("Object name  : " + NC.MyObj_rect[o].objdisplayname + "\n");
-                        addproperties("Inlets       : " + intToString(NC.MyObj_rect[o].Inletnum) + "\n");
-                        addproperties("Outlets      : " + intToString(NC.MyObj_rect[o].Outletnum) + "\n");
-                        addproperties("Objtect type : " + intToString(NC.MyObj_rect[o].objtype) + "\n");
+                        inletnum = NC.MyObj_rect[o].Inletnum;
+                        outletnum = NC.MyObj_rect[o].Outletnum;
+                        switch(NC.MyObj_rect[o].objtype){
+                            case 0 :
+                                addproperties("Objtect type : Object\n");
+                                break;
+                            case 1 :
+                                addproperties("Objtect type : Object\n");
+                                break;
+                            case 2 :
+                                addproperties("Objtect type : Float\n");
+                                break;
+                            default :
+                                addproperties("Objtect type : Unknown\n");
+                                break;
+                        }
                         break;
                     }
                     else{
@@ -546,6 +560,14 @@ void Displayloop(){
             ImGui::SameLine();
             ImGui::SetNextItemWidth(window_width * 0.4 / 4.0);
             ImGui::InputText("##Input", buffer, IM_ARRAYSIZE(buffer));
+            ImGui::Text("Inlets       :");
+            ImGui::SameLine();
+            ImGui::SetNextItemWidth(window_width * 0.4 / 4.0);
+            ImGui::InputInt("##IntInput", &inletnum, 1, 10);
+            ImGui::Text("Outlets      :");
+            ImGui::SameLine();
+            ImGui::SetNextItemWidth(window_width * 0.4 / 4.0);
+            ImGui::InputInt("##IntInput", &outletnum, 1, 10);
         }
         // ImGui::Text("NEURALITI");
         // open file dialog when user clicks this button
