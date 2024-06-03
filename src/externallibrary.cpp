@@ -70,6 +70,6 @@ int sharedlibrary(int objindex){
 int modifyobject(int objindex){
     FontBitmap fontBit = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), 
                                             NC.MyObj_font[objindex].objdisplayname);
-            updateTexture(NC.MyObj_font[objindex].texture, fontBit.bitmap);
+    updateTexture(NC.MyObj_font[objindex].texture, fontBit.bitmap);
     return 0;
 }

@@ -4,13 +4,15 @@ layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoord;
 
 uniform mat4 ProjMat;
-in vec3 position;
+uniform vec3 startPos;
+uniform vec2 size;
 out vec3 fontColor;
 out vec2 TexCoord;
 
 void main()
-{
-    gl_Position = ProjMat * vec4(aPos, 1.0);
+{   
+    vec3 localPos = vec3(aPos.x * size.x, aPos.y * size.y, 0.0) + startPos;
+    gl_Position = ProjMat * vec4(localPos.x, localPos.y, localPos.z, 1.0);
     fontColor = aColor;
     TexCoord = aTexCoord;
 }

@@ -67,6 +67,20 @@ float* drawobject(float x, float y, float* color, float vertices[], float sent_w
     return vertices;
 }
 
+float* drawline(float wid, float x1, float y1, float x2, float y2, float* color){
+    float slope = 1.5708 - atan((y2 - y1) / (x2 - x1));
+    float y = sin(slope) * wid;
+    float x = cos(slope) * wid;
+    float* quadLines = new float[24]{
+    // positions     // colors
+    x1, y1, color[0], color[1], color[2], // top right
+    x2, y2, color[0], color[1], color[2],// bottom right
+    x2 + x, y2 - y, color[0], color[1], color[2],// bottom left
+    x1 + x, y1 - y, color[0], color[1], color[2]	// top left	
+    }; 
+    return quadLines;
+}
+
 void InitShader(const char* shadevs, const char* shadefs){
     Shader ourShader(shadevs, shadefs);
     // load image, create texture and generate mipmaps
@@ -201,6 +215,7 @@ NeuralObj createobj(NeuralObj &MyObj){
     sentence_width = MyObj.objdisplayname.length() * globalfontsize * 2.0;
     MyObj.sentencewidth = (float)sentence_width/(float)window_width;
     MyObj.sentenceheight = (float)globalfontsize * 2.3/(float)window_height;
+    
     drawobject(MyObj.x, MyObj.y, MyObj.color, MyObj.verts, fmax(sentence_width, globalfontsize * 2.0), globalfontsize * 2.3);
     unsigned int indices[] = {
             0, 1, 3, // first triangle
@@ -242,20 +257,6 @@ NeuralObj createobj(NeuralObj &MyObj){
         createoutlets(MyObj);
     }
     return MyObj;
-}
-
-float* drawline(float wid, float x1, float y1, float x2, float y2, float* color){
-    float slope = 1.5708 - atan((y2 - y1) / (x2 - x1));
-    float y = sin(slope) * wid;
-    float x = cos(slope) * wid;
-    float* quadLines = new float[24]{
-    // positions     // colors
-    x1, y1, color[0], color[1], color[2], // top right
-    x2, y2, color[0], color[1], color[2],// bottom right
-    x2 + x, y2 - y, color[0], color[1], color[2],// bottom left
-    x1 + x, y1 - y, color[0], color[1], color[2]	// top left	
-    }; 
-    return quadLines;
 }
 
 NeuralLines createlines(NeuralLines &MyObj){
@@ -318,5 +319,42 @@ NeuralLines createhorizontallines(NeuralLines &MyObj){
 
     // Unbind VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    return MyObj;
+}
+
+NeuralObj createhorizontallines(NeuralObj &MyObj){
+    sentence_width = MyObj.objdisplayname.length() * globalfontsize * 2.0;
+    MyObj.sentencewidth = (float)sentence_width/(float)window_width;
+    MyObj.sentenceheight = (float)globalfontsize * 2.3/(float)window_height;
+    float vertices[] = {
+        0.0f, 0.0f, // Bottom-left
+        1.0f, 0.0f, // Bottom-right
+        0.0f, 1.0f, // Top-left
+        1.0f, 1.0f  // Top-right
+    };
+
+    glGenVertexArrays(1, &MyObj.VAO);
+    glGenBuffers(1, &MyObj.VBO);
+
+    // Bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attribute(s).
+    glBindVertexArray(MyObj.VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, MyObj.VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Unbind VBO
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    if(MyObj.objtype == 1){
+        stbi_set_flip_vertically_on_load(true);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        FontBitmap fontBit = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), MyObj.objdisplayname);
+        updateTexture(MyObj.texture, fontBit.bitmap);
+        free(fontBit.bitmap);
+    }
     return MyObj;
 }

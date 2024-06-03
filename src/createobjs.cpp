@@ -1,7 +1,7 @@
-#include "../dependencies/include/createobjs.hpp"
 #include "stdio.h"
 #include <string>
 #include <iostream>
+#include "../dependencies/include/createobjs.hpp"
 #include "../dependencies/include/datatypes.hpp"
 #include "../dependencies/include/creategeom.h"
 #include "../dependencies/include/uielements.h"
@@ -20,8 +20,7 @@ NeuralObj createrect(int ind, NeuralObj MyObj, float x, float y, float objtype, 
     MyObj.Inletnum = globalinlets[ind];
     MyObj.Outletnum = globaloutlets[ind];
     MyObj.objtype = objecttypes[ind];
-    MyObj = createobj(MyObj);
-    
+    MyObj = createhorizontallines(MyObj);
     return MyObj;
 }
 
@@ -32,7 +31,9 @@ NeuralObj createfont(NeuralObj MyObj, float x, float y, float objtype, float* co
     MyObj.color = color;
     MyObj.objdisplayname = objname;
     MyObj.funcname = objname.substr(0, objname.find(" "));
-    MyObj = createobj(MyObj);
+
+    // MyObj = createobj(MyObj);
+    MyObj = createhorizontallines(MyObj);
     
     return MyObj;
 }
@@ -56,7 +57,6 @@ NeuralObj createobj1(int ind, float x, float y, std::string objname, int neuralo
                 break;
             case 2:
                 color = primary_color_10;
-                // std::cout << objecttypes[ind] << std::endl;
                 break;
             default:
                 color = primary_color_2;
