@@ -400,8 +400,8 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                         clearproperties();
                         showobjprop = true;
                         std::strncpy(buffer, NC.MyObj_rect[o].objdisplayname.c_str(), sizeof(buffer));
-                        inletnum = NC.MyObj_rect[o].Inletnum;
-                        outletnum = NC.MyObj_rect[o].Outletnum;
+                        addproperties("Inlets       : " + intToString(NC.MyObj_rect[o].Inletnum) + "\n");
+                        addproperties("Outlets      : " + intToString(NC.MyObj_rect[o].Outletnum) + "\n");
                         switch(NC.MyObj_rect[o].objtype){
                             case 0 :
                                 addproperties("Objtect type : Object\n");
@@ -560,18 +560,12 @@ void Displayloop(){
             ImGui::SameLine();
             ImGui::SetNextItemWidth(window_width * 0.4 / 4.0);
             ImGui::InputText("##Input", buffer, IM_ARRAYSIZE(buffer));
-            ImGui::Text("Inlets       :");
-            ImGui::SameLine();
-            ImGui::SetNextItemWidth(window_width * 0.4 / 4.0);
-            ImGui::InputInt("##IntInput", &inletnum, 1, 10);
-            ImGui::Text("Outlets      :");
-            ImGui::SameLine();
-            ImGui::SetNextItemWidth(window_width * 0.4 / 4.0);
-            ImGui::InputInt("##IntInput", &outletnum, 1, 10);
+            ImGui::TextUnformatted(properties.c_str());
+            if (ImGui::Button("Modify!")) {
+                std::cout << "Button clicked!" << std::endl;
+            }
         }
-        // ImGui::Text("NEURALITI");
         // open file dialog when user clicks this button
-        ImGui::TextUnformatted(properties.c_str());
         if(fileDialog.HasSelected()){
             // std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
             fileDialog.ClearSelected();
