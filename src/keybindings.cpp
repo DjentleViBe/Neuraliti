@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include "../dependencies/include/imgui_impl_glfw.h"
 #include "../dependencies/include/keybindings.h"
 #include "../dependencies/include/GLFW/glfw3.h"
 #include "../dependencies/include/extras.h"
@@ -135,7 +136,8 @@ void NeuralCanvas::eraseLinesIf(std::function<bool(NeuralLines&)> condition) {
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
+{   
+    ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
     if((glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SUPER) == GLFW_PRESS) &&
        glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) != GLFW_PRESS){
         switch(key){
@@ -274,6 +276,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     (glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS ||
     glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS)){
         // delete connections
+        std::cout << "delete" << std::endl;
         auto linesCondition = [&](NeuralLines& line) {
             if (line.startobj == selectindex || line.endobj == selectindex) {
                 connectnumber--;
