@@ -39,5 +39,5 @@ void loadobjects();
 int sharedlibrary(int objindex);
 FontBitmap loadfont(std::string fontname, std::string sentence);
 void updateTexture(unsigned int textureID, unsigned char* map);
-
+int modifyobject(int objindex);
 #endif

@@ -562,7 +562,9 @@ void Displayloop(){
             ImGui::InputText("##Input", buffer, IM_ARRAYSIZE(buffer));
             ImGui::TextUnformatted(properties.c_str());
             if (ImGui::Button("Modify!")) {
-                std::cout << "Button clicked!" << std::endl;
+                NC.MyObj_font[selectindex].objdisplayname = buffer;
+                modifyobject(selectindex);
+                
             }
         }
         // open file dialog when user clicks this button
