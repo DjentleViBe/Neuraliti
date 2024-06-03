@@ -269,8 +269,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 break;
         }
     }
-    if(glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS ||
-    glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS){
+    if((glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS || 
+    glfwGetKey(window, GLFW_KEY_RIGHT_SUPER) == GLFW_PRESS) && 
+    (glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS ||
+    glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS)){
         // delete connections
         auto linesCondition = [&](NeuralLines& line) {
             if (line.startobj == selectindex || line.endobj == selectindex) {

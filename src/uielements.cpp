@@ -55,6 +55,10 @@ GLFWcursor *cursor_normal;
 GLFWcursor *cursor_hand;
 GLFWcursor *custom_cursor;
 int cursor_type = 0; // 0: default, 1: hand
+char buffer[256] = "";
+bool showobjprop = false;
+int inletnum = 0;
+int outletnum = 0;
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -84,6 +88,23 @@ GLFWwindow *window;
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+}
+
+bool MyInputTextCallback(ImGuiInputTextCallbackData* data) {
+    // Your callback logic here (optional)
+    return 0;
+}
+
+// GLFW key callback function
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
+
+    // Your custom key handling (if any)
+}
+
+// GLFW char callback function
+void CharCallback(GLFWwindow* window, unsigned int c) {
+    ImGui_ImplGlfw_CharCallback(window, c);
 }
 
 int loadconfig(const std::string& path){
@@ -366,7 +387,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         glfwGetCursorPos(window, &xpos, &ypos);
         float boundingx = (xpos * 2 / window_width) - 1;
         float boundingy = -(ypos * 2 / window_height) + 1;
-        
         for(int o = 0; o < objnumber; o++){
             if(NC.MyObj_rect[o].result.x < boundingx && NC.MyObj_rect[o].result.x + NC.MyObj_rect[o].sentencewidth > boundingx){
                 if(NC.MyObj_rect[o].result.y > boundingy && NC.MyObj_rect[o].result.y - NC.MyObj_rect[o].sentenceheight < boundingy){
@@ -378,10 +398,24 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                         mouseloc.x = boundingx;
                         mouseloc.y = boundingy;
                         clearproperties();
-                        addproperties("Object name  : " + NC.MyObj_rect[o].objdisplayname + "\n");
+                        showobjprop = true;
+                        std::strncpy(buffer, NC.MyObj_rect[o].objdisplayname.c_str(), sizeof(buffer));
                         addproperties("Inlets       : " + intToString(NC.MyObj_rect[o].Inletnum) + "\n");
                         addproperties("Outlets      : " + intToString(NC.MyObj_rect[o].Outletnum) + "\n");
-                        addproperties("Objtect type : " + intToString(NC.MyObj_rect[o].objtype) + "\n");
+                        switch(NC.MyObj_rect[o].objtype){
+                            case 0 :
+                                addproperties("Objtect type : Object\n");
+                                break;
+                            case 1 :
+                                addproperties("Objtect type : Object\n");
+                                break;
+                            case 2 :
+                                addproperties("Objtect type : Float\n");
+                                break;
+                            default :
+                                addproperties("Objtect type : Unknown\n");
+                                break;
+                        }
                         break;
                     }
                     else{
@@ -399,6 +433,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
             // std::cout << "reset\n";
             for(int o = 0; o < objnumber; o++){
                 NC.MyObj_rect[o].select = 0;
+                showobjprop = false;
                 clearproperties();
             }
         }
@@ -431,20 +466,21 @@ void Displayloop(){
     loadobjects();
     calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), Xpos, Ypos);
     unsigned int objectColorLoc = glGetUniformLocation(objShader.ID, "aColor");
+    unsigned int fontColorLoc = glGetUniformLocation(fontShader.ID, "aColor");
 
-    
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     
     glm::vec3 startPos;
+    glm::vec2 size;
     glm::mediump_vec3 endPos;
     float angle;
 
     while (!glfwWindowShouldClose(window))
     {   
         glfwGetWindowSize(window, &window_width, &window_height);
-        glfwSetKeyCallback(window, key_callback);
+        glfwSetKeyCallback(window, KeyCallback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
@@ -476,18 +512,22 @@ void Displayloop(){
         for (int i = 0; i < objnumber; ++i) {
             objShader.use();
             NC.MyObj_rect[i].Matrix = glGetUniformLocation(objShader.ID, "ProjMat");
-            glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, NC.MyObj_rect[i].texture);
-            glBindVertexArray(NC.MyObj_rect[i].VAO);
+            startPos = glm::vec3(NC.MyObj_rect[i].x, NC.MyObj_rect[i].y, 0.0f);
+            size = glm::vec2(NC.MyObj_rect[i].sentencewidth, -NC.MyObj_rect[i].sentenceheight);
+            glUniform3fv(glGetUniformLocation(objShader.ID, "startPos"), 1, &startPos[0]);
+            glUniform2fv(glGetUniformLocation(objShader.ID, "size"), 1, &size[0]);
+
             if(NC.MyObj_rect[i].select == 1){
                 glUniform3fv(objectColorLoc, 1, primary_color_8);
             }
             else{
                 glUniform3fv(objectColorLoc, 1, NC.MyObj_rect[i].color);
             }
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
+            glBindVertexArray(NC.MyObj_rect[i].VAO);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
+            
             nodeShader.use();
             NC.MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
             glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
@@ -499,30 +539,48 @@ void Displayloop(){
 
             fontShader.use();
             NC.MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
+            startPos = glm::vec3(NC.MyObj_font[i].x, NC.MyObj_font[i].y, 0.0f);
+            size = glm::vec2(NC.MyObj_font[i].sentencewidth, -NC.MyObj_font[i].sentenceheight);
+            glUniform3fv(glGetUniformLocation(fontShader.ID, "startPos"), 1, &startPos[0]);
+            glUniform2fv(glGetUniformLocation(fontShader.ID, "size"), 1, &size[0]);
+            glUniform3fv(fontColorLoc, 1, NC.MyObj_font[i].color);
             glUniformMatrix4fv(NC.MyObj_font[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, NC.MyObj_font[i].texture);
             glBindVertexArray(NC.MyObj_font[i].VAO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+            glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
         }
-
+/*
         for (int i = 0; i < objnumber; i++){
             sharedlibrary(i);
             // process the name of the methods
-        }
+        }*/
         
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         ShowMenu(&show_demo_window);
-        ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0));
+        ImGui::SetNextWindowSize(ImVec2(window_width / 4.0, window_height * 5.0 / 6.0 - 20));
         ImGui::SetNextWindowPos(ImVec2(0, 20));
 
         ImGui::Begin("Object Properties");
-        // ImGui::Text("NEURALITI");
+        if(showobjprop){
+            ImGui::Text("Object name  :");
+            ImGui::SameLine();
+            ImGui::SetNextItemWidth(window_width * 0.4 / 4.0);
+            ImGui::InputText("##Input", buffer, IM_ARRAYSIZE(buffer));
+            ImGui::TextUnformatted(properties.c_str());
+            if (ImGui::Button("Modify!")) {
+                NC.MyObj_font[selectindex].objdisplayname = buffer;
+                NC.MyObj_rect[selectindex].objdisplayname = buffer;
+                NC.MyObj_font[selectindex].objectwidth = NC.MyObj_font[selectindex].objdisplayname.length() * (float)globalfontsize * 2.0;
+                NC.MyObj_rect[selectindex].objectwidth = NC.MyObj_font[selectindex].objectwidth;
+                NC.MyObj_rect[selectindex].sentencewidth = (float)NC.MyObj_rect[selectindex].objectwidth/(float)window_width;
+                NC.MyObj_font[selectindex].sentencewidth = (float)NC.MyObj_font[selectindex].objectwidth/(float)window_width;
+                modifyobject(selectindex);
+            }
+        }
         // open file dialog when user clicks this button
-        ImGui::TextUnformatted(properties.c_str());
         if(fileDialog.HasSelected()){
             // std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
             fileDialog.ClearSelected();

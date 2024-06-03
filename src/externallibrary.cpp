@@ -51,7 +51,7 @@ int sharedlibrary(int objindex){
             NC.MyObj_font[objindex].objdisplayname = floatToString(NC.MyObj_rect[objindex].Inlets[0][0], 1);
             FontBitmap fontBit = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), 
                                             NC.MyObj_font[objindex].objdisplayname);
-            updateTexture(NC.MyObj_font[objindex].texture, fontBit.bitmap);
+            updateTexture(NC.MyObj_font[objindex].texture, fontBit.bitmap, NC.MyObj_font[objindex].objectwidth);
             // std::cout << NC.MyObj_rect[objindex].Inlets[0][0] << " " << objindex << std::endl;
         }
         // objconnect = 0;
@@ -64,5 +64,12 @@ int sharedlibrary(int objindex){
 
     // Close the library
     dlclose(handle);
+    return 0;
+}
+
+int modifyobject(int objindex){
+    FontBitmap fontBit = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), 
+                                            NC.MyObj_font[objindex].objdisplayname);
+    updateTexture(NC.MyObj_font[objindex].texture, fontBit.bitmap, NC.MyObj_font[objindex].objectwidth);
     return 0;
 }

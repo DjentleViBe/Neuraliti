@@ -32,6 +32,7 @@ class NeuralObj {       // The class
     glm::vec4 result;
     float sentencewidth;
     float sentenceheight;
+    float objectwidth;
     int select;
     float offsetx;
     float offsety;

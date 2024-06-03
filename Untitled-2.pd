@@ -1,5 +1,5 @@
 #N canvas 512 341 450 300 12;
-#X obj -0.45 0.4 sub_;
+#X obj -0.45 0.4 sueb_;
 #X obj 0.0 0.2 add_ 1 2;
 #X floatatom 0.228 0.40 50.0 0 0 0 - - - 0;
 #X floatatom 0.445 0.40 25.0 0 0 0 - - - 0;
