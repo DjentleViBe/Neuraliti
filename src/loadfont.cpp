@@ -14,7 +14,6 @@
 #include "../dependencies/include/stb_image.h"
 #include "../dependencies/include/datatypes.hpp"
 
-int sentence_width = 0;
 FontBitmap loadfont(std::string fontname, std::string sentence)
 {
     // load font file //
@@ -39,10 +38,9 @@ FontBitmap loadfont(std::string fontname, std::string sentence)
         printf("failed\n");
     }
     
-    int b_w = sentence_width; // bitmap width //
+    int b_w = (sentence.length() % 2 == 0) ? sentence.length() * globalfontsize *2.0 : (sentence.length() * globalfontsize + 1) * 2; // bitmap width //
     int b_h = globalfontsize * 3; // bitmap height //
     int l_h = globalfontsize * 3; // line height //
-    
     // create a bitmap for the phrase //
     unsigned char* bitmap = (unsigned char *)calloc(b_w * b_h, sizeof(unsigned char));
     // calculate font scaling //
@@ -53,8 +51,8 @@ FontBitmap loadfont(std::string fontname, std::string sentence)
     int ascent, descent, lineGap;
     stbtt_GetFontVMetrics(&info, &ascent, &descent, &lineGap);
     
-    ascent = roundf(ascent * scale);
-    descent = roundf(descent * scale);
+    ascent = ceilf(ascent * scale);
+    descent = ceilf(descent * scale);
     
     int i;
     for (i = 0; i < strlen(word); ++i)
@@ -77,12 +75,14 @@ FontBitmap loadfont(std::string fontname, std::string sentence)
         stbtt_MakeCodepointBitmap(&info, bitmap + byteOffset, c_x2 - c_x1, c_y2 - c_y1, b_w, scale, scale, word[i]);
         
         // advance x //
-        x += roundf(ax * scale);
+        x += ceilf(ax * scale);
         
         // add kerning //
-        int kern;
-        kern = stbtt_GetCodepointKernAdvance(&info, word[i], word[i + 1]);
-        x += roundf(kern * scale);
+        if (i < strlen(word) - 1){
+            int kern;
+            kern = stbtt_GetCodepointKernAdvance(&info, word[i], word[i + 1]);
+            x += ceilf(kern * scale);
+        }
     }
     
     // save out a 1 channel image //

@@ -9,4 +9,5 @@ NeuralObj createobj(NeuralObj &MyObj);
 NeuralLines createlines(NeuralLines &MyObj);
 NeuralLines createhorizontallines(NeuralLines &MyObj);
 NeuralObj createhorizontallines(NeuralObj &MyObj);
+NeuralObj createhorizontalfonts(NeuralObj &MyObj);
 #endif /* creategeom_h */

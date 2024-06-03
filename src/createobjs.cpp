@@ -31,9 +31,7 @@ NeuralObj createfont(NeuralObj MyObj, float x, float y, float objtype, float* co
     MyObj.color = color;
     MyObj.objdisplayname = objname;
     MyObj.funcname = objname.substr(0, objname.find(" "));
-
-    // MyObj = createobj(MyObj);
-    MyObj = createhorizontallines(MyObj);
+    MyObj = createhorizontalfonts(MyObj);
     
     return MyObj;
 }

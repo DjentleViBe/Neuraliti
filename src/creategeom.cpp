@@ -114,7 +114,7 @@ NeuralObj createinlets(NeuralObj &MyObj){
             translation.x = MyObj.x + offset;
             translation.y = MyObj.y;
             translations[index++] = translation;
-            offset += -0.02f/(MyObj.Inletnum - 1) + (fmax(sentence_width, globalfontsize * 3.0) / (window_width * (MyObj.Inletnum - 1)));
+            offset += -0.02f/(MyObj.Inletnum - 1) + (fmax(MyObj.objectwidth, globalfontsize * 3.0) / (window_width * (MyObj.Inletnum - 1)));
         }
     // store instance data in an array buffer
     // --------------------------------------
@@ -157,7 +157,7 @@ NeuralObj createoutlets(NeuralObj &MyObj){
             //translation.y = (float)y / 10.0f + offset;
             translation.y = MyObj.y - 0.02f - globalfontsize * 2.3/window_height;
             translations[index++] = translation;
-            offset += fmax(sentence_width, globalfontsize * 3.0) / window_width - 0.02f;
+            offset += fmax(MyObj.objectwidth, globalfontsize * 3.0) / window_width - 0.02f;
         }
         
     // store instance data in an array buffer
@@ -196,9 +196,9 @@ NeuralObj createoutlets(NeuralObj &MyObj){
     return MyObj;
 }
 
-void updateTexture(unsigned int textureID, unsigned char* map){
+void updateTexture(unsigned int textureID, unsigned char* map, float sw){
     glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, fmax(sentence_width, globalfontsize * 3.0), globalfontsize * 3.0, 0, GL_RED, GL_UNSIGNED_BYTE, map);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, fmax(sw, globalfontsize * 3.0), globalfontsize * 3.0, 0, GL_RED, GL_UNSIGNED_BYTE, map);
     // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     // set texture wrapping to GL_REPEAT (default wrapping method)
@@ -206,57 +206,6 @@ void updateTexture(unsigned int textureID, unsigned char* map){
     // set texture filtering parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-}
-
-NeuralObj createobj(NeuralObj &MyObj){
-    // if object type is 0
-    // render font
-    // create the background box
-    sentence_width = MyObj.objdisplayname.length() * globalfontsize * 2.0;
-    MyObj.sentencewidth = (float)sentence_width/(float)window_width;
-    MyObj.sentenceheight = (float)globalfontsize * 2.3/(float)window_height;
-    
-    drawobject(MyObj.x, MyObj.y, MyObj.color, MyObj.verts, fmax(sentence_width, globalfontsize * 2.0), globalfontsize * 2.3);
-    unsigned int indices[] = {
-            0, 1, 3, // first triangle
-            1, 2, 3  // second triangle
-        };
-    // objects /////////////////
-    glGenVertexArrays(1, &MyObj.VAO);
-    glGenBuffers(1, &MyObj.VBO);
-    glGenBuffers(1, &MyObj.EBO);
-    glBindVertexArray(MyObj.VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, MyObj.VBO);
-    glBufferData(GL_ARRAY_BUFFER, 128, MyObj.verts, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, MyObj.EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    //texture coord attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    glGenTextures(1, &MyObj.texture);
-    // glBindTexture(GL_TEXTURE_2D, MyObj.texture);
-    
-    if(MyObj.objtype == 1){
-        stbi_set_flip_vertically_on_load(true);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        FontBitmap fontBit = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), MyObj.objdisplayname);
-        updateTexture(MyObj.texture, fontBit.bitmap);
-        free(fontBit.bitmap);
-    }
-    else{
-        createinlets(MyObj);
-        createoutlets(MyObj);
-    }
-    return MyObj;
 }
 
 NeuralLines createlines(NeuralLines &MyObj){
@@ -319,12 +268,13 @@ NeuralLines createhorizontallines(NeuralLines &MyObj){
 
     // Unbind VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
     return MyObj;
 }
 
 NeuralObj createhorizontallines(NeuralObj &MyObj){
-    sentence_width = MyObj.objdisplayname.length() * globalfontsize * 2.0;
-    MyObj.sentencewidth = (float)sentence_width/(float)window_width;
+    MyObj.objectwidth = MyObj.objdisplayname.length() * (float)globalfontsize * 2.0;
+    MyObj.sentencewidth = (float)MyObj.objectwidth/(float)window_width;
     MyObj.sentenceheight = (float)globalfontsize * 2.3/(float)window_height;
     float vertices[] = {
         0.0f, 0.0f, // Bottom-left
@@ -344,17 +294,57 @@ NeuralObj createhorizontallines(NeuralObj &MyObj){
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-
     // Unbind VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    createinlets(MyObj);
+    createoutlets(MyObj);
+    return MyObj;
+}
+
+NeuralObj createhorizontalfonts(NeuralObj &MyObj){
+    MyObj.objectwidth = MyObj.objdisplayname.length() * (float)globalfontsize * 2.0;
+    MyObj.sentencewidth = (float)MyObj.objectwidth/(float)window_width;
+    MyObj.sentenceheight = (float)globalfontsize * 2.3/(float)window_height;
+
+    float vertices[] = {
+       // positions    // texture coords
+        0.0f, 0.0f,  0.0f, 0.0f,
+        1.0f, 0.0f,  1.0f, 0.0f,
+        1.0f,  1.0f,  1.0f, 1.0f,
+        0.0f,  1.0f,  0.0f, 1.0f
+    };
+
+    unsigned int indices[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
+
+    glGenVertexArrays(1, &MyObj.VAO);
+    glGenBuffers(1, &MyObj.VBO);
+
+    // Bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attribute(s).
+    glBindVertexArray(MyObj.VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, MyObj.VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, MyObj.EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // Position attribute
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // Texture coord attribute
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    glGenTextures(1, &MyObj.texture);
+    stbi_set_flip_vertically_on_load(true);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    if(MyObj.objtype == 1){
-        stbi_set_flip_vertically_on_load(true);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        FontBitmap fontBit = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), MyObj.objdisplayname);
-        updateTexture(MyObj.texture, fontBit.bitmap);
-        free(fontBit.bitmap);
-    }
+    FontBitmap fontBit = loadfont((CurrentDir + "/assets/fonts/" + appsettings["defaultfont"]).c_str(), MyObj.objdisplayname);
+    updateTexture(MyObj.texture, fontBit.bitmap, MyObj.objectwidth);
+    free(fontBit.bitmap);
+
     return MyObj;
 }

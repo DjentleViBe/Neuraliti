@@ -1,11 +1,11 @@
 #version 330 core
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 aTexCoord;
+layout (location = 1) in vec2 aTexCoord;
 
 uniform mat4 ProjMat;
 uniform vec3 startPos;
 uniform vec2 size;
+uniform vec3 aColor;
 out vec3 fontColor;
 out vec2 TexCoord;
 

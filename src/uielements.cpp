@@ -485,7 +485,7 @@ void Displayloop(){
         glClear(GL_COLOR_BUFFER_BIT);
         
         calculate_view(window_width, window_height, glm::vec3(-0.45, 0.0f, 0.0f), 0.0, 0.0);
-        /*
+        
         for (int i = 0; i < connectnumber; i++){
             lineShader.use();
             NC.MyObj_lines[i].Matrix = glGetUniformLocation(lineShader.ID, "ProjMat");
@@ -507,7 +507,7 @@ void Displayloop(){
             glUniformMatrix4fv(NC.MyObj_lines[i].Matrix, 1, GL_FALSE, &mvp_lines[i][0][0]);
             glBindVertexArray(NC.MyObj_lines[i].VAO);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        }*/
+        }
         
         for (int i = 0; i < objnumber; ++i) {
             objShader.use();
@@ -528,32 +528,33 @@ void Displayloop(){
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
             
-            /*nodeShader.use();
+            nodeShader.use();
             NC.MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
             glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glBindVertexArray(NC.MyObj_rect[i].inquadVAO);
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Inletnum);
             glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glBindVertexArray(NC.MyObj_rect[i].outquadVAO);
-            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Outletnum);*/
+            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Outletnum);
 
             fontShader.use();
             NC.MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
             startPos = glm::vec3(NC.MyObj_font[i].x, NC.MyObj_font[i].y, 0.0f);
-            size = glm::vec2(NC.MyObj_font[i].sentencewidth, -NC.MyObj_rect[i].sentenceheight);
+            size = glm::vec2(NC.MyObj_font[i].sentencewidth, -NC.MyObj_font[i].sentenceheight);
             glUniform3fv(glGetUniformLocation(fontShader.ID, "startPos"), 1, &startPos[0]);
             glUniform2fv(glGetUniformLocation(fontShader.ID, "size"), 1, &size[0]);
             glUniform3fv(fontColorLoc, 1, NC.MyObj_font[i].color);
             glUniformMatrix4fv(NC.MyObj_font[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, NC.MyObj_font[i].texture);
             glBindVertexArray(NC.MyObj_font[i].VAO);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-            
+            glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
         }
-
+/*
         for (int i = 0; i < objnumber; i++){
             sharedlibrary(i);
             // process the name of the methods
-        }
+        }*/
         
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -572,9 +573,10 @@ void Displayloop(){
             if (ImGui::Button("Modify!")) {
                 NC.MyObj_font[selectindex].objdisplayname = buffer;
                 NC.MyObj_rect[selectindex].objdisplayname = buffer;
-                sentence_width = NC.MyObj_rect[selectindex].objdisplayname.length() * globalfontsize * 2.0;
-                NC.MyObj_rect[selectindex].sentencewidth = (float)sentence_width/(float)window_width;
-                NC.MyObj_font[selectindex].sentencewidth = (float)sentence_width/(float)window_width;
+                NC.MyObj_font[selectindex].objectwidth = NC.MyObj_font[selectindex].objdisplayname.length() * (float)globalfontsize * 2.0;
+                NC.MyObj_rect[selectindex].objectwidth = NC.MyObj_font[selectindex].objectwidth;
+                NC.MyObj_rect[selectindex].sentencewidth = (float)NC.MyObj_rect[selectindex].objectwidth/(float)window_width;
+                NC.MyObj_font[selectindex].sentencewidth = (float)NC.MyObj_font[selectindex].objectwidth/(float)window_width;
                 modifyobject(selectindex);
             }
         }
