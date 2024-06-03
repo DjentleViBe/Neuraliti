@@ -95,13 +95,6 @@ bool MyInputTextCallback(ImGuiInputTextCallbackData* data) {
     return 0;
 }
 
-// GLFW key callback function
-void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
-
-    // Your custom key handling (if any)
-}
-
 // GLFW char callback function
 void CharCallback(GLFWwindow* window, unsigned int c) {
     ImGui_ImplGlfw_CharCallback(window, c);
@@ -480,7 +473,7 @@ void Displayloop(){
     while (!glfwWindowShouldClose(window))
     {   
         glfwGetWindowSize(window, &window_width, &window_height);
-        glfwSetKeyCallback(window, KeyCallback);
+        glfwSetKeyCallback(window, key_callback);
         glClearColor(primary_color_1[0], primary_color_1[1], primary_color_1[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
