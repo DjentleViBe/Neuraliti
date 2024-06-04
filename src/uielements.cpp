@@ -563,7 +563,6 @@ void Displayloop(){
             ImGui::InputText("##Input", buffer, IM_ARRAYSIZE(buffer));
             ImGui::TextUnformatted(properties.c_str());
             if (ImGui::Button("Modify!")) {
-                std::cout << NC.MyObj_rect[selectindex].objtype << std::endl;
                 if(isFloat(buffer) == 0 && NC.MyObj_rect[selectindex].objtype == 2){
                     addlogs("\nObject is of float type, enter a number!\n");
                 }
