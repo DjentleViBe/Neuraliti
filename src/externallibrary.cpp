@@ -27,7 +27,7 @@ int sharedlibrary(int objindex){
         func_t func = (func_t) dlsym(handle, NC.MyObj_font[objindex].funcname.c_str());
         const char* dlsym_error = dlerror();
         if (dlsym_error) {
-            std::cerr << "Cannot load symbol '" << NC.MyObj_font[objindex].funcname << "': " << dlsym_error << std::endl;
+            //std::cerr << "Cannot load symbol '" << NC.MyObj_font[objindex].funcname << "': " << dlsym_error << std::endl;
             dlclose(handle);
             return 1;
         }

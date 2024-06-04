@@ -531,6 +531,10 @@ void Displayloop(){
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Outletnum);
 
             fontShader.use();
+            NC.MyObj_font[i].objectwidth = NC.MyObj_font[i].objdisplayname.length() * (float)globalfontsize * 2.0;
+            NC.MyObj_rect[i].objectwidth = NC.MyObj_font[i].objectwidth;
+            NC.MyObj_rect[i].sentencewidth = (float)NC.MyObj_rect[i].objectwidth/(float)window_width;
+            NC.MyObj_font[i].sentencewidth = (float)NC.MyObj_font[i].objectwidth/(float)window_width;
             NC.MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
             startPos = glm::vec3(NC.MyObj_font[i].x, NC.MyObj_font[i].y, 0.0f);
             size = glm::vec2(NC.MyObj_font[i].sentencewidth, -NC.MyObj_font[i].sentenceheight);
@@ -543,11 +547,6 @@ void Displayloop(){
             glBindVertexArray(NC.MyObj_font[i].VAO);
             glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
         }
-/*
-        for (int i = 0; i < objnumber; i++){
-            sharedlibrary(i);
-            // process the name of the methods
-        }*/
         
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -570,8 +569,14 @@ void Displayloop(){
                 NC.MyObj_rect[selectindex].objectwidth = NC.MyObj_font[selectindex].objectwidth;
                 NC.MyObj_rect[selectindex].sentencewidth = (float)NC.MyObj_rect[selectindex].objectwidth/(float)window_width;
                 NC.MyObj_font[selectindex].sentencewidth = (float)NC.MyObj_font[selectindex].objectwidth/(float)window_width;
+                std::cout << buffer << std::endl;
                 modifyobject(selectindex);
             }
+        }
+
+        for (int i = 0; i < objnumber; i++){
+            sharedlibrary(i);
+            // process the name of the methods
         }
         // open file dialog when user clicks this button
         if(fileDialog.HasSelected()){
