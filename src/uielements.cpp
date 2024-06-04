@@ -563,14 +563,19 @@ void Displayloop(){
             ImGui::InputText("##Input", buffer, IM_ARRAYSIZE(buffer));
             ImGui::TextUnformatted(properties.c_str());
             if (ImGui::Button("Modify!")) {
-                NC.MyObj_font[selectindex].objdisplayname = buffer;
-                NC.MyObj_rect[selectindex].objdisplayname = buffer;
-                NC.MyObj_font[selectindex].objectwidth = NC.MyObj_font[selectindex].objdisplayname.length() * (float)globalfontsize * 2.0;
-                NC.MyObj_rect[selectindex].objectwidth = NC.MyObj_font[selectindex].objectwidth;
-                NC.MyObj_rect[selectindex].sentencewidth = (float)NC.MyObj_rect[selectindex].objectwidth/(float)window_width;
-                NC.MyObj_font[selectindex].sentencewidth = (float)NC.MyObj_font[selectindex].objectwidth/(float)window_width;
-                std::cout << buffer << std::endl;
-                modifyobject(selectindex);
+                std::cout << NC.MyObj_rect[selectindex].objtype << std::endl;
+                if(isFloat(buffer) == 0 && NC.MyObj_rect[selectindex].objtype == 2){
+                    addlogs("\nObject is of float type, enter a number!\n");
+                }
+                else{
+                    NC.MyObj_font[selectindex].objdisplayname = buffer;
+                    NC.MyObj_rect[selectindex].objdisplayname = buffer;
+                    NC.MyObj_font[selectindex].objectwidth = NC.MyObj_font[selectindex].objdisplayname.length() * (float)globalfontsize * 2.0;
+                    NC.MyObj_rect[selectindex].objectwidth = NC.MyObj_font[selectindex].objectwidth;
+                    NC.MyObj_rect[selectindex].sentencewidth = (float)NC.MyObj_rect[selectindex].objectwidth/(float)window_width;
+                    NC.MyObj_font[selectindex].sentencewidth = (float)NC.MyObj_font[selectindex].objectwidth/(float)window_width;
+                    modifyobject(selectindex);
+                }
             }
         }
 

@@ -25,4 +25,5 @@ void printMatrix(const std::vector<std::vector<int>>& matrix, std::string verbos
 void printvector(const std::vector<int> vec, std::string verbose);
 std::string floatToString(float value, int precision);
 std::string intToString(int value);
+bool isFloat(const std::string& str);
 #endif /* extras_h */

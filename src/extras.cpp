@@ -223,3 +223,10 @@ std::string intToString(int value) {
     oss << value;
     return oss.str();
 }
+
+bool isFloat(const std::string& str)
+{
+    char* ptr;
+    strtof(str.c_str(), &ptr);
+    return (*ptr) == '\0';
+}
