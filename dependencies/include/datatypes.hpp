@@ -18,6 +18,7 @@ class NeuralObj {       // The class
     float y;            // y position
     std::string funcname;
     std::string objdisplayname;  // Attribute (string variable)
+    glm::vec2 translation;
     unsigned int VAO, VBO, EBO;
     unsigned int inquadVAO, inquadVBO, instanceVBO;
     unsigned int outquadVAO, outquadVBO, outstanceVBO;
