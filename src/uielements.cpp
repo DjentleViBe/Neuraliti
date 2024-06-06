@@ -587,6 +587,7 @@ void Displayloop(){
                     NC.MyObj_font[selectindex].sentencewidth = (float)NC.MyObj_font[selectindex].objectwidth/(float)window_width;
                     NC.MyObj_rect[selectindex] = changeInstanceNumber(countSpaces(buffer) + 1, NC.MyObj_rect[selectindex]);
                     modifyobject(selectindex);
+                    clearlines(countSpaces(buffer), selectindex);
                     
                 }
             }
