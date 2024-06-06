@@ -20,6 +20,6 @@ void clearlines(int maxinlet, int objnumber){
         if (NC.MyObj_lines[l].endobj == objnumber) {
             std::cout << "delete" << std::endl;
             NC.MyObj_lines.erase(NC.MyObj_lines.begin() + l);
+        }
     }
-}
 }
