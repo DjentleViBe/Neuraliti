@@ -230,3 +230,13 @@ bool isFloat(const std::string& str)
     strtof(str.c_str(), &ptr);
     return (*ptr) == '\0';
 }
+
+int countSpaces(const std::string& str) {
+    int count = 0;
+    for (char ch : str) {
+        if (ch == ' ') {
+            count++;
+        }
+    }
+    return count;
+}

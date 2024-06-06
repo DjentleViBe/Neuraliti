@@ -103,45 +103,51 @@ void InitShader(const char* shadevs, const char* shadefs){
     stbi_image_free(data);*/
 }
 
-NeuralObj createinlets(NeuralObj &MyObj){
-    glm::vec2 translations[MyObj.Inletnum];
+void updateInstanceData(NeuralObj &MyObj) {
     int index = 0;
     float offset = 0.0f;
-    
-    for (int x = 0; x <= MyObj.Inletnum; x++)
-        {
-            glm::vec2 translation;
-            translation.x = MyObj.x + offset;
-            translation.y = MyObj.y;
-            translations[index++] = translation;
-            offset += -0.02f/(MyObj.Inletnum - 1) + (fmax(MyObj.objectwidth, globalfontsize * 3.0) / (window_width * (MyObj.Inletnum - 1)));
-        }
-    // store instance data in an array buffer
-    // --------------------------------------
-    glGenBuffers(1, &MyObj.instanceVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, MyObj.instanceVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * 10, &translations[0], GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
-    float *quadVertices = drawnodes(0.02f, primary_color_4);
+    std::vector<glm::vec2> translations(MyObj.Inletnum);
+
+    for (int x = 0; x < MyObj.Inletnum; ++x) {
+        glm::vec2 translation;
+        translation.x = MyObj.x + offset;
+        translation.y = MyObj.y;
+        translations[index++] = translation;
+        offset += -0.02f / (MyObj.Inletnum - 1) + (fmax(MyObj.objectwidth, globalfontsize * 3.0f) / (window_width * (MyObj.Inletnum - 1)));
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, MyObj.instanceVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * MyObj.Inletnum, &translations[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void setupVertexData(NeuralObj &MyObj) {
+    float* quadVertices = drawnodes(0.02f, primary_color_4);
     glGenVertexArrays(1, &MyObj.inquadVAO);
     glGenBuffers(1, &MyObj.inquadVBO);
     glBindVertexArray(MyObj.inquadVAO);
     glBindBuffer(GL_ARRAY_BUFFER, MyObj.inquadVBO);
-    glBufferData(GL_ARRAY_BUFFER, 120, quadVertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 5, quadVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
-    // also set instance data
+
+    glGenBuffers(1, &MyObj.instanceVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, MyObj.instanceVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * MyObj.Inletnum, nullptr, GL_STATIC_DRAW);
     glEnableVertexAttribArray(2);
-    glBindBuffer(GL_ARRAY_BUFFER, MyObj.instanceVBO); // this attribute comes from a different vertex buffer
+    glBindBuffer(GL_ARRAY_BUFFER, MyObj.instanceVBO);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glVertexAttribDivisor(2, 1); // tell OpenGL this is an instanced vertex attribute.
+    glVertexAttribDivisor(2, 1);
+}
 
+
+NeuralObj createinlets(NeuralObj &MyObj){
+    setupVertexData(MyObj);
+    updateInstanceData(MyObj);
     return MyObj;
 }
 

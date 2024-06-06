@@ -438,6 +438,19 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     }
 }
 
+void renderinlet(int i){
+    glBindVertexArray(NC.MyObj_rect[i].inquadVAO);
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Inletnum);
+    glBindVertexArray(0);
+}
+
+NeuralObj changeInstanceNumber(int newInletnum, NeuralObj MyObj) {
+    MyObj.Inletnum = newInletnum;
+    updateInstanceData(MyObj);
+
+    return MyObj;
+}
+
 void Displayloop(){
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
@@ -524,8 +537,7 @@ void Displayloop(){
             nodeShader.use();
             NC.MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
             glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
-            glBindVertexArray(NC.MyObj_rect[i].inquadVAO);
-            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Inletnum);
+            renderinlet(i);
             glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glBindVertexArray(NC.MyObj_rect[i].outquadVAO);
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Outletnum);
@@ -573,7 +585,9 @@ void Displayloop(){
                     NC.MyObj_rect[selectindex].objectwidth = NC.MyObj_font[selectindex].objectwidth;
                     NC.MyObj_rect[selectindex].sentencewidth = (float)NC.MyObj_rect[selectindex].objectwidth/(float)window_width;
                     NC.MyObj_font[selectindex].sentencewidth = (float)NC.MyObj_font[selectindex].objectwidth/(float)window_width;
+                    NC.MyObj_rect[selectindex] = changeInstanceNumber(countSpaces(buffer) + 1, NC.MyObj_rect[selectindex]);
                     modifyobject(selectindex);
+                    
                 }
             }
         }
