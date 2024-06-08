@@ -27,4 +27,5 @@ std::string floatToString(float value, int precision);
 std::string intToString(int value);
 bool isFloat(const std::string& str);
 int countSpaces(const std::string& str);
+char* doubleToChar(double value);
 #endif /* extras_h */

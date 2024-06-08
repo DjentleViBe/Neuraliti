@@ -70,12 +70,22 @@ class NeuralFloat{
         int labelvalue;
 };
 
+class AudioDevice {
+    public:
+        std::string device_name;
+        std::vector<float> sample_rate_list;
+        double       sample_rate;
+        int         device_id;
+};
+
 class NeuralCanvas{
     public:
         std::vector<NeuralObj> MyObj_rect;
         std::vector<NeuralObj> MyObj_font;
         std::vector<NeuralLines> MyObj_lines;
         std::vector<NeuralFloat> MyObj_floats;
+        AudioDevice MyObj_inputaudio;
+        AudioDevice MyObj_outputaudio;
 
         void eraseLinesIf(std::function<bool(NeuralLines&)> condition);
 };

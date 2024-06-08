@@ -103,31 +103,54 @@ void audioprefwindow(ImGui::FileBrowser fileDialog){
     ImGui::Begin("Audio Preferences", &audiopref);
     static int currentinputItem = 0;
     static int currentoutputItem = 0;
-    if (ImGui::TreeNode("Audio Devices")){
-        ImGui::SetNextItemWidth(window_width * 0.7 / 4.0);
-        if (ImGui::BeginCombo("Input Device", audioinputdevicelist[currentinputItem].c_str())) {
-            for (int i = 0; i < audioinputdevicelist.size(); i++) {
-                const bool isSelected = (currentinputItem == i);
-                if (ImGui::Selectable(audioinputdevicelist[i].c_str(), isSelected))
-                    currentinputItem = i;
+    if (ImGui::CollapsingHeader("Audio devices",  ImGuiTreeNodeFlags_DefaultOpen)){
+        if (ImGui::TreeNodeEx("Input Device", ImGuiTreeNodeFlags_DefaultOpen)){
+            ImGui::SetNextItemWidth(window_width * 0.7 / 4.0);
+            if (ImGui::BeginCombo("Input Device", audioinputdevicelist[currentinputItem].c_str())) {
+                for (int i = 0; i < audioinputdevicelist.size(); i++) {
+                    const bool isSelected = (currentinputItem == i);
+                    if (ImGui::Selectable(audioinputdevicelist[i].c_str(), isSelected))
+                        currentinputItem = i;
 
-                if (isSelected)
-                    ImGui::SetItemDefaultFocus();
+                    if (isSelected)
+                        ImGui::SetItemDefaultFocus();
+                }
+                ImGui::EndCombo();
             }
-            ImGui::EndCombo();
+            NC.MyObj_inputaudio.device_name = pdi[audioinputdeviceid[currentinputItem]]->name;
+            NC.MyObj_inputaudio.sample_rate = pdi[audioinputdeviceid[currentinputItem]]->defaultSampleRate;
+            ImGui::Text("%s", "Device name : ");
+            ImGui::SameLine();
+            ImGui::Text("%s", NC.MyObj_inputaudio.device_name.c_str());
+            ImGui::Text("%s", "Sample rate : ");
+            ImGui::SameLine();
+            ImGui::Text("%s", doubleToChar(NC.MyObj_inputaudio.sample_rate));
+            ImGui::TreePop();
         }
-        ImGui::SetNextItemWidth(window_width * 0.7 / 4.0);
-        if (ImGui::BeginCombo("Output Device", audiooutputdevicelist[currentoutputItem].c_str())) {
-            for (int i = 0; i < audiooutputdevicelist.size(); i++) {
-                const bool isSelected = (currentoutputItem == i);
-                if (ImGui::Selectable(audiooutputdevicelist[i].c_str(), isSelected))
-                    currentoutputItem = i;
+        ImGui::Separator();
+        if (ImGui::TreeNodeEx("Output Device", ImGuiTreeNodeFlags_DefaultOpen)){
+            ImGui::SetNextItemWidth(window_width * 0.7 / 4.0);
+            if (ImGui::BeginCombo("Output Device", audiooutputdevicelist[currentoutputItem].c_str())) {
+                for (int i = 0; i < audiooutputdevicelist.size(); i++) {
+                    const bool isSelected = (currentoutputItem == i);
+                    if (ImGui::Selectable(audiooutputdevicelist[i].c_str(), isSelected))
+                    
+                        currentoutputItem = i;
 
-                if (isSelected)
-                    ImGui::SetItemDefaultFocus();
+                    if (isSelected)
+                        ImGui::SetItemDefaultFocus();
+                }
+                ImGui::EndCombo();
             }
-            ImGui::EndCombo();
-        }
-        ImGui::TreePop();
+            NC.MyObj_outputaudio.device_name = pdi[audiooutputdeviceid[currentoutputItem]]->name;
+            NC.MyObj_outputaudio.sample_rate = pdi[audiooutputdeviceid[currentoutputItem]]->defaultSampleRate;
+            ImGui::Text("%s", "Device name : ");
+            ImGui::SameLine();
+            ImGui::Text("%s", NC.MyObj_outputaudio.device_name.c_str());
+            ImGui::Text("%s", "Sample rate : ");
+            ImGui::SameLine();
+            ImGui::Text("%s", doubleToChar(NC.MyObj_outputaudio.sample_rate));
+            ImGui::TreePop();
+        } 
     }
 }
