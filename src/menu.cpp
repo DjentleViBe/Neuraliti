@@ -9,6 +9,7 @@ std::string superkey = "";
 bool saveas;
 bool openfile;
 bool editpref;
+bool audiopref;
 
 void ShowMenu(bool* p_open)
 {
@@ -97,7 +98,9 @@ void ShowMenu(bool* p_open)
             if (ImGui::BeginMenu("Media"))
             {
                 //ShowExampleMenuFile();
-                if (ImGui::MenuItem("Audio Settings...")) {}
+                if (ImGui::MenuItem("Audio Settings...")) {
+                    audiopref = true;
+                }
                 if (ImGui::MenuItem("MIDI Settings...")) {}
                 if (ImGui::BeginMenu("Preferences")) {
                     if(ImGui::MenuItem("Edit Preferences...")){
