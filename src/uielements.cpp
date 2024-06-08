@@ -3,6 +3,7 @@
 #include <ctime>
 #include <map>
 #include <string>
+#include <mach-o/dyld.h>
 #include "../dependencies/include/glad/glad.h"
 #define GL_SILENCE_DEPRECATION
 #include "../dependencies/include/GLFW/glfw3.h" // Will drag system OpenGL headers
@@ -28,7 +29,6 @@
 #include "../dependencies/include/fileoperations.hpp"
 #include "../dependencies/include/mathoperations.h"
 #include "../dependencies/include/initobjs.hpp"
-#include <mach-o/dyld.h>
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
