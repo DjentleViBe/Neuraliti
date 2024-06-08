@@ -36,7 +36,7 @@ std::string filename = "";
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 std::map<std::string, std::string> appsettings;
-std::vector<std::string> fontlist, configlist, fontsizelist;
+std::vector<std::string> fontlist, configlist, fontsizelist, audioinputdevicelist, audiooutputdevicelist;
 const char *homeDir;
 picojson::value v;
 glm::mat4 *mvp;
@@ -455,7 +455,8 @@ void Displayloop(){
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
     ImGui::FileBrowser openDialog;
-    
+    ImGui::FileBrowser audioDialog;
+
     Shader fontShader((CurrentDir + "/bin/fontshader.vs").c_str(), (CurrentDir + "/bin/fontshader.fs").c_str());
     Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     Shader nodeShader((CurrentDir + "/bin/inletshader.vs").c_str(), (CurrentDir + "/bin/inletshader.fs").c_str());
@@ -619,6 +620,10 @@ void Displayloop(){
         }
         if(openfile){
             fileopenwindow(openDialog);
+        }
+        if(audiopref){
+            audioprefwindow(audioDialog);
+            ImGui::End();
         }
         // std::cout << "looping" << std::endl;
         //ImGui::Text("This is the debug window");
