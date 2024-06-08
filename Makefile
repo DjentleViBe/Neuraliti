@@ -11,10 +11,10 @@ BCKNDS = $(MAKEFILE_DIR)/dependencies/backends
 INCDIR = $(MAKEFILE_DIR)/dependencies/include
 OBJDIR = $(MAKEFILE_DIR)/bin/
 BINDIR = $(MAKEFILE_DIR)/bin/
-LIBS = -lglfw.3.3
+LIBS = -lglfw.3.3 -lportaudio
 LIBDIR = $(MAKEFILE_DIR)/dependencies/library
 SHAREDLIB = $(MAKEFILE_DIR)/sharedlib
-FRAMEWORKS = -framework OpenGL -framework CoreFoundation -framework CoreVideo -framework IOKit -framework OpenCL
+FRAMEWORKS = -framework OpenGL -framework CoreFoundation -framework CoreVideo -framework IOKit -framework OpenCL -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework CoreServices
 # Source files
 SOURCES_C := $(foreach dir,$(SRCDIRS),$(wildcard $(dir)/*.c))
 SOURCES_CPP := $(foreach dir,$(SRCDIRS),$(wildcard $(dir)/*.cpp))
