@@ -3,6 +3,7 @@
 #include <ctime>
 #include <map>
 #include <string>
+#include <mach-o/dyld.h>
 #include "../dependencies/include/glad/glad.h"
 #define GL_SILENCE_DEPRECATION
 #include "../dependencies/include/GLFW/glfw3.h" // Will drag system OpenGL headers
@@ -28,7 +29,6 @@
 #include "../dependencies/include/fileoperations.hpp"
 #include "../dependencies/include/mathoperations.h"
 #include "../dependencies/include/initobjs.hpp"
-#include <mach-o/dyld.h>
 
 #define SCR_WIDTH 1280.0f
 #define SCR_HEIGHT 960.0f
@@ -36,7 +36,7 @@ std::string filename = "";
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 std::map<std::string, std::string> appsettings;
-std::vector<std::string> fontlist, configlist, fontsizelist;
+std::vector<std::string> fontlist, configlist, fontsizelist, audioinputdevicelist, audiooutputdevicelist;
 const char *homeDir;
 picojson::value v;
 glm::mat4 *mvp;
@@ -438,11 +438,25 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     }
 }
 
+void renderinlet(int i){
+    glBindVertexArray(NC.MyObj_rect[i].inquadVAO);
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Inletnum);
+    glBindVertexArray(0);
+}
+
+NeuralObj changeInstanceNumber(int newInletnum, NeuralObj MyObj) {
+    MyObj.Inletnum = newInletnum;
+    updateInstanceData(MyObj);
+
+    return MyObj;
+}
+
 void Displayloop(){
     ImGuiIO io = ImGui::GetIO();
     ImGui::FileBrowser fileDialog;
     ImGui::FileBrowser openDialog;
-    
+    ImGui::FileBrowser audioDialog;
+
     Shader fontShader((CurrentDir + "/bin/fontshader.vs").c_str(), (CurrentDir + "/bin/fontshader.fs").c_str());
     Shader objShader((CurrentDir + "/bin/objshader.vs").c_str(), (CurrentDir + "/bin/objshader.fs").c_str());
     Shader nodeShader((CurrentDir + "/bin/inletshader.vs").c_str(), (CurrentDir + "/bin/inletshader.fs").c_str());
@@ -524,13 +538,16 @@ void Displayloop(){
             nodeShader.use();
             NC.MyObj_rect[i].Matrix = glGetUniformLocation(nodeShader.ID, "ProjMat");
             glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
-            glBindVertexArray(NC.MyObj_rect[i].inquadVAO);
-            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Inletnum);
+            renderinlet(i);
             glUniformMatrix4fv(NC.MyObj_rect[i].Matrix, 1, GL_FALSE, &mvp[i][0][0]);
             glBindVertexArray(NC.MyObj_rect[i].outquadVAO);
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NC.MyObj_rect[i].Outletnum);
 
             fontShader.use();
+            NC.MyObj_font[i].objectwidth = NC.MyObj_font[i].objdisplayname.length() * (float)globalfontsize * 2.0;
+            NC.MyObj_rect[i].objectwidth = NC.MyObj_font[i].objectwidth;
+            NC.MyObj_rect[i].sentencewidth = (float)NC.MyObj_rect[i].objectwidth/(float)window_width;
+            NC.MyObj_font[i].sentencewidth = (float)NC.MyObj_font[i].objectwidth/(float)window_width;
             NC.MyObj_font[i].Matrix = glGetUniformLocation(fontShader.ID, "ProjMat");
             startPos = glm::vec3(NC.MyObj_font[i].x, NC.MyObj_font[i].y, 0.0f);
             size = glm::vec2(NC.MyObj_font[i].sentencewidth, -NC.MyObj_font[i].sentenceheight);
@@ -543,11 +560,6 @@ void Displayloop(){
             glBindVertexArray(NC.MyObj_font[i].VAO);
             glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
         }
-/*
-        for (int i = 0; i < objnumber; i++){
-            sharedlibrary(i);
-            // process the name of the methods
-        }*/
         
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -564,14 +576,27 @@ void Displayloop(){
             ImGui::InputText("##Input", buffer, IM_ARRAYSIZE(buffer));
             ImGui::TextUnformatted(properties.c_str());
             if (ImGui::Button("Modify!")) {
-                NC.MyObj_font[selectindex].objdisplayname = buffer;
-                NC.MyObj_rect[selectindex].objdisplayname = buffer;
-                NC.MyObj_font[selectindex].objectwidth = NC.MyObj_font[selectindex].objdisplayname.length() * (float)globalfontsize * 2.0;
-                NC.MyObj_rect[selectindex].objectwidth = NC.MyObj_font[selectindex].objectwidth;
-                NC.MyObj_rect[selectindex].sentencewidth = (float)NC.MyObj_rect[selectindex].objectwidth/(float)window_width;
-                NC.MyObj_font[selectindex].sentencewidth = (float)NC.MyObj_font[selectindex].objectwidth/(float)window_width;
-                modifyobject(selectindex);
+                if(isFloat(buffer) == 0 && NC.MyObj_rect[selectindex].objtype == 2){
+                    addlogs("\nObject is of float type, enter a number!\n");
+                }
+                else{
+                    NC.MyObj_font[selectindex].objdisplayname = buffer;
+                    NC.MyObj_rect[selectindex].objdisplayname = buffer;
+                    NC.MyObj_font[selectindex].objectwidth = NC.MyObj_font[selectindex].objdisplayname.length() * (float)globalfontsize * 2.0;
+                    NC.MyObj_rect[selectindex].objectwidth = NC.MyObj_font[selectindex].objectwidth;
+                    NC.MyObj_rect[selectindex].sentencewidth = (float)NC.MyObj_rect[selectindex].objectwidth/(float)window_width;
+                    NC.MyObj_font[selectindex].sentencewidth = (float)NC.MyObj_font[selectindex].objectwidth/(float)window_width;
+                    NC.MyObj_rect[selectindex] = changeInstanceNumber(countSpaces(buffer) + 1, NC.MyObj_rect[selectindex]);
+                    modifyobject(selectindex);
+                    clearlines(countSpaces(buffer), selectindex);
+                    
+                }
             }
+        }
+
+        for (int i = 0; i < objnumber; i++){
+            sharedlibrary(i);
+            // process the name of the methods
         }
         // open file dialog when user clicks this button
         if(fileDialog.HasSelected()){
@@ -595,6 +620,10 @@ void Displayloop(){
         }
         if(openfile){
             fileopenwindow(openDialog);
+        }
+        if(audiopref){
+            audioprefwindow(audioDialog);
+            ImGui::End();
         }
         // std::cout << "looping" << std::endl;
         //ImGui::Text("This is the debug window");

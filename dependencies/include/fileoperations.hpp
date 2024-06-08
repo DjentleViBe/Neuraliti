@@ -12,4 +12,5 @@ extern int objnumber;
 extern int connectnumber;
 extern std::vector<std::vector<int>> connectionmatrix;
 std::tuple<std::vector<int>, std::vector<int>> readpdfile(std::string path);
+void clearlines(int maxinlet, int objnumber);
 #endif /* fileoperations_hpp */

@@ -14,3 +14,12 @@ void clearobjs(){
     NC.MyObj_lines.erase(NC.MyObj_lines.begin(), NC.MyObj_lines.end());
     
 }
+
+void clearlines(int maxinlet, int objnumber){
+    for (int l = NC.MyObj_lines.size() - 1; l >= 0; --l) {
+        if (NC.MyObj_lines[l].endobj == objnumber) {
+            std::cout << "delete" << std::endl;
+            NC.MyObj_lines.erase(NC.MyObj_lines.begin() + l);
+        }
+    }
+}

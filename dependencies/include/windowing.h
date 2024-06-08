@@ -7,5 +7,6 @@
 
 void editprefwindow(ImGui::FileBrowser fileDialog);
 void fileopenwindow(ImGui::FileBrowser openDialog);
+void audioprefwindow(ImGui::FileBrowser fileDialog);
 void closefile();
 #endif /* Windowing_h */

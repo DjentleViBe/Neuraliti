@@ -10,6 +10,7 @@
 #include "../dependencies/include/extras.h"
 #include "../dependencies/include/picojson.h"
 #include "../dependencies/include/initobjs.hpp"
+#include "../dependencies/include/pa.hpp"
 
 void editprefwindow(ImGui::FileBrowser fileDialog){
     // Buffer to hold the current working directory
@@ -94,4 +95,39 @@ void fileopenwindow(ImGui::FileBrowser openDialog){
 
     }
     //ImGui::End();
+}
+
+void audioprefwindow(ImGui::FileBrowser fileDialog){
+    ImGui::SetNextWindowPos(ImVec2(window_width / 4.0, (window_height / 4.0)));
+    ImGui::SetNextWindowSize(ImVec2(window_width / 3.0, (window_height / 3.0)));
+    ImGui::Begin("Audio Preferences", &audiopref);
+    static int currentinputItem = 0;
+    static int currentoutputItem = 0;
+    if (ImGui::TreeNode("Audio Devices")){
+        ImGui::SetNextItemWidth(window_width * 0.7 / 4.0);
+        if (ImGui::BeginCombo("Input Device", audioinputdevicelist[currentinputItem].c_str())) {
+            for (int i = 0; i < audioinputdevicelist.size(); i++) {
+                const bool isSelected = (currentinputItem == i);
+                if (ImGui::Selectable(audioinputdevicelist[i].c_str(), isSelected))
+                    currentinputItem = i;
+
+                if (isSelected)
+                    ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::SetNextItemWidth(window_width * 0.7 / 4.0);
+        if (ImGui::BeginCombo("Output Device", audiooutputdevicelist[currentoutputItem].c_str())) {
+            for (int i = 0; i < audiooutputdevicelist.size(); i++) {
+                const bool isSelected = (currentoutputItem == i);
+                if (ImGui::Selectable(audiooutputdevicelist[i].c_str(), isSelected))
+                    currentoutputItem = i;
+
+                if (isSelected)
+                    ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::TreePop();
+    }
 }
