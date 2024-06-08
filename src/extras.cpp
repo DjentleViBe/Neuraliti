@@ -240,3 +240,18 @@ int countSpaces(const std::string& str) {
     }
     return count;
 }
+
+char* doubleToChar(double value) {
+    // Define a buffer to hold the resulting string
+    constexpr int bufferSize = 64; // adjust as needed
+    char buffer[bufferSize];
+    
+    // Convert the double to a string
+    std::snprintf(buffer, bufferSize, "%.0f", value);
+    
+    // Allocate memory for the char* and copy the string
+    char* result = new char[strlen(buffer) + 1];
+    std::strcpy(result, buffer);
+    
+    return result;
+}
