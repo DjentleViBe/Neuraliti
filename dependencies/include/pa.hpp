@@ -4,6 +4,8 @@
 #include <vector>
 
 extern std::vector<std::string> audioinputdevicelist, audiooutputdevicelist;
+extern std::vector<int> audioinputdeviceid, audiooutputdeviceid;
+extern std::vector<const PaDeviceInfo*> pdi;
 
 int getnumaudiodevices();
 const PaDeviceInfo* getaudiodeviceinfo(int i);
